@@ -34,8 +34,9 @@ import org.springframework.lang.Nullable;
  * existing bean instances.
  *
  * <p>This subinterface of BeanFactory is not meant to be used in normal
- * 正常的应用代码中并不会使用这个接口：典型使用情况下，该接口是紧跟BeanFactory或者ListableBeanFactory的
+ * 正常的应用代码中并不会使用这个接口：通常使用的时候，该接口和BeanFactory或者ListableBeanFactory
  * application code: stick to {@link org.springframework.beans.factory.BeanFactory}
+ * 一起使用
  * or {@link org.springframework.beans.factory.ListableBeanFactory} for
  * typical use cases.
  *
@@ -221,11 +222,16 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	 * Instantiate a new bean instance of the given class with the specified autowire
 	 * strategy. All constants defined in this interface are supported here.
 	 * Can also be invoked with {@code AUTOWIRE_NO} in order to just apply
+	 * 也可以传入AUTOWIRE_NO为了仅仅应用实例化前回调（比如注解驱动注入）
 	 * before-instantiation callbacks (e.g. for annotation-driven injection).
 	 * <p>Does <i>not</i> apply standard {@link BeanPostProcessor BeanPostProcessors}
+	 * 不能应用标准的BeanPostProcessors回调或者执行任何更多的bean初始化操作。
 	 * callbacks or perform any further initialization of the bean. This interface
+	 * 这个接口对应用标准的BeanPostProcessors回调或者执行任何更多的bean初始化操作提供了确切的，
 	 * offers distinct, fine-grained operations for those purposes, for example
+	 * 细粒度的操作，比如initializeBean。然而，如果应用构造器构造实例，
 	 * {@link #initializeBean}. However, {@link InstantiationAwareBeanPostProcessor}
+	 * 会应用InstantiationAwareBeanPostProcessor回调
 	 * callbacks are applied, if applicable to the construction of the instance.
 	 * @param beanClass the class of the bean to instantiate
 	 * @param autowireMode by name or type, using the constants in this interface
@@ -247,6 +253,7 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 
 	/**
 	 * Autowire the bean properties of the given bean instance by name or type.
+	 * 根据名称或者类型对给定的bean实例自动织入bean属性。
 	 * Can also be invoked with {@code AUTOWIRE_NO} in order to just apply
 	 * after-instantiation callbacks (e.g. for annotation-driven injection).
 	 * <p>Does <i>not</i> apply standard {@link BeanPostProcessor BeanPostProcessors}
@@ -268,11 +275,15 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 
 	/**
 	 * Apply the property values of the bean definition with the given name to
+	 * 将给定名称bean定义的属性值应用到给定的bean实例中。
 	 * the given bean instance. The bean definition can either define a fully
+	 * bean定义可以定义完全自包含的bean，重用其属性值，也可以只定义用于现有bean实例的属性值。
 	 * self-contained bean, reusing its property values, or just property values
 	 * meant to be used for existing bean instances.
 	 * <p>This method does <i>not</i> autowire bean properties; it just applies
+	 * 这个方法不会自动织入bean属性；它只会明确应用已定义的属性值。使用autowireBeanProperties
 	 * explicitly defined property values. Use the {@link #autowireBeanProperties}
+	 * 方法将属性自动织入一个现有bean实例中。
 	 * method to autowire an existing bean instance.
 	 * <b>Note: This method requires a bean definition for the given name!</b>
 	 * <p>Does <i>not</i> apply standard {@link BeanPostProcessor BeanPostProcessors}
@@ -283,6 +294,7 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	 * @param existingBean the existing bean instance
 	 * @param beanName the name of the bean definition in the bean factory
 	 * (a bean definition of that name has to be available)
+	 *  （该名称的bean定义要存在）
 	 * @throws org.springframework.beans.factory.NoSuchBeanDefinitionException
 	 * if there is no bean definition with the given name
 	 * @throws BeansException if applying the property values failed
@@ -292,11 +304,14 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 
 	/**
 	 * Initialize the given raw bean, applying factory callbacks
+	 * 初始化给定原始bean
 	 * such as {@code setBeanName} and {@code setBeanFactory},
 	 * also applying all bean post processors (including ones which
 	 * might wrap the given raw bean).
 	 * <p>Note that no bean definition of the given name has to exist
+	 * 注意，给定名字的bean定义不一定在容器中存在。传入的bean名称仅仅用于回调，
 	 * in the bean factory. The passed-in bean name will simply be used
+	 * 而没有对照已注册的bean定义进行检查
 	 * for callbacks but not checked against the registered bean definitions.
 	 * @param existingBean the existing bean instance
 	 * @param beanName the name of the bean, to be passed to it if necessary
@@ -308,8 +323,11 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 
 	/**
 	 * Apply {@link BeanPostProcessor BeanPostProcessors} to the given existing bean
+	 * 将BeanPostProcessors应用于给定现有bean实例，调用BeanPostProcessors的
 	 * instance, invoking their {@code postProcessBeforeInitialization} methods.
+	 * postProcessBeforeInitialization方法。
 	 * The returned bean instance may be a wrapper around the original.
+	 * 返回的bean实例可以使原有bean的包装类
 	 * @param existingBean the new bean instance
 	 * @param beanName the name of the bean
 	 * @return the bean instance to use, either the original or a wrapped one
@@ -334,9 +352,12 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 
 	/**
 	 * Destroy the given bean instance (typically coming from {@link #createBean}),
+	 * 销毁给定的bean实例（通常来自于createBean）
 	 * applying the {@link org.springframework.beans.factory.DisposableBean} contract as well as
+	 * 应用DisposableBean以及已注册的DestructionAwareBeanPostProcessors
 	 * registered {@link DestructionAwareBeanPostProcessor DestructionAwareBeanPostProcessors}.
 	 * <p>Any exception that arises during destruction should be caught
+	 * 在销毁期间发生的异常应该被捕获和记录而不是传播给该方法的调用者。
 	 * and logged instead of propagated to the caller of this method.
 	 * @param existingBean the bean instance to destroy
 	 */
@@ -345,16 +366,20 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 
 	//-------------------------------------------------------------------------
 	// Delegate methods for resolving injection points
+	// 解析注入点的委派方法
 	//-------------------------------------------------------------------------
 
 	/**
 	 * Resolve the bean instance that uniquely matches the given object type, if any,
+	 * 如果有的话，包括bean实例的bean名称，解析唯一匹配给定类型的bean实例
 	 * including its bean name.
 	 * <p>This is effectively a variant of {@link #getBean(Class)} which preserves the
+	 * 实际上，这是getBean(Class)的变体，其保存了匹配的实例的bean名称。
 	 * bean name of the matching instance.
 	 * @param requiredType type the bean must match; can be an interface or superclass.
 	 * {@code null} is disallowed.
 	 * @return the bean name plus bean instance
+	 * 返回bean名称和bean实例
 	 * @throws NoSuchBeanDefinitionException if no matching bean was found
 	 * @throws NoUniqueBeanDefinitionException if more than one matching bean was found
 	 * @throws BeansException if the bean could not be created
@@ -365,9 +390,13 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 
 	/**
 	 * Resolve the specified dependency against the beans defined in this factory.
+	 * 根据容器中定义的bean解析指定的依赖
 	 * @param descriptor the descriptor for the dependency (field/method/constructor)
+	 *                   依赖描述器（字段、方法、构造器）
 	 * @param requestingBeanName the name of the bean which declares the given dependency
+	 *                           声明给定依赖的bean的名称
 	 * @return the resolved object, or {@code null} if none found
+	 *          已解析的对象
 	 * @throws NoSuchBeanDefinitionException if no matching bean was found
 	 * @throws NoUniqueBeanDefinitionException if more than one matching bean was found
 	 * @throws BeansException if dependency resolution failed for any other reason
@@ -382,8 +411,10 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	 * @param descriptor the descriptor for the dependency (field/method/constructor)
 	 * @param requestingBeanName the name of the bean which declares the given dependency
 	 * @param autowiredBeanNames a Set that all names of autowired beans (used for
+	 *                           该集合中有所有已自动织入bean的名称（被用于解析给定依赖）
 	 * resolving the given dependency) are supposed to be added to
 	 * @param typeConverter the TypeConverter to use for populating arrays and collections
+	 *                      类型转换器用于填充数组和集合
 	 * @return the resolved object, or {@code null} if none found
 	 * @throws NoSuchBeanDefinitionException if no matching bean was found
 	 * @throws NoUniqueBeanDefinitionException if more than one matching bean was found

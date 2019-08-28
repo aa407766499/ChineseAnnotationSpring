@@ -154,7 +154,7 @@ public interface ConfigurableListableBeanFactory
 
 	/**
 	 * Clear the merged bean definition cache, removing entries for beans
-	 * 清楚覆盖的bean定义缓存，移除所有不适合全部元数据缓存的bean。
+	 * 清楚已覆盖的bean定义缓存，移除所有不适合全部元数据缓存的bean。
 	 * which are not considered eligible for full metadata caching yet.
 	 * <p>Typically triggered after changes to the original bean definitions,
 	 * 通常在原bean定义改变之后出发，比如应用BeanFactoryPostProcessor之后。

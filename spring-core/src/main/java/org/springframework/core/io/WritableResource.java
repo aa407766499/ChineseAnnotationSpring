@@ -61,9 +61,9 @@ public interface WritableResource extends Resource {
 
 	/**
 	 * Return a {@link WritableByteChannel}.
-	 * 返回写入字节管道。
+	 * 返回写入字节通道。
 	 * <p>It is expected that each call creates a <i>fresh</i> channel.
-	 * 每次调用都创建新管道。
+	 * 每次调用都创建新通道。
 	 * <p>The default implementation returns {@link Channels#newChannel(OutputStream)}
 	 * with the result of {@link #getOutputStream()}.
 	 * @return the byte channel for the underlying resource (must not be {@code null})

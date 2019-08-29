@@ -82,7 +82,9 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 	/**
 	 * Role hint indicating that a {@code BeanDefinition} is providing an
+	 * 该参数表明，该BeanDefinition完全是一个后台角色，与终端用户没有关联。该
 	 * entirely background role and has no relevance to the end-user. This hint is
+	 * 参数在注册ComponentDefinition内部操作bean时使用。
 	 * used when registering beans that are completely part of the internal workings
 	 * of a {@link org.springframework.beans.factory.parsing.ComponentDefinition}.
 	 */
@@ -90,21 +92,26 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 
 	// Modifiable attributes
+	// 可修改的属性
 
 	/**
 	 * Set the name of the parent definition of this bean definition, if any.
+	 * 如果有的话设置该bean定义的父bean定义的名称。
 	 */
 	void setParentName(@Nullable String parentName);
 
 	/**
 	 * Return the name of the parent definition of this bean definition, if any.
+	 * 如果有的话返回该bean定义的父bean定义的名称。
 	 */
 	@Nullable
 	String getParentName();
 
 	/**
 	 * Specify the bean class name of this bean definition.
+	 * 指定该bean定义的bean类名。
 	 * <p>The class name can be modified during bean factory post-processing,
+	 * 在bean工厂后置处理期间可以修改该类名，通常用解析的类名替换原来的类名。
 	 * typically replacing the original class name with a parsed variant of it.
 	 * @see #setParentName
 	 * @see #setFactoryBeanName
@@ -114,9 +121,13 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 	/**
 	 * Return the current bean class name of this bean definition.
+	 * 返回该bean定义的当前bean类名。
 	 * <p>Note that this does not have to be the actual class name used at runtime, in
+	 * 注意：在运行期并不是要使用实际的类名，子bean定义会重写/继承父bean定义的类名。
 	 * case of a child definition overriding/inheriting the class name from its parent.
+	 * 这也可以是调用工厂方法生成的类，或者调用工厂bean引用的方法时为空。因此，这不是要在
 	 * Also, this may just be the class that a factory method is called on, or it may
+	 * 运行期确定bean的类型，而是在个别bean定义等级仅用于解析目的。
 	 * even be empty in case of a factory bean reference that a method is called on.
 	 * Hence, do <i>not</i> consider this to be the definitive bean type at runtime but
 	 * rather only use it for parsing purposes at the individual bean definition level.

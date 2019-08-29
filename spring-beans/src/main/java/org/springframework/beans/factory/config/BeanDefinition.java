@@ -23,11 +23,15 @@ import org.springframework.lang.Nullable;
 
 /**
  * A BeanDefinition describes a bean instance, which has property values,
+ * 一个BeanDefinition描述一个bean实例，该实例中有属性值，构造器参数值，
  * constructor argument values, and further information supplied by
+ * 更多的信息由具体实现提供。
  * concrete implementations.
  *
  * <p>This is just a minimal interface: The main intention is to allow a
+ * 这是一个最小接口：其目的是允许BeanFactoryPostProcessor比如PropertyPlaceholderConfigurer
  * {@link BeanFactoryPostProcessor} such as {@link PropertyPlaceholderConfigurer}
+ * 拦截并修改属性值和其他bean元数据。
  * to introspect and modify property values and other bean metadata.
  *
  * @author Juergen Hoeller
@@ -56,14 +60,19 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
 	/**
 	 * Role hint indicating that a {@code BeanDefinition} is a major part
+	 * 角色提示，该参数表明一个BeanDefinition是应用的主要部分。通常对应于
 	 * of the application. Typically corresponds to a user-defined bean.
+	 * 用户自定义的bean
 	 */
 	int ROLE_APPLICATION = 0;
 
 	/**
 	 * Role hint indicating that a {@code BeanDefinition} is a supporting
+	 * 该参数表明一个bean定义是某些大配置的支持部分，通常
 	 * part of some larger configuration, typically an outer
+	 * 在仔细查看特定的ComponentDefinition时，需要看该ComponentDefinition
 	 * {@link org.springframework.beans.factory.parsing.ComponentDefinition}.
+	 * 最重要的支持bean，而不是查看应用的全部配置。
 	 * {@code SUPPORT} beans are considered important enough to be aware
 	 * of when looking more closely at a particular
 	 * {@link org.springframework.beans.factory.parsing.ComponentDefinition},

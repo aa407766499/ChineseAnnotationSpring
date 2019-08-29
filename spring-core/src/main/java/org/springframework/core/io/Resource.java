@@ -144,7 +144,7 @@ public interface Resource extends InputStreamSource {
 
 	/**
 	 * Return a {@link ReadableByteChannel}.
-	 * 返回读取字节通道。
+	 * 返回读取字节管道。
 	 * <p>It is expected that each call creates a <i>fresh</i> channel.
 	 * 每次调用都会创建新的通道
 	 * <p>The default implementation returns {@link Channels#newChannel(InputStream)}

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.springframework.context.ApplicationContext</OriginalElement>
+  <nodes>
+    <node x="90.5" y="160.0">org.springframework.context.support.AbstractApplicationContext</node>
+    <node x="0.0" y="400.0">org.springframework.context.support.AbstractXmlApplicationContext</node>
+    <node x="137.0" y="80.0">org.springframework.context.ConfigurableApplicationContext</node>
+    <node x="455.0" y="80.0">org.springframework.web.context.WebApplicationContext</node>
+    <node x="253.0" y="400.0">org.springframework.web.context.support.AbstractRefreshableWebApplicationContext</node>
+    <node x="321.5" y="0.0">org.springframework.context.ApplicationContext</node>
+    <node x="56.5" y="240.0">org.springframework.context.support.AbstractRefreshableApplicationContext</node>
+    <node x="351.75" y="160.0">org.springframework.web.context.ConfigurableWebApplicationContext</node>
+    <node x="37.0" y="320.0">org.springframework.context.support.AbstractRefreshableConfigApplicationContext</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.springframework.context.support.AbstractXmlApplicationContext" target="org.springframework.context.support.AbstractRefreshableConfigApplicationContext">
+      <point x="0.0" y="-15.0" />
+      <point x="-79.5" y="15.0" />
+    </edge>
+    <edge source="org.springframework.context.ConfigurableApplicationContext" target="org.springframework.context.ApplicationContext">
+      <point x="0.0" y="-15.0" />
+      <point x="255.0" y="55.0" />
+      <point x="361.75" y="55.0" />
+      <point x="-40.25" y="15.0" />
+    </edge>
+    <edge source="org.springframework.context.support.AbstractRefreshableConfigApplicationContext" target="org.springframework.context.support.AbstractRefreshableApplicationContext">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.web.context.ConfigurableWebApplicationContext" target="org.springframework.context.ConfigurableApplicationContext">
+      <point x="-65.75" y="-15.0" />
+      <point x="417.5" y="135.0" />
+      <point x="314.0" y="135.0" />
+      <point x="59.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.web.context.ConfigurableWebApplicationContext" target="org.springframework.web.context.WebApplicationContext">
+      <point x="65.75" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.web.context.support.AbstractRefreshableWebApplicationContext" target="org.springframework.context.support.AbstractRefreshableConfigApplicationContext">
+      <point x="-76.75" y="-15.0" />
+      <point x="329.75" y="375.0" />
+      <point x="275.5" y="375.0" />
+      <point x="79.5" y="15.0" />
+    </edge>
+    <edge source="org.springframework.web.context.support.AbstractRefreshableWebApplicationContext" target="org.springframework.web.context.ConfigurableWebApplicationContext">
+      <point x="76.74999999999999" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.context.support.AbstractRefreshableApplicationContext" target="org.springframework.context.support.AbstractApplicationContext">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.web.context.WebApplicationContext" target="org.springframework.context.ApplicationContext">
+      <point x="0.0" y="-15.0" />
+      <point x="549.0" y="55.0" />
+      <point x="442.25" y="55.0" />
+      <point x="40.25" y="15.0" />
+    </edge>
+    <edge source="org.springframework.context.support.AbstractApplicationContext" target="org.springframework.context.ConfigurableApplicationContext">
+      <point x="0.0" y="-15.0" />
+      <point x="-59.0" y="15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="321.5" y="215.0" />
+  <SelectedNodes>
+    <node>org.springframework.context.ApplicationContext</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

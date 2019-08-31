@@ -55,10 +55,15 @@ public interface BeanDefinitionRegistry extends AliasRegistry {
 
 	/**
 	 * Register a new bean definition with this registry.
+	 * 将新的bean定义注册到该注册表中。必须支持RootBeanDefinition
 	 * Must support RootBeanDefinition and ChildBeanDefinition.
+	 * 和ChildBeanDefinition
 	 * @param beanName the name of the bean instance to register
+	 *                 注册的bean实例的名称
 	 * @param beanDefinition definition of the bean instance to register
+	 *                       注册的bean实例的定义
 	 * @throws BeanDefinitionStoreException if the BeanDefinition is invalid
+	 * 如果BeanDefinition无效或者已经有指定名称的BeanDefinition（不允许重写）
 	 * or if there is already a BeanDefinition for the specified bean name
 	 * (and we are not allowed to override it)
 	 * @see RootBeanDefinition
@@ -69,6 +74,7 @@ public interface BeanDefinitionRegistry extends AliasRegistry {
 
 	/**
 	 * Remove the BeanDefinition for the given name.
+	 * 移除指定名称的BeanDefinition
 	 * @param beanName the name of the bean instance to register
 	 * @throws NoSuchBeanDefinitionException if there is no such bean definition
 	 */
@@ -76,6 +82,7 @@ public interface BeanDefinitionRegistry extends AliasRegistry {
 
 	/**
 	 * Return the BeanDefinition for the given bean name.
+	 * 获取指定名称的BeanDefinition
 	 * @param beanName name of the bean to find a definition for
 	 * @return the BeanDefinition for the given name (never {@code null})
 	 * @throws NoSuchBeanDefinitionException if there is no such bean definition
@@ -84,6 +91,7 @@ public interface BeanDefinitionRegistry extends AliasRegistry {
 
 	/**
 	 * Check if this registry contains a bean definition with the given name.
+	 * 确认该注册表是否指定名称的BeanDefinition
 	 * @param beanName the name of the bean to look for
 	 * @return if this registry contains a bean definition with the given name
 	 */
@@ -91,6 +99,7 @@ public interface BeanDefinitionRegistry extends AliasRegistry {
 
 	/**
 	 * Return the names of all beans defined in this registry.
+	 * 获取该注册表中所有定义的bean名称。
 	 * @return the names of all beans defined in this registry,
 	 * or an empty array if none defined
 	 */
@@ -98,13 +107,16 @@ public interface BeanDefinitionRegistry extends AliasRegistry {
 
 	/**
 	 * Return the number of beans defined in the registry.
+	 * 返回该注册表中定义的bean的数量。
 	 * @return the number of beans defined in the registry
 	 */
 	int getBeanDefinitionCount();
 
 	/**
 	 * Determine whether the given bean name is already in use within this registry,
+	 * 确定该注册表中指定名称是否已经使用。
 	 * i.e. whether there is a local bean or alias registered under this name.
+	 * 该名称下是否已经注册了本地bean或者别名
 	 * @param beanName the name to check
 	 * @return whether the given bean name is already in use
 	 */

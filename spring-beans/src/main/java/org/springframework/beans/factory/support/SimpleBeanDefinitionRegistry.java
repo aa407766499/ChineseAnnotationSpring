@@ -16,9 +16,6 @@
 
 package org.springframework.beans.factory.support;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -26,9 +23,14 @@ import org.springframework.core.SimpleAliasRegistry;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Simple implementation of the {@link BeanDefinitionRegistry} interface.
+ * BeanDefinitionRegistry接口的简单实现。仅提供注册功能，没有内建容器功能。
  * Provides registry capabilities only, with no factory capabilities built in.
+ * 可以用来测试bean定义读取器。
  * Can for example be used for testing bean definition readers.
  *
  * @author Juergen Hoeller
@@ -37,6 +39,7 @@ import org.springframework.util.StringUtils;
 public class SimpleBeanDefinitionRegistry extends SimpleAliasRegistry implements BeanDefinitionRegistry {
 
 	/** Map of bean definition objects, keyed by bean name */
+	//key是bean名称，值是bean定义对象。
 	private final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>(64);
 
 

@@ -224,7 +224,7 @@ public interface BeanFactory {
 	 * overriding the specified default arguments (if any) in the bean definition.
 	 * @param name the name of the bean to retrieve
 	 * @param args arguments to use when creating a bean instance using explicit arguments
-	 *             使用明确的参数创建实例的时候要使用这些参数（与检索一个存在的实例相比，在创建新的实例时使用）
+	 *             使用明确的参数创建实例的时候要使用这些参数（仅在创建新实例时应用，而不是检索现有实例。）
 	 * (only applied when creating a new instance as opposed to retrieving an existing one)
 	 *
 	 * @return an instance of the bean

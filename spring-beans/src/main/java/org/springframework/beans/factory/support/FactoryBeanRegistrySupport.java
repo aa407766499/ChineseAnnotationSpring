@@ -82,6 +82,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 
 	/**
 	 * Obtain an object to expose from the given FactoryBean.
+	 * 获取给定工厂bean生成的对象
 	 * @param factory the FactoryBean instance
 	 * @param beanName the name of the bean
 	 * @param shouldPostProcess whether the bean is subject to post-processing
@@ -102,7 +103,9 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 					//调用Bean工厂的getObject方法生产指定Bean的实例对象
 					object = doGetObjectFromFactoryBean(factory, beanName);
 					// Only post-process and store if not put there already during getObject() call above
+					// 如果在上面调用的getObject()的调用过程中没有放到缓存中，则仅后置处理和存储
 					// (e.g. because of circular reference processing triggered by custom getBean calls)
+					// （因为自定义getBean调用触发了循环引用处理）
 					Object alreadyThere = this.factoryBeanObjectCache.get(beanName);
 					if (alreadyThere != null) {
 						object = alreadyThere;
@@ -141,6 +144,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 
 	/**
 	 * Obtain an object to expose from the given FactoryBean.
+	 * 获取指定工厂bean生产的对象
 	 * @param factory the FactoryBean instance
 	 * @param beanName the name of the bean
 	 * @return the object obtained from the FactoryBean
@@ -157,7 +161,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 				AccessControlContext acc = getAccessControlContext();
 				try {
 					//实现PrivilegedExceptionAction接口的匿名内置类
-					//根据JVM检查权限，然后决定BeanFactory创建实例对象
+					//根据JVM检查权限，然后决定FactoryBean创建实例对象
 					object = AccessController.doPrivileged((PrivilegedExceptionAction<Object>) () ->
 							factory.getObject(), acc);
 				}
@@ -166,7 +170,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 				}
 			}
 			else {
-				//调用BeanFactory接口实现类的创建对象方法
+				//调用FactoryBean接口实现类的创建对象方法
 				object = factory.getObject();
 			}
 		}
@@ -178,6 +182,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 		}
 
 		// Do not accept a null value for a FactoryBean that's not fully
+		//对于尚未完全初始化的工厂bean，不接受空值：许多工厂bean只返回NULL。
 		// initialized yet: Many FactoryBeans just return null then.
 		//创建出来的实例对象为null，或者因为单态对象正在创建而返回null
 		if (object == null) {
@@ -192,8 +197,10 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 
 	/**
 	 * Post-process the given object that has been obtained from the FactoryBean.
+	 * 后置处理工厂bean生产的给定对象。结果对象会暴露。所得到的对象将被暴露用于Bean引用。
 	 * The resulting object will get exposed for bean references.
 	 * <p>The default implementation simply returns the given object as-is.
+	 * 默认实现简单地按原样返回。子类可以重写这个方法应用后置处理器。
 	 * Subclasses may override this, for example, to apply post-processors.
 	 * @param object the object obtained from the FactoryBean.
 	 * @param beanName the name of the bean

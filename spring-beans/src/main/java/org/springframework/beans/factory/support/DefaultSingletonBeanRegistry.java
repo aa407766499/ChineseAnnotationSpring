@@ -394,6 +394,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 	/**
 	 * Register a dependent bean for the given bean,
+	 * 注册指定bean的依赖bean，在指定bean销毁前销毁。
 	 * to be destroyed before the given bean is destroyed.
 	 * @param beanName the name of the bean
 	 * @param dependentBeanName the name of the dependent bean
@@ -401,6 +402,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	//为指定的Bean注入依赖的Bean
 	public void registerDependentBean(String beanName, String dependentBeanName) {
 		// A quick check for an existing entry upfront, avoiding synchronization...
+		// 快速检查前面存在的条目，防止同步。
 		//处理Bean名称，将别名转换为规范的Bean名称
 		String canonicalName = canonicalName(beanName);
 		Set<String> dependentBeans = this.dependentBeanMap.get(canonicalName);
@@ -409,6 +411,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		}
 
 		// No entry yet -> fully synchronized manipulation of the dependentBeans Set
+		// 没有条目 ->完整同步操作依赖bean集合。
 		//多线程同步，保证容器内数据的一致性
 		//先从容器中：bean名称-->全部依赖Bean名称集合找查找给定名称Bean的依赖Bean
 		synchronized (this.dependentBeanMap) {
@@ -438,6 +441,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 	/**
 	 * Determine whether the specified dependent bean has been registered as
+	 * 确认指定的依赖bean是否已经注册为依赖于指定bean或依赖于其任何传递依赖项。
 	 * dependent on the given bean or on any of its transitive dependencies.
 	 * @param beanName the name of the bean to check
 	 * @param dependentBeanName the name of the dependent bean
@@ -607,9 +611,13 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 	/**
 	 * Exposes the singleton mutex to subclasses and external collaborators.
+	 * 将单例互斥锁暴露给子类和外部合作者
 	 * <p>Subclasses should synchronize on the given Object if they perform
+	 * 如果子类对扩展的单例创建步骤进行排序，那么在给定对象上就应该同步。
 	 * any sort of extended singleton creation phase. In particular, subclasses
+	 * 特别地在单例创建中，子类不应该包含自己的互斥锁，这样可以防止在延迟初始化时可能
 	 * should <i>not</i> have their own mutexes involved in singleton creation,
+	 * 发生死锁。
 	 * to avoid the potential for deadlocks in lazy-init situations.
 	 */
 	public final Object getSingletonMutex() {

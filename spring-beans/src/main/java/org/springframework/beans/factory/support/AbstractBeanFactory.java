@@ -359,6 +359,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				//IOC容器创建原型模式Bean实例对象
 				else if (mbd.isPrototype()) {
 					// It's a prototype -> create a new instance.
+					// 如果是原型 ->创建新实例
 					//原型模式(Prototype)是每次都会创建一个新的对象
 					Object prototypeInstance = null;
 					try {
@@ -1072,7 +1073,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	/**
 	 * Callback before prototype creation.
+	 * 原型创建前回调。
 	 * <p>The default implementation register the prototype as currently in creation.
+	 * 默认实现注册当前创建的原型对象
 	 * @param beanName the name of the prototype about to be created
 	 * @see #isPrototypeCurrentlyInCreation
 	 */

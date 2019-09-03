@@ -40,23 +40,32 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Default implementation of the
+ * ListableBeanFactory和BeanDefinitionRegistry的默认实现：
  * {@link org.springframework.beans.factory.ListableBeanFactory} and
+ * 基于bean定义对象的成熟的bean容器
  * {@link BeanDefinitionRegistry} interfaces: a full-fledged bean factory
  * based on bean definition objects.
  *
  * <p>Typical usage is registering all bean definitions first (possibly read
+ * 通常使用在访问bean之前，首先是注册所有的bean定义（可能读取一个bean定义文件）。
  * from a bean definition file), before accessing beans. Bean definition lookup
+ * 因此在本地bean定义表中查找bean定义不是一个昂贵的操作，操作预构建的bean定义元数据对象。
  * is therefore an inexpensive operation in a local bean definition table,
  * operating on pre-built bean definition metadata objects.
  *
  * <p>Can be used as a standalone bean factory, or as a superclass for custom
+ * 该容器能被用作标准bean容器，或者作为自定义bean容器的超类。注意：读取指定bean定义
  * bean factories. Note that readers for specific bean definition formats are
+ * 格式通常是分开实现的，而不是由bean容器子类实现，参看PropertiesBeanDefinitionReader
  * typically implemented separately rather than as bean factory subclasses:
+ * 以及XmlBeanDefinitionReader
  * see for example {@link PropertiesBeanDefinitionReader} and
  * {@link org.springframework.beans.factory.xml.XmlBeanDefinitionReader}.
  *
  * <p>For an alternative implementation of the
+ * ListableBeanFactory接口的一个可选实现，参看StaticListableBeanFactory，
  * {@link org.springframework.beans.factory.ListableBeanFactory} interface,
+ * 其管理存在的bean实例而不是基于bean定义创建新的实例。
  * have a look at {@link StaticListableBeanFactory}, which manages existing
  * bean instances rather than creating new ones based on bean definitions.
  *

@@ -20,7 +20,9 @@ import org.springframework.lang.Nullable;
 
 /**
  * Holder containing one or more {@link PropertyValue} objects,
+ * 持有者包含一个或者多个PropertyValue对象，通常包含一个特定目标
  * typically comprising one update for a specific target bean.
+ * bean一次更新
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -31,11 +33,13 @@ public interface PropertyValues {
 
 	/**
 	 * Return an array of the PropertyValue objects held in this object.
+	 * 返回该对象持有的PropertyValue对象数据
 	 */
 	PropertyValue[] getPropertyValues();
 
 	/**
 	 * Return the property value with the given name, if any.
+	 * 返回给定名称的属性值
 	 * @param propertyName the name to search for
 	 * @return the property value, or {@code null} if none
 	 */
@@ -44,6 +48,7 @@ public interface PropertyValues {
 
 	/**
 	 * Return the changes since the previous PropertyValues.
+	 * 返回从前一个PropertyValues的改变。子类应该重写equals
 	 * Subclasses should also override {@code equals}.
 	 * @param old old property values
 	 * @return PropertyValues updated or new properties.

@@ -191,9 +191,12 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 
 	/**
 	 * Subclasses may override this to perform custom initialization.
+	 * 子类可以重写该方法执行自定义初始化。该方法调用前该servlet所有的bean
 	 * All bean properties of this servlet will have been set before this
+	 * 属性都要设置完成。
 	 * method is invoked.
 	 * <p>This default implementation is empty.
+	 * 默认空实现
 	 * @throws ServletException if subclass initialization fails
 	 */
 	protected void initServletBean() throws ServletException {

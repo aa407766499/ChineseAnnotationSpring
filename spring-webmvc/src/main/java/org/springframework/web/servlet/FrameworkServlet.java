@@ -485,6 +485,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 	/**
 	 * Overridden method of {@link HttpServletBean}, invoked after any bean properties
+	 * 重写HttpServletBean的方法，所有bean属性设置后调用。创建该servlet的WebApplicationContext
 	 * have been set. Creates this servlet's WebApplicationContext.
 	 */
 	@Override
@@ -518,7 +519,9 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 	/**
 	 * Initialize and publish the WebApplicationContext for this servlet.
+	 * 初始化和发布该servlet的WebApplicationContext
 	 * <p>Delegates to {@link #createWebApplicationContext} for actual creation
+	 * 该上下文的实际创建委派给createWebApplicationContext方法。能够被子类重写。
 	 * of the context. Can be overridden in subclasses.
 	 * @return the WebApplicationContext instance
 	 * @see #FrameworkServlet(WebApplicationContext)

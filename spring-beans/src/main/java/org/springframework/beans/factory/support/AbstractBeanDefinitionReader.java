@@ -35,9 +35,11 @@ import org.springframework.util.Assert;
 
 /**
  * Abstract base class for bean definition readers which implement
+ * 实现BeanDefinitionReader接口的bean定义读取器抽象基础类
  * the {@link BeanDefinitionReader} interface.
  *
  * <p>Provides common properties like the bean factory to work on
+ * 提供要处理的bean容器和用于加载bean类的类加载器等常见属性。
  * and the class loader to use for loading bean classes.
  *
  * @author Juergen Hoeller

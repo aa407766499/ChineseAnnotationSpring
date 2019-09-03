@@ -85,24 +85,35 @@ import org.springframework.util.StringUtils;
 
 /**
  * Abstract bean factory superclass that implements default bean creation,
+ * 抽象bean容器超类实现了默认的bean创建过程，具有RootBeanDefinition类指定的全部功能。
  * with the full capabilities specified by the {@link RootBeanDefinition} class.
+ * 除了实现AbstractBeanFactory的createBean方法还实现了AutowireCapableBeanFactory接口
  * Implements the {@link org.springframework.beans.factory.config.AutowireCapableBeanFactory}
  * interface in addition to AbstractBeanFactory's {@link #createBean} method.
  *
  * <p>Provides bean creation (with constructor resolution), property population,
+ * 提供bean创建（构造器解析），属性填充，织入（包括自动织入），初始化，处理运行时
  * wiring (including autowiring), and initialization. Handles runtime bean
+ * bean引用，解析管理的集合，调用初始化方法等。支持构造器自动注入，根据名称注入属性，
  * references, resolves managed collections, calls initialization methods, etc.
+ * 根据类型注入属性。
  * Supports autowiring constructors, properties by name, and properties by type.
  *
  * <p>The main template method to be implemented by subclasses is
+ * 子类实现的主要模板方法是resolveDependency(DependencyDescriptor, String, Set, TypeConverter)，
  * {@link #resolveDependency(DependencyDescriptor, String, Set, TypeConverter)},
+ * 用于按类型自动注入。如果一个工厂能够搜索它的bean定义，匹配bean，那么它通常可以通过
  * used for autowiring by type. In case of a factory which is capable of searching
+ * 这样的搜索（搜索类型）实现。对于其他的容器风格，可以实现简化的匹配算法。
  * its bean definitions, matching beans will typically be implemented through such
  * a search. For other factory styles, simplified matching algorithms can be implemented.
  *
  * <p>Note that this class does <i>not</i> assume or implement bean definition
+ * 注意：该类不能承担或者实现bean定义注册表的功能。查看ListableBeanFactory以及
  * registry capabilities. See {@link DefaultListableBeanFactory} for an implementation
+ * BeanDefinitionRegistry接口的一个实现DefaultListableBeanFactory，这两个分别代表
  * of the {@link org.springframework.beans.factory.ListableBeanFactory} and
+ * 该容器的API和SPI视图
  * {@link BeanDefinitionRegistry} interfaces, which represent the API and SPI
  * view of such a factory, respectively.
  *

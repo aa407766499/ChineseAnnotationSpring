@@ -21,6 +21,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.lang.Nullable;
 
 /**
+ * (粗略理解为查单个bean)
  * The root interface for accessing a Spring bean container.
  * 这个顶层接口用于访问spring bean 容器（bean可以理解为组件）
  * This is the basic client view of a bean container;

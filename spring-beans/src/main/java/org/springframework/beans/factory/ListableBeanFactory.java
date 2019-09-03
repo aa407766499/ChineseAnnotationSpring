@@ -24,6 +24,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.lang.Nullable;
 
 /**
+ * （粗略理解为查多个bean）
  * Extension of the {@link BeanFactory} interface to be implemented by bean factories
  * 这是BeanFactory的扩展接口，实现该接口的bean factory能够枚举其所有的bean实例，而不是
  * that can enumerate all their bean instances, rather than attempting bean lookup

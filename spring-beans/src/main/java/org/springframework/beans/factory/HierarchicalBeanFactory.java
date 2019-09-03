@@ -19,6 +19,7 @@ package org.springframework.beans.factory;
 import org.springframework.lang.Nullable;
 
 /**
+ * （实现bean容器父子级关系，有点类似类加载器）
  * Sub-interface implemented by bean factories that can be part
  * 层级结构中的bean容器需要实现这个接口
  * of a hierarchy.

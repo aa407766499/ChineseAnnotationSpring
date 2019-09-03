@@ -26,6 +26,7 @@ import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
 import org.springframework.lang.Nullable;
 
 /**
+ * （粗略理解为新增bean）
  * Extension of the {@link org.springframework.beans.factory.BeanFactory}
  * 有自动注入功能的bean容器需要实现该BeanFactory的扩展接口，容器会将
  * interface to be implemented by bean factories that are capable of

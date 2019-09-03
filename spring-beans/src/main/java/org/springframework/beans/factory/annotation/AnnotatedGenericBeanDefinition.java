@@ -29,8 +29,11 @@ import org.springframework.util.Assert;
  * {@link AnnotatedBeanDefinition} interface.
  *
  * <p>This GenericBeanDefinition variant is mainly useful for testing code that expects
+ * 该GenericBeanDefinition变体主要用于测试操作AnnotatedBeanDefinition的代码，比如
  * to operate on an AnnotatedBeanDefinition, for example strategy implementations
+ * Spring组件扫描支持实现策略（默认的定义类是ScannedGenericBeanDefinition，其也实现了
  * in Spring's component scanning support (where the default definition class is
+ * AnnotatedBeanDefinition接口）。
  * {@link org.springframework.context.annotation.ScannedGenericBeanDefinition},
  * which also implements the AnnotatedBeanDefinition interface).
  *

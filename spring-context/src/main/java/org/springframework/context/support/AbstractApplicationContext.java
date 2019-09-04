@@ -598,14 +598,17 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				}
 
 				// Destroy already created singletons to avoid dangling resources.
+				// 销毁以及创建的单例，防止危及资源。
 				//13、销毁已创建的Bean
 				destroyBeans();
 
 				// Reset 'active' flag.
+				// 重置容器运行标识.
 				//14、取消refresh操作，重置容器的同步标识。
 				cancelRefresh(ex);
 
 				// Propagate exception to caller.
+				// 将异常传播给调用者
 				throw ex;
 			}
 

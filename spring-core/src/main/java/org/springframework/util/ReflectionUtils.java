@@ -475,7 +475,9 @@ public abstract class ReflectionUtils {
 
 	/**
 	 * Make the given constructor accessible, explicitly setting it accessible
+	 * 使得给定构造器可访问，如果必要明确设置其可访问。setAccessible(true)方法只
 	 * if necessary. The {@code setAccessible(true)} method is only called
+	 * 在真正必要时才调用，为了防止与JVM安全管理器相冲突（如果运行中）
 	 * when actually necessary, to avoid unnecessary conflicts with a JVM
 	 * SecurityManager (if active).
 	 * @param ctor the constructor to make accessible

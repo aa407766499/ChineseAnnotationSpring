@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.springframework.core.env.PropertyResolver</OriginalElement>
+  <nodes>
+    <node x="192.5" y="240.0">org.springframework.web.context.ConfigurableWebEnvironment</node>
+    <node x="97.5" y="160.0">org.springframework.core.env.ConfigurableEnvironment</node>
+    <node x="177.25" y="0.0">org.springframework.core.env.PropertyResolver</node>
+    <node x="86.0" y="80.0">org.springframework.core.env.Environment</node>
+    <node x="88.0" y="400.0">org.springframework.web.context.support.StandardServletEnvironment</node>
+    <node x="245.0" y="80.0">org.springframework.core.env.ConfigurablePropertyResolver</node>
+    <node x="0.0" y="320.0">org.springframework.core.env.StandardEnvironment</node>
+    <node x="313.5" y="160.0">org.springframework.core.env.AbstractPropertyResolver</node>
+    <node x="1.5" y="240.0">org.springframework.core.env.AbstractEnvironment</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.springframework.web.context.support.StandardServletEnvironment" target="org.springframework.core.env.StandardEnvironment">
+      <point x="-53.75" y="-15.0" />
+      <point x="141.75" y="375.0" />
+      <point x="87.0" y="375.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.core.env.Environment" target="org.springframework.core.env.PropertyResolver">
+      <point x="0.0" y="-15.0" />
+      <point x="146.5" y="55.0" />
+      <point x="214.5" y="55.0" />
+      <point x="-37.25" y="15.0" />
+    </edge>
+    <edge source="org.springframework.core.env.ConfigurableEnvironment" target="org.springframework.core.env.ConfigurablePropertyResolver">
+      <point x="49.0" y="-15.0" />
+      <point x="244.5" y="135.0" />
+      <point x="301.0" y="135.0" />
+      <point x="-56.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.core.env.AbstractEnvironment" target="org.springframework.core.env.ConfigurableEnvironment">
+      <point x="0.0" y="-15.0" />
+      <point x="87.0" y="215.0" />
+      <point x="146.5" y="215.0" />
+      <point x="-49.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.core.env.StandardEnvironment" target="org.springframework.core.env.AbstractEnvironment">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.core.env.ConfigurableEnvironment" target="org.springframework.core.env.Environment">
+      <point x="-49.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.core.env.AbstractPropertyResolver" target="org.springframework.core.env.ConfigurablePropertyResolver">
+      <point x="0.0" y="-15.0" />
+      <point x="56.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.web.context.ConfigurableWebEnvironment" target="org.springframework.core.env.ConfigurableEnvironment">
+      <point x="0.0" y="-15.0" />
+      <point x="304.0" y="215.0" />
+      <point x="244.5" y="215.0" />
+      <point x="49.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.web.context.support.StandardServletEnvironment" target="org.springframework.web.context.ConfigurableWebEnvironment">
+      <point x="53.75" y="-15.0" />
+      <point x="249.25" y="375.0" />
+      <point x="304.0" y="375.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.core.env.ConfigurablePropertyResolver" target="org.springframework.core.env.PropertyResolver">
+      <point x="0.0" y="-15.0" />
+      <point x="357.0" y="55.0" />
+      <point x="289.0" y="55.0" />
+      <point x="37.25" y="15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="256.5" y="215.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

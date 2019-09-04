@@ -473,6 +473,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * This implementation calls {@link #initStrategies}.
+	 * 该实现调用initStrategies
 	 */
 	@Override
 	protected void onRefresh(ApplicationContext context) {
@@ -481,7 +482,9 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * Initialize the strategy objects that this servlet uses.
+	 * 初始化该servlet使用的策略对象。
 	 * <p>May be overridden in subclasses in order to initialize further strategy objects.
+	 * 为了初始化更多的策略对象，可以被子类重写
 	 */
 	//初始化策略
 	protected void initStrategies(ApplicationContext context) {
@@ -501,13 +504,15 @@ public class DispatcherServlet extends FrameworkServlet {
 		initRequestToViewNameTranslator(context);
 		//初始化视图转换器
 		initViewResolvers(context);
-		//
+		//初始化闪存Map管理器（用于重定向请求时，保留请求属性）
 		initFlashMapManager(context);
 	}
 
 	/**
 	 * Initialize the MultipartResolver used by this class.
+	 * 初始化该类的多文件上传组件
 	 * <p>If no bean is defined with the given name in the BeanFactory for this namespace,
+	 * 如果
 	 * no multipart handling is provided.
 	 */
 	private void initMultipartResolver(ApplicationContext context) {

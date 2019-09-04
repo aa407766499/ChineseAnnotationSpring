@@ -99,8 +99,11 @@ public abstract class BeanUtils {
 
 	/**
 	 * Instantiate a class using its no-arg constructor.
+	 * 使用无惨构造实例化一个类。
 	 * <p>Note that this method tries to set the constructor accessible
+	 * 注意：如果给定了一个不能访问的构造器（换句话说，不是公共的），那么
 	 * if given a non-accessible (that is, non-public) constructor.
+	 * 该方法会试着设置该构造器可访问
 	 * @param clazz class to instantiate
 	 * @return the new instance
 	 * @throws BeanInstantiationException if the bean cannot be instantiated
@@ -145,6 +148,7 @@ public abstract class BeanUtils {
 
 	/**
 	 * Convenience method to instantiate a class using the given constructor.
+	 * 使用给定构造器实例化一个类的便利方法。
 	 * <p>Note that this method tries to set the constructor accessible if given a
 	 * non-accessible (that is, non-public) constructor, and supports Kotlin classes
 	 * with optional parameters and default values.

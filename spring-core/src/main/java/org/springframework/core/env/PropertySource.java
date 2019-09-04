@@ -190,9 +190,13 @@ public abstract class PropertySource<T> {
 
 	/**
 	 * {@code PropertySource} to be used as a placeholder in cases where an actual
+	 * 在应用上下文创建的时候，实际的属性源不能饿汉式初始化，这时使用占位符属性源。
 	 * property source cannot be eagerly initialized at application context
+	 * 比如，ServletContext基础属性源必须等到ServletContext对象能够获得其ApplicationContext。
 	 * creation time.  For example, a {@code ServletContext}-based property source
+	 * 在这种情况下，一个占位符被用于持有想要的属性源的默认位置/顺序，然后在上下文启动的时候
 	 * must wait until the {@code ServletContext} object is available to its enclosing
+	 * 被替换。
 	 * {@code ApplicationContext}.  In such cases, a stub should be used to hold the
 	 * intended default position/order of the property source, then be replaced
 	 * during context refresh.

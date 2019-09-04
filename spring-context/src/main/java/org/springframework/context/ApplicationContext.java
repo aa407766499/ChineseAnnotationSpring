@@ -25,7 +25,7 @@ import org.springframework.lang.Nullable;
 
 /**
  * Central interface to provide configuration for an application.
- * 给应用提供配置的中心接口。应用运行期间处于只读状态，但是如果试下
+ * 给应用提供配置的中心接口。应用运行期间处于只读状态，但是如果实现
  * This is read-only while the application is running, but may be
  * 支持这个接口可以重新加载。
  * reloaded if the implementation supports this.

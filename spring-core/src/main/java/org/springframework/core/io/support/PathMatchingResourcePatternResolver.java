@@ -194,8 +194,11 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 
 	/**
 	 * Create a new PathMatchingResourcePatternResolver.
+	 * 创建新的PathMatchingResourcePatternResolver。
 	 * <p>ClassLoader access will happen via the thread context class loader.
+	 * 通过线程上下文类加载器访问类加载器。
 	 * @param resourceLoader the ResourceLoader to load root directories and
+	 *                          ResourceLoader加载根路径和实际资源
 	 * actual resources with
 	 */
 	public PathMatchingResourcePatternResolver(ResourceLoader resourceLoader) {

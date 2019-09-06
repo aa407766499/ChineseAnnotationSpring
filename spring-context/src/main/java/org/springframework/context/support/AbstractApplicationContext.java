@@ -82,29 +82,41 @@ import org.springframework.util.ReflectionUtils;
 
 /**
  * Abstract implementation of the {@link org.springframework.context.ApplicationContext}
+ * ApplicationContext接口的抽象实现。不授权用于配置的存储类型（粗略理解为忽略bean配置信息
  * interface. Doesn't mandate the type of storage used for configuration; simply
+ * 的存储类型）；简单实现公共的上下文功能。使用模板方法设计模式，需要具体的子类实现抽象方法。
  * implements common context functionality. Uses the Template Method design pattern,
  * requiring concrete subclasses to implement abstract methods.
  *
  * <p>In contrast to a plain BeanFactory, an ApplicationContext is supposed
+ * 相比于普通bean容器，ApplicationContext需要探测其内部bean容器中定义的特定bean：
  * to detect special beans defined in its internal bean factory:
+ * 因此，该类自动注册了BeanFactoryPostProcessors，BeanPostProcessors，ApplicationListeners，
  * Therefore, this class automatically registers
+ * 这些在上下文中都被定义为bean。
  * {@link org.springframework.beans.factory.config.BeanFactoryPostProcessor BeanFactoryPostProcessors},
  * {@link org.springframework.beans.factory.config.BeanPostProcessor BeanPostProcessors}
  * and {@link org.springframework.context.ApplicationListener ApplicationListeners}
  * which are defined as beans in the context.
  *
  * <p>A {@link org.springframework.context.MessageSource} may also be supplied
+ * 在上下文中MessageSource也可以作为一个bean提供，名称为messageSource；然而消息
  * as a bean in the context, with the name "messageSource"; otherwise, message
+ * 解析被委派给父容器。此外，在上下文中提供类型为ApplicationEventMulticaster
  * resolution is delegated to the parent context. Furthermore, a multicaster
+ * 的bean作为应用事件的传播器，命名为applicationEventMulticaster。否则，会使用
  * for application events can be supplied as "applicationEventMulticaster" bean
+ * SimpleApplicationEventMulticaster类型作为默认的传播器。
  * of type {@link org.springframework.context.event.ApplicationEventMulticaster}
  * in the context; otherwise, a default multicaster of type
  * {@link org.springframework.context.event.SimpleApplicationEventMulticaster} will be used.
  *
  * <p>Implements resource loading through extending
+ * 通过扩展DefaultResourceLoader实现资源加载。因此对于非URL
  * {@link org.springframework.core.io.DefaultResourceLoader}.
+ * 资源路径比如类路径资源（支持完整的包含包路径的类路径资源名称），
  * Consequently treats non-URL resource paths as class path resources
+ * 除非getResourceByPath在子类中重写。
  * (supporting full class path resource names that include the package path,
  * e.g. "mypackage/myresource.dat"), unless the {@link #getResourceByPath}
  * method is overwritten in a subclass.
@@ -205,6 +217,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	private LifecycleProcessor lifecycleProcessor;
 
 	/** MessageSource we delegate our implementation of this interface to */
+	// 委派消息源给该接口的实现
 	@Nullable
 	private MessageSource messageSource;
 
@@ -471,10 +484,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	//---------------------------------------------------------------------
 	// Implementation of ConfigurableApplicationContext interface
+	// ConfigurableApplicationContext接口实现
 	//---------------------------------------------------------------------
 
 	/**
 	 * Set the parent of this application context.
+	 * 设置父容器。如果父环境ConfigurableEnvironment的实例，那么父环境可以被子环境合并。
 	 * <p>The parent {@linkplain ApplicationContext#getEnvironment() environment} is
 	 * {@linkplain ConfigurableEnvironment#merge(ConfigurableEnvironment) merged} with
 	 * this (child) application context environment if the parent is non-{@code null} and
@@ -1203,7 +1218,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * <p>The default implementation checks the {@link #isActive() 'active'} status
 	 * 默认实现检查整个上下文的和isActive()方法功能一样的'active'状态。可以被重写进行更多
 	 * of this context overall. May be overridden for more specific checks, or for a
-	 * 的特定检查，或者如果getBeanFactory()方法在这种情况下抛出了异常，说明没打开。
+	 * 的特定检查，或者如果getBeanFactory()方法在这种情况下抛出了异常，说明没启动。
 	 * no-op if {@link #getBeanFactory()} itself throws an exception in such a case.
 	 */
 	protected void assertBeanFactoryActive() {
@@ -1220,6 +1235,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	//---------------------------------------------------------------------
 	// Implementation of BeanFactory interface
+	// BeanFactory接口实现
 	//---------------------------------------------------------------------
 
 	@Override
@@ -1296,6 +1312,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	//---------------------------------------------------------------------
 	// Implementation of ListableBeanFactory interface
+	// ListableBeanFactory接口实现
 	//---------------------------------------------------------------------
 
 	@Override
@@ -1371,6 +1388,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	//---------------------------------------------------------------------
 	// Implementation of HierarchicalBeanFactory interface
+	// HierarchicalBeanFactory接口实现
 	//---------------------------------------------------------------------
 
 	@Override
@@ -1386,7 +1404,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * Return the internal bean factory of the parent context if it implements
+	 * 如果该上下文实现了ConfigurableApplicationContext接口，返回父上下文的内部
 	 * ConfigurableApplicationContext; else, return the parent context itself.
+	 * bean容器。如果没有实现，返回父容器。
 	 * @see org.springframework.context.ConfigurableApplicationContext#getBeanFactory
 	 */
 	@Nullable
@@ -1398,6 +1418,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	//---------------------------------------------------------------------
 	// Implementation of MessageSource interface
+	// MessageSource接口实现
 	//---------------------------------------------------------------------
 
 	@Override
@@ -1417,6 +1438,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * Return the internal MessageSource used by the context.
+	 * 返回该上下文使用的内部消息源。
 	 * @return the internal MessageSource (never {@code null})
 	 * @throws IllegalStateException if the context has not been initialized yet
 	 */
@@ -1430,7 +1452,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * Return the internal message source of the parent context if it is an
+	 * 如果该上下文实现了ConfigurableApplicationContext接口，返回父上下文的内部
 	 * AbstractApplicationContext too; else, return the parent context itself.
+	 * 消息源。如果没有实现，返回父容器。
 	 */
 	@Nullable
 	protected MessageSource getInternalParentMessageSource() {
@@ -1441,6 +1465,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	//---------------------------------------------------------------------
 	// Implementation of ResourcePatternResolver interface
+	// ResourcePatternResolver接口实现
 	//---------------------------------------------------------------------
 
 	@Override
@@ -1451,6 +1476,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	//---------------------------------------------------------------------
 	// Implementation of Lifecycle interface
+	// Lifecycle接口实现
 	//---------------------------------------------------------------------
 
 	@Override
@@ -1494,8 +1520,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * Subclasses must implement this method to release their internal bean factory.
+	 * 子类必须实现该方法来释放其内部bean容器。在所有其他关闭操作执行后，由close()
 	 * This method gets invoked by {@link #close()} after all other shutdown work.
+	 * 方法调用
 	 * <p>Should never throw an exception but rather log shutdown failures.
+	 * 不要抛出异常，而要记录关闭错误消息
 	 */
 	protected abstract void closeBeanFactory();
 
@@ -1523,6 +1552,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * Return information about this context.
+	 * 返回有关该上下文的信息
 	 */
 	@Override
 	public String toString() {

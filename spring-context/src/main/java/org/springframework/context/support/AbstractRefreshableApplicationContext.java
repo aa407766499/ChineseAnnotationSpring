@@ -27,24 +27,33 @@ import org.springframework.lang.Nullable;
 
 /**
  * Base class for {@link org.springframework.context.ApplicationContext}
+ * ApplicationContext的基础实现类，该类支持多次调用refresh()，每次都创建一个新的内部bean
  * implementations which are supposed to support multiple calls to {@link #refresh()},
+ * 容器。通常（非必须），该上下文由一组配置路径驱动，能从这些路径下加载bean定义。
  * creating a new internal bean factory instance every time.
  * Typically (but not necessarily), such a context will be driven by
  * a set of config locations to load bean definitions from.
  *
  * <p>The only method to be implemented by subclasses is {@link #loadBeanDefinitions},
+ * 仅仅需要子类实现的方法时loadBeanDefinitions，该方法每次刷新的时候都调用。具体的实现会将
  * which gets invoked on each refresh. A concrete implementation is supposed to load
+ * bean定义加载到给定的DefaultListableBeanFactory中，
  * bean definitions into the given
+ * 通常委派给一个或者多个特定的bean定义读取器
  * {@link org.springframework.beans.factory.support.DefaultListableBeanFactory},
  * typically delegating to one or more specific bean definition readers.
  *
  * <p><b>Note that there is a similar base class for WebApplicationContexts.</b>
+ * 注意：该类和WebApplicationContexts的基础类相似。AbstractRefreshableWebApplicationContext
  * {@link org.springframework.web.context.support.AbstractRefreshableWebApplicationContext}
+ * 提供了相同的子类策略，但是额外预实现了所有web环境上下文功能。也预定义了一个方式
  * provides the same subclassing strategy, but additionally pre-implements
+ * 去加载web上下文的配置路径。
  * all context functionality for web environments. There is also a
  * pre-defined way to receive config locations for a web context.
  *
  * <p>Concrete standalone subclasses of this base class, reading in a
+ * 读取特定bean定义格式的该基础类的具体实现类，
  * specific bean definition format, are {@link ClassPathXmlApplicationContext}
  * and {@link FileSystemXmlApplicationContext}, which both derive from the
  * common {@link AbstractXmlApplicationContext} base class;
@@ -117,7 +126,9 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 
 	/**
 	 * This implementation performs an actual refresh of this context's underlying
+	 * 该实现执行该上下文底层bean容器的真正刷新，关闭以前的bean容器（如果有的话）以及
 	 * bean factory, shutting down the previous bean factory (if any) and
+	 * 初始化该上下文的生命周期下个阶段的新bean容器
 	 * initializing a fresh bean factory for the next phase of the context's lifecycle.
 	 */
 	@Override

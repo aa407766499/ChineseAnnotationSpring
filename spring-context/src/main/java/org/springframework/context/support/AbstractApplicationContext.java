@@ -1410,7 +1410,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see org.springframework.context.ConfigurableApplicationContext#getBeanFactory
 	 */
 	@Nullable
-	protected BeanFactory getInternalParentBeanFactory() {
+	protected BeanFactory  getInternalParentBeanFactory() {
 		return (getParent() instanceof ConfigurableApplicationContext) ?
 				((ConfigurableApplicationContext) getParent()).getBeanFactory() : getParent();
 	}

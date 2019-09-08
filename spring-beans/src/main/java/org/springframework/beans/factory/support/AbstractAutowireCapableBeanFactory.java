@@ -230,15 +230,21 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	/**
 	 * Set whether to allow circular references between beans - and automatically
+	 * 设置是否允许bean之间的循环引用-自动解析循环引用。
 	 * try to resolve them.
 	 * <p>Note that circular reference resolution means that one of the involved beans
+	 * 注意：循环引用解析意味着一个已解析的bean会接收另一个当前还没完全初始化的bean。
 	 * will receive a reference to another bean that is not fully initialized yet.
+	 * 这会导致微妙的或者不那么微妙的初始化副作用；虽然，在许多情况下都可以正常工作。
 	 * This can lead to subtle and not-so-subtle side effects on initialization;
 	 * it does work fine for many scenarios, though.
 	 * <p>Default is "true". Turn this off to throw an exception when encountering
+	 * 默认为true。如果关闭了，在遇到循环引用时会抛出异常。完全不允许循环引用。
 	 * a circular reference, disallowing them completely.
 	 * <p><b>NOTE:</b> It is generally recommended to not rely on circular references
+	 * 注意：通常不建议依赖bean之间的循环引用。重构你的应用逻辑，讲两个已解析的bean委派给
 	 * between your beans. Refactor your application logic to have the two beans
+	 * 包含他们共同逻辑的第三个bean。
 	 * involved delegate to a third bean that encapsulates their common logic.
 	 */
 	public void setAllowCircularReferences(boolean allowCircularReferences) {

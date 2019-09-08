@@ -137,7 +137,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	/**
 	 * Create new XmlBeanDefinitionReader for the given bean factory.
 	 * @param registry the BeanFactory to load bean definitions into,
+	 *                 使用BeanDefinitionRegistry的方式，注册加载bean定义
 	 * in the form of a BeanDefinitionRegistry
+	 *                 的bean容器。
 	 */
 	public XmlBeanDefinitionReader(BeanDefinitionRegistry registry) {
 		super(registry);
@@ -146,8 +148,11 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	/**
 	 * Set whether to use XML validation. Default is {@code true}.
+	 * 设置是否使用XML验证。默认为true。
 	 * <p>This method switches namespace awareness on if validation is turned off,
+	 * 如果关闭验证，此方法将打开命名空间识别功能，以便在这种情况下仍然正确地处理
 	 * in order to still process schema namespaces properly in such a scenario.
+	 * 模式命名空间。
 	 * @see #setValidationMode
 	 * @see #setNamespaceAware
 	 */
@@ -249,8 +254,11 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	/**
 	 * Set a SAX entity resolver to be used for parsing.
+	 * 设置SAX实体解析器用于解析。
 	 * <p>By default, {@link ResourceEntityResolver} will be used. Can be overridden
+	 * 默认，会使用ResourceEntityResolver。可以重写用于自定义实体解析，比如相对于某些特定
 	 * for custom entity resolution, for example relative to some specific base path.
+	 * 的基础路径。
 	 */
 	public void setEntityResolver(@Nullable EntityResolver entityResolver) {
 		this.entityResolver = entityResolver;
@@ -299,7 +307,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	/**
 	 * Load bean definitions from the specified XML file.
+	 * 从指定XML文件中加载bean定义
 	 * @param resource the resource descriptor for the XML file
+	 *                 XML文件的资源描述符
 	 * @return the number of bean definitions found
 	 * @throws BeanDefinitionStoreException in case of loading or parsing errors
 	 */

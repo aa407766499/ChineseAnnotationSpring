@@ -25,8 +25,11 @@ import org.springframework.util.StringUtils;
 
 /**
  * {@link AbstractRefreshableApplicationContext} subclass that adds common handling
+ * AbstractRefreshableApplicationContext子类，添加了公共的指定配置路径的处理。作为
  * of specified config locations. Serves as base class for XML-based application
+ * 基于XML应用上下文实现类的基类，比如ClassPathXmlApplicationContext和
  * context implementations such as {@link ClassPathXmlApplicationContext} and
+ * FileSystemXmlApplicationContext，还有XmlWebApplicationContext
  * {@link FileSystemXmlApplicationContext}, as well as
  * {@link org.springframework.web.context.support.XmlWebApplicationContext}.
  *
@@ -98,9 +101,12 @@ public abstract class AbstractRefreshableConfigApplicationContext extends Abstra
 
 	/**
 	 * Return an array of resource locations, referring to the XML bean definition
+	 * 返回资源路径数组，参考XML bean定义文件构建该上下文。也可以使路径模式串，该
 	 * files that this context should be built with. Can also include location
+	 * 模式串将被ResourcePatternResolver解析。
 	 * patterns, which will get resolved via a ResourcePatternResolver.
 	 * <p>The default implementation returns {@code null}. Subclasses can override
+	 * 默认返回null。子类可以重写来提供加载bean定义的资源路径集合。
 	 * this to provide a set of resource locations to load bean definitions from.
 	 * @return an array of resource locations, or {@code null} if none
 	 * @see #getResources
@@ -113,6 +119,7 @@ public abstract class AbstractRefreshableConfigApplicationContext extends Abstra
 
 	/**
 	 * Return the default config locations to use, for the case where no
+	 * 返回默认配置路径，该情况下没有指定明确的配置路径。
 	 * explicit config locations have been specified.
 	 * <p>The default implementation returns {@code null},
 	 * requiring explicit config locations.

@@ -166,6 +166,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	/**
 	 * Specify an id for serialization purposes, allowing this BeanFactory to be
+	 * 指定用于序列化的ID，如果需要的话，允许该容器通过该id反序列化为容器对象。
 	 * deserialized from this id back into the BeanFactory object, if needed.
 	 */
 	public void setSerializationId(@Nullable String serializationId) {
@@ -190,9 +191,12 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	/**
 	 * Set whether it should be allowed to override bean definitions by registering
+	 * 设置允许重写注册的相同名称不同定义的bean定义，自动替换格式化器。如果不允许，则抛出
 	 * a different definition with the same name, automatically replacing the former.
+	 * 异常。也可以用于重写别名。
 	 * If not, an exception will be thrown. This also applies to overriding aliases.
 	 * <p>Default is "true".
+	 * 默认为true
 	 * @see #registerBeanDefinition
 	 */
 	public void setAllowBeanDefinitionOverriding(boolean allowBeanDefinitionOverriding) {

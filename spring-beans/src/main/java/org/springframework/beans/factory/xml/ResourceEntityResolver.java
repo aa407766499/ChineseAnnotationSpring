@@ -32,18 +32,26 @@ import org.springframework.lang.Nullable;
 
 /**
  * EntityResolver implementation that tries to resolve entity references
+ * EntityResolver实现通过ResourceLoader解析实体引用（通常，相对于应用程序
  * through a {@link org.springframework.core.io.ResourceLoader} (usually,
+ * 上下文的资源基础），如果应用的话。
  * relative to the resource base of an ApplicationContext), if applicable.
+ * 扩展DelegatingEntityResolver也可以提供DTD和XSD查找。
  * Extends {@link DelegatingEntityResolver} to also provide DTD and XSD lookup.
  *
  * <p>Allows to use standard XML entities to include XML snippets into an
+ * 允许使用标准xml实体将xml片段包含到应用程序上下文定义中，比如将大的
  * application context definition, for example to split a large XML file
+ * XML文件分割成多个部分，通常包含的路径是相对于应用上下文的资源基础的，
  * into various modules. The include paths can be relative to the
+ * 而不是相对于JVM工作目录（XML解析默认是相对于JVM工作目录）
  * application context's resource base as usual, instead of relative
  * to the JVM working directory (the XML parser's default).
  *
  * <p>Note: In addition to relative paths, every URL that specifies a
+ * 注意：除了相对路径之外，在当前系统根路径下的指向文件的每一个URL，
  * file in the current system root, i.e. the JVM working directory,
+ * 比如JVM工作目录，也会被解释为相对于应用上下文的路径
  * will be interpreted relative to the application context too.
  *
  * @author Juergen Hoeller

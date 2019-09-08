@@ -28,12 +28,17 @@ import java.io.IOException;
 
 /**
  * Convenient base class for {@link org.springframework.context.ApplicationContext}
+ * ApplicationContext实现的便利基础类，从包含XmlBeanDefinitionReader能解析的bean定义的XML
  * implementations, drawing configuration from XML documents containing bean definitions
+ * 文档中拉取配置。
  * understood by an {@link org.springframework.beans.factory.xml.XmlBeanDefinitionReader}.
  *
  * <p>Subclasses just have to implement the {@link #getConfigResources} and/or
+ * 子类必须实现getConfigResources以及/或者getConfigLocations方法。此外，子类可以
  * the {@link #getConfigLocations} method. Furthermore, they might override
+ * 重写getResourceByPath钩子方法解释一个指定环境方法的相对路径，以及/或者重写
  * the {@link #getResourceByPath} hook to interpret relative paths in an
+ * getResourcePatternResolver用于解析扩展的模式
  * environment-specific fashion, and/or {@link #getResourcePatternResolver}
  * for extended pattern resolution.
  *
@@ -73,6 +78,7 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 
 	/**
 	 * Loads the bean definitions via an XmlBeanDefinitionReader.
+	 * 通过XmlBeanDefinitionReader加载bean定义。
 	 * @see org.springframework.beans.factory.xml.XmlBeanDefinitionReader
 	 * @see #initBeanDefinitionReader
 	 * @see #loadBeanDefinitions
@@ -81,10 +87,12 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 	@Override
 	protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) throws BeansException, IOException {
 		// Create a new XmlBeanDefinitionReader for the given BeanFactory.
-		//创建XmlBeanDefinitionReader，即创建Bean读取器，并通过回调设置到容器中去，容  器使用该读取器读取Bean定义资源
+		// 根据给定bean容器创建新的XmlBeanDefinitionReader
+		//创建XmlBeanDefinitionReader，即创建Bean读取器，并通过回调设置到容器中去，容器使用该读取器读取Bean定义资源
 		XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(beanFactory);
 
 		// Configure the bean definition reader with this context's
+		// 配置该上下文的加载环境资源的bean定义读取器。
 		// resource loading environment.
 		//为Bean读取器设置Spring资源加载器，AbstractXmlApplicationContext的
 		//祖先父类AbstractApplicationContext继承DefaultResourceLoader，因此，容器本身也是一个资源加载器
@@ -94,6 +102,7 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 		beanDefinitionReader.setEntityResolver(new ResourceEntityResolver(this));
 
 		// Allow a subclass to provide custom initialization of the reader,
+		// 允许子类提供读取器的自定义初始化，然后实际进行bean定义的加载。
 		// then proceed with actually loading the bean definitions.
 		//当Bean读取器读取Bean定义的Xml资源文件时，启用Xml的校验机制
 		initBeanDefinitionReader(beanDefinitionReader);
@@ -103,8 +112,10 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 
 	/**
 	 * Initialize the bean definition reader used for loading the bean
+	 * 初始化该上下文的用于加载bean定义的bean定义读取器。默认实现为空。
 	 * definitions of this context. Default implementation is empty.
 	 * <p>Can be overridden in subclasses, e.g. for turning off XML validation
+	 * 能够被子类重写，比如关闭XML验证或者使用不同的XmlBeanDefinitionParser实现
 	 * or using a different XmlBeanDefinitionParser implementation.
 	 * @param reader the bean definition reader used by this context
 	 * @see org.springframework.beans.factory.xml.XmlBeanDefinitionReader#setDocumentReaderClass
@@ -115,7 +126,9 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 
 	/**
 	 * Load the bean definitions with the given XmlBeanDefinitionReader.
+	 * 使用给定XmlBeanDefinitionReader加载bean定义
 	 * <p>The lifecycle of the bean factory is handled by the {@link #refreshBeanFactory}
+	 * 通过refreshBeanFactory方法处理bean容器的生命周期；因此该方法仅加载和/或者注册bean定义
 	 * method; hence this method is just supposed to load and/or register bean definitions.
 	 * @param reader the XmlBeanDefinitionReader to use
 	 * @throws BeansException in case of bean registration errors
@@ -144,8 +157,10 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 
 	/**
 	 * Return an array of Resource objects, referring to the XML bean definition
+	 * 返回资源对象数组，参考XML bean定义文件构建该上下文
 	 * files that this context should be built with.
 	 * <p>The default implementation returns {@code null}. Subclasses can override
+	 * 默认实现返回null。子类能够重写该方法，提供预构建资源对象而不是路径字符串。
 	 * this to provide pre-built Resource objects rather than location Strings.
 	 * @return an array of Resource objects, or {@code null} if none
 	 * @see #getConfigLocations()

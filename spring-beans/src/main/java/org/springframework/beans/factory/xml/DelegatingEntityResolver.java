@@ -16,18 +16,19 @@
 
 package org.springframework.beans.factory.xml;
 
-import java.io.IOException;
-
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
+import java.io.IOException;
 
 /**
  * {@link EntityResolver} implementation that delegates to a {@link BeansDtdResolver}
+ * EntityResolver的实现类，将工作分别委派给BeansDtdResolver以及PluggableSchemaResolver
  * and a {@link PluggableSchemaResolver} for DTDs and XML schemas, respectively.
+ * 来解析DTDs以及XML schemas。
  *
  * @author Rob Harrop
  * @author Juergen Hoeller

@@ -62,6 +62,7 @@ public class DefaultDocumentLoader implements DocumentLoader {
 
 	/**
 	 * Load the {@link Document} at the supplied {@link InputSource} using the standard JAXP-configured
+	 * 使用标准的JAXP配置XML解析器将所给的InputSource转换成Document
 	 * XML parser.
 	 */
 	//使用标准的JAXP将载入的Bean定义资源转换成document对象
@@ -82,6 +83,7 @@ public class DefaultDocumentLoader implements DocumentLoader {
 
 	/**
 	 * Create the {@link DocumentBuilderFactory} instance.
+	 * 创建DocumentBuilderFactory实例
 	 * @param validationMode the type of validation: {@link XmlValidationModeDetector#VALIDATION_DTD DTD}
 	 * or {@link XmlValidationModeDetector#VALIDATION_XSD XSD})
 	 * @param namespaceAware whether the returned factory is to provide support for XML namespaces
@@ -100,6 +102,7 @@ public class DefaultDocumentLoader implements DocumentLoader {
 			factory.setValidating(true);
 			if (validationMode == XmlValidationModeDetector.VALIDATION_XSD) {
 				// Enforce namespace aware for XSD...
+				// 强制命名空间感知XSD
 				factory.setNamespaceAware(true);
 				try {
 					factory.setAttribute(SCHEMA_LANGUAGE_ATTRIBUTE, XSD_SCHEMA_LANGUAGE);
@@ -120,7 +123,9 @@ public class DefaultDocumentLoader implements DocumentLoader {
 
 	/**
 	 * Create a JAXP DocumentBuilder that this bean definition reader
+	 * 创建该bean定义读取器要使用的用于解析XML文档的JAXP DocumentBuilder
 	 * will use for parsing XML documents. Can be overridden in subclasses,
+	 * 能够被子类重写，给构建器添加额外的初始化。
 	 * adding further initialization of the builder.
 	 * @param factory the JAXP DocumentBuilderFactory that the DocumentBuilder
 	 * should be created with

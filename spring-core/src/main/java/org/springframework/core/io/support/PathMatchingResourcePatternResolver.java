@@ -244,6 +244,7 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 
 	/**
 	 * Return the PathMatcher that this resource pattern resolver uses.
+	 * 返回该资源模式解析器使用的路径匹配器，返回的实现类是AntPathMatcher
 	 */
 	public PathMatcher getPathMatcher() {
 		return this.pathMatcher;
@@ -260,26 +261,33 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 		Assert.notNull(locationPattern, "Location pattern must not be null");
 		if (locationPattern.startsWith(CLASSPATH_ALL_URL_PREFIX)) {
 			// a class path resource (multiple resources for same name possible)
+			// 一个类路径资源（可能是相同名字的多个资源）
 			if (getPathMatcher().isPattern(locationPattern.substring(CLASSPATH_ALL_URL_PREFIX.length()))) {
 				// a class path resource pattern
+				// 类路径资源模式串
 				return findPathMatchingResources(locationPattern);
 			}
 			else {
 				// all class path resources with the given name
+				// 所有给定名称的类路径资源
 				return findAllClassPathResources(locationPattern.substring(CLASSPATH_ALL_URL_PREFIX.length()));
 			}
 		}
 		else {
 			// Generally only look for a pattern after a prefix here,
+			// 通常在前缀之后仅查找一个模式，在tomcat上war：协议的"*/"分隔符之后查找一个
 			// and on Tomcat only after the "*/" separator for its "war:" protocol.
+			// 模式。
 			int prefixEnd = (locationPattern.startsWith("war:") ? locationPattern.indexOf("*/") + 1 :
 					locationPattern.indexOf(":") + 1);
 			if (getPathMatcher().isPattern(locationPattern.substring(prefixEnd))) {
 				// a file pattern
+				// 文件模式串
 				return findPathMatchingResources(locationPattern);
 			}
 			else {
 				// a single resource with the given name
+				// 一个给定名称的单一资源
 				return new Resource[] {getResourceLoader().getResource(locationPattern)};
 			}
 		}
@@ -459,7 +467,9 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 
 	/**
 	 * Find all resources that match the given location pattern via the
+	 * 通过Ant风格路径匹配器查找所有匹配给定路径模式串的资源。。支持jar文件，zip
 	 * Ant-style PathMatcher. Supports resources in jar files and zip files
+	 * 文件中的资源，还有文件系统中的资源
 	 * and in the file system.
 	 * @param locationPattern the location pattern to match
 	 * @return the result as Resource array

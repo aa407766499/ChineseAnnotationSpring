@@ -22,10 +22,13 @@ import org.springframework.lang.Nullable;
 
 /**
  * Simple {@link Stack}-based structure for tracking the logical position during
+ * 在解析处理期间，为了跟踪逻辑位置的简单栈结果。在解析阶段，在读取器特定的方法中每一次
  * a parsing process. {@link Entry entries} are added to the stack at
+ * 将条目压入栈中。
  * each point during the parse phase in a reader-specific manner.
  *
  * <p>Calling {@link #toString()} will render a tree-style view of the current logical
+ * 调用toString()会展示解析阶段当前逻辑位置的树状视图。该方法可以用来错误消息。
  * position in the parse phase. This representation is intended for use in
  * error messages.
  *

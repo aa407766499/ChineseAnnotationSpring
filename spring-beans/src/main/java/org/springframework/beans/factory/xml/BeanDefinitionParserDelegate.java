@@ -36,7 +36,11 @@ import java.util.*;
 
 /**
  * Stateful delegate class used to parse XML bean definitions.
+ * 用于解析XML bean定义的有状态的委派类。主要的解析器和任何的
  * Intended for use by both the main parser and any extension
+ * BeanDefinitionParsers或者BeanDefinitionDecorators的扩展类
+ * BeanDefinitionParsers或者BeanDefinitionDecorators
+ * 使用该类
  * {@link BeanDefinitionParser BeanDefinitionParsers} or
  * {@link BeanDefinitionDecorator BeanDefinitionDecorators}.
  *
@@ -364,7 +368,9 @@ public class BeanDefinitionParserDelegate {
 
 	/**
 	 * Parses the supplied {@code <bean>} element. May return {@code null}
+	 * 解析提供的<bean>元素。可能返回null如果解析期间有错误发生。错误由ProblemReporter
 	 * if there were errors during parse. Errors are reported to the
+	 * 报告。
 	 * {@link org.springframework.beans.factory.parsing.ProblemReporter}.
 	 */
 	//解析<Bean>元素的入口
@@ -458,6 +464,7 @@ public class BeanDefinitionParserDelegate {
 
 	/**
 	 * Validate that the specified bean name and aliases have not been used already
+	 * 验证指定的bean名称和别名尚未在bean元素嵌套的当前级别中使用。
 	 * within the current level of beans element nesting.
 	 */
 	protected void checkNameUniqueness(String beanName, List<String> aliases, Element beanElement) {
@@ -479,6 +486,7 @@ public class BeanDefinitionParserDelegate {
 
 	/**
 	 * Parse the bean definition itself, without regard to name or aliases. May return
+	 * 解析bean定义，忽略名称或者别名。
 	 * {@code null} if problems occurred during the parsing of the bean definition.
 	 */
 	//详细对<Bean>元素中配置的Bean定义其他属性进行解析
@@ -635,6 +643,7 @@ public class BeanDefinitionParserDelegate {
 
 	/**
 	 * Create a bean definition for the given class name and parent name.
+	 * 根据给定的类名和父名称创建bean定义。
 	 * @param className the name of the bean class
 	 * @param parentName the name of the bean's parent bean
 	 * @return the newly created bean definition

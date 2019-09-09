@@ -399,8 +399,11 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	/**
 	 * Actually load bean definitions from the specified XML file.
+	 * 实际进行从指定XML文件中加载bean定义。
 	 * @param inputSource the SAX InputSource to read from
+	 *                    要读取的SAX输入源
 	 * @param resource the resource descriptor for the XML file
+	 *                 XML文件的资源描述符
 	 * @return the number of bean definitions found
 	 * @throws BeanDefinitionStoreException in case of loading or parsing errors
 	 * @see #doLoadDocument
@@ -442,6 +445,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	/**
 	 * Actually load the specified document using the configured DocumentLoader.
+	 * 使用配置的DocumentLoader实际加载指定文档。
 	 * @param inputSource the SAX InputSource to read from
 	 * @param resource the resource descriptor for the XML file
 	 * @return the DOM Document
@@ -515,8 +519,11 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	/**
 	 * Register the bean definitions contained in the given DOM document.
+	 * 注册给定DOM文档中包含的bean定义。
 	 * Called by {@code loadBeanDefinitions}.
+	 * 由loadBeanDefinitions方法调用
 	 * <p>Creates a new instance of the parser class and invokes
+	 * 创建解析器类的新实例，以及调用registerBeanDefinitions方法。
 	 * {@code registerBeanDefinitions} on it.
 	 * @param doc the DOM document
 	 * @param resource the resource descriptor (for context information)
@@ -533,7 +540,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 		//获得容器中注册的Bean数量
 		int countBefore = getRegistry().getBeanDefinitionCount();
 		//解析过程入口，这里使用了委派模式，BeanDefinitionDocumentReader只是个接口,
-		//具体的解析实现过程有实现类DefaultBeanDefinitionDocumentReader完成
+		//具体的解析实现过程由实现类DefaultBeanDefinitionDocumentReader完成
 		documentReader.registerBeanDefinitions(doc, createReaderContext(resource));
 		//统计解析的Bean数量
 		return getRegistry().getBeanDefinitionCount() - countBefore;
@@ -541,8 +548,10 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	/**
 	 * Create the {@link BeanDefinitionDocumentReader} to use for actually
+	 * 创建BeanDefinitionDocumentReader用于实际读取XML文档中的bean定义。
 	 * reading bean definitions from an XML document.
 	 * <p>The default implementation instantiates the specified "documentReaderClass".
+	 * 默认实现实例化特定的documentReaderClass。
 	 * @see #setDocumentReaderClass
 	 */
 	//创建BeanDefinitionDocumentReader对象，解析Document对象
@@ -552,6 +561,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	/**
 	 * Create the {@link XmlReaderContext} to pass over to the document reader.
+	 * 忽视文档读取器，创建XmlReaderContext
 	 */
 	public XmlReaderContext createReaderContext(Resource resource) {
 		return new XmlReaderContext(resource, this.problemReporter, this.eventListener,

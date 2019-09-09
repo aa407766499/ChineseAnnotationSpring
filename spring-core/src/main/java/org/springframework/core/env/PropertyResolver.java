@@ -20,7 +20,7 @@ import org.springframework.lang.Nullable;
 
 /**
  * Interface for resolving properties against any underlying source.
- *
+ * 解析任何底层资源属性的接口
  * @author Chris Beams
  * @author Juergen Hoeller
  * @since 3.1
@@ -104,7 +104,9 @@ public interface PropertyResolver {
 
 	/**
 	 * Resolve ${...} placeholders in the given text, replacing them with corresponding
+	 * 解析给定文本中的${...}占位符，使用getProperty解析的相应的属性值替换占位符。没有默认值
 	 * property values as resolved by {@link #getProperty}. Unresolvable placeholders with
+	 * 的不能解析的占位符会抛出异常IllegalArgumentException
 	 * no default value will cause an IllegalArgumentException to be thrown.
 	 * @return the resolved String (never {@code null})
 	 * @throws IllegalArgumentException if given text is {@code null}

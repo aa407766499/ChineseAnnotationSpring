@@ -32,12 +32,16 @@ import org.springframework.util.StringUtils;
 
 /**
  * Default implementation of the {@link ResourceLoader} interface.
+ * ResourceLoader接口的默认实现，ResourceEditor使用该类，而且该类
  * Used by {@link ResourceEditor}, and serves as base class for
+ * 作为AbstractApplicationContext的基础类。能够单独使用。
  * {@link org.springframework.context.support.AbstractApplicationContext}.
  * Can also be used standalone.
  *
  * <p>Will return a {@link UrlResource} if the location value is a URL,
+ * 如果路径值是一个URL会返回一个UrlResource，如果是一个非URL路径或者一个假
  * and a {@link ClassPathResource} if it is a non-URL path or a
+ * URL路径"classpath:",则返回ClassPathResource
  * "classpath:" pseudo-URL.
  *
  * @author Juergen Hoeller
@@ -160,6 +164,7 @@ public class DefaultResourceLoader implements ResourceLoader {
 		else {
 			try {
 				// Try to parse the location as a URL...
+				// 解析URL格式的路径
 				// 如果是URL 方式，使用UrlResource 作为bean 文件的资源对象
 				URL url = new URL(location);
 				return (ResourceUtils.isFileURL(url) ? new FileUrlResource(url) : new UrlResource(url));
@@ -175,7 +180,9 @@ public class DefaultResourceLoader implements ResourceLoader {
 
 	/**
 	 * Return a Resource handle for the resource at the given path.
+	 * 返回给定路径资源的Resource句柄。
 	 * <p>The default implementation supports class path locations. This should
+	 * 默认实现支持类路径。适合单独实现，但可以被重写。比如：将Servlet容器作为目标实现。
 	 * be appropriate for standalone implementations but can be overridden,
 	 * e.g. for implementations targeted at a Servlet container.
 	 * @param path the path to the resource
@@ -191,6 +198,7 @@ public class DefaultResourceLoader implements ResourceLoader {
 
 	/**
 	 * ClassPathResource that explicitly expresses a context-relative path
+	 * 通过实现上下文资源接口，明确表明类路径资源是相对于上下文的。
 	 * through implementing the ContextResource interface.
 	 */
 	protected static class ClassPathContextResource extends ClassPathResource implements ContextResource {

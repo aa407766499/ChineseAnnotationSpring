@@ -21,7 +21,9 @@ import org.springframework.lang.Nullable;
 
 /**
  * Simple JavaBean that holds the defaults specified at the {@code <beans>}
+ * 在标准的Spring XML bean定义文档中，持有<beans>级别指定的默认值的简单JavaBean。
  * level in a standard Spring XML bean definition document:
+ * default-lazy-init，default-autowire等
  * {@code default-lazy-init}, {@code default-autowire}, etc.
  *
  * @author Juergen Hoeller

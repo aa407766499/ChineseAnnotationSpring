@@ -20,7 +20,7 @@ import org.springframework.util.StringUtils;
 
 /**
  * {@link ParseState} entry representing a JavaBean property.
- *
+ * ParseState中代表JavaBean属性的条目。
  * @author Rob Harrop
  * @since 2.0
  */

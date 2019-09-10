@@ -24,12 +24,17 @@ import org.springframework.util.ObjectUtils;
 
 /**
  * Object to hold information and value for an individual bean property.
+ * 该类对象持有bean属性的信息和值。这里使用一个对象，而不是仅仅用一个以
  * Using an object here, rather than just storing all properties in
+ * 属性名为key的map存储所有属性，这样提供了更多的灵活性，而且能够以一种
  * a map keyed by property name, allows for more flexibility, and the
+ * 优化的方式处理索引的属性。
  * ability to handle indexed properties etc in an optimized way.
  *
  * <p>Note that the value doesn't need to be the final required type:
+ * 注意：该值不需要是最终需要的类型。BeanWrapper的实现类应该处理任何必要的转换，
  * A {@link BeanWrapper} implementation should handle any necessary conversion,
+ * 因为这个对象不知道它将被应用到的对象
  * as this object doesn't know anything about the objects it will be applied to.
  *
  * @author Rod Johnson

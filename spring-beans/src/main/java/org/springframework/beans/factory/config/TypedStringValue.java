@@ -24,10 +24,13 @@ import org.springframework.util.ObjectUtils;
 
 /**
  * Holder for a typed String value. Can be added to bean definitions
+ * 持有类型化字符串值。为了明确指定一个字符串值的目标类型，将该类添加在
  * in order to explicitly specify a target type for a String value,
+ * bean定义中，比如集合元素。
  * for example for collection elements.
  *
  * <p>This holder will just store the String value and the target type.
+ * 该持有器仅存储字符串值和目标类型。实际转换由bean容器执行。
  * The actual conversion will be performed by the bean factory.
  *
  * @author Juergen Hoeller

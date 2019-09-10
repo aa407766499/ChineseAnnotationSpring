@@ -25,7 +25,9 @@ import org.springframework.lang.Nullable;
 
 /**
  * Tag collection class used to hold managed List elements, which may
+ * 标签集合类用于持有管理的List元素，这些元素可以包含运行时bean引用
  * include runtime bean references (to be resolved into bean objects).
+ * （被解析进bean对象）
  *
  * @author Rod Johnson
  * @author Rob Harrop

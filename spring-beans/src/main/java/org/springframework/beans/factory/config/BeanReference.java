@@ -20,10 +20,13 @@ import org.springframework.beans.BeanMetadataElement;
 
 /**
  * Interface that exposes a reference to a bean name in an abstract fashion.
+ * 该接口使用抽象的方式暴露一个bean名称的引用。该接口没必要表示一个实际bean实例的
  * This interface does not necessarily imply a reference to an actual bean
+ * 引用。其仅仅表示一个bean名称的逻辑引用。
  * instance; it just expresses a logical reference to the name of a bean.
  *
  * <p>Serves as common interface implemented by any kind of bean reference
+ * 任何bean引用持有者实现的公共接口，比如RuntimeBeanReference以及RuntimeBeanNameReference
  * holder, such as {@link RuntimeBeanReference RuntimeBeanReference} and
  * {@link RuntimeBeanNameReference RuntimeBeanNameReference}.
  *

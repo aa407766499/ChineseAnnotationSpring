@@ -994,6 +994,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 	/**
 	 * Set the resource that this bean definition came from
+	 * 设置该bean定义源自哪个资源
 	 * (for the purpose of showing context in case of errors).
 	 */
 	public void setResource(@Nullable Resource resource) {

@@ -28,6 +28,7 @@ import java.util.function.Supplier;
 
 /**
  * Standalone application context, accepting annotated classes as input - in particular
+ * 单独的应用上下文，接收注解类作为输入-特别是@Configuration注解的类，
  * {@link Configuration @Configuration}-annotated classes, but also plain
  * {@link org.springframework.stereotype.Component @Component} types and JSR-330 compliant
  * classes using {@code javax.inject} annotations. Allows for registering classes one by

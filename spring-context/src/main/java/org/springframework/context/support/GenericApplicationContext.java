@@ -39,22 +39,30 @@ import org.springframework.util.Assert;
 
 /**
  * Generic ApplicationContext implementation that holds a single internal
+ * 一般ApplicationContext实现，持有一个内部DefaultListableBeanFactory实例，没有
  * {@link org.springframework.beans.factory.support.DefaultListableBeanFactory}
+ * 要求bean定义格式。实现BeanDefinitionRegistry接口是为了允许应用bean定义读取器。
  * instance and does not assume a specific bean definition format. Implements
  * the {@link org.springframework.beans.factory.support.BeanDefinitionRegistry}
  * interface in order to allow for applying any bean definition readers to it.
  *
  * <p>Typical usage is to register a variety of bean definitions via the
+ * 典型用法，通过BeanDefinitionRegistry接口注册多个bean定义，然后调用refresh()
  * {@link org.springframework.beans.factory.support.BeanDefinitionRegistry}
+ * 方法初始化那些应用上下文语义的bean（处理ApplicationContextAware，自动探测
  * interface and then call {@link #refresh()} to initialize those beans
+ * BeanFactoryPostProcessor等）
  * with application context semantics (handling
  * {@link org.springframework.context.ApplicationContextAware}, auto-detecting
  * {@link org.springframework.beans.factory.config.BeanFactoryPostProcessor BeanFactoryPostProcessors},
  * etc).
  *
  * <p>In contrast to other ApplicationContext implementations that create a new
+ * 与其他ApplicationContext实现相反，每次刷新都会创建一个新的内部BeanFactory实例，
  * internal BeanFactory instance for each refresh, the internal BeanFactory of
+ * 上下文的内部BeanFactory从开始就可以获得，能往BeanFactory中注册bean定义。
  * this context is available right from the start, to be able to register bean
+ * refresh()方法可能仅被调用一次。
  * definitions on it. {@link #refresh()} may only be called once.
  *
  * <p>Usage example:
@@ -71,14 +79,19 @@ import org.springframework.util.Assert;
  * ...</pre>
  *
  * For the typical case of XML bean definitions, simply use
+ * 对于典型的XML bean定义简单实用ClassPathXmlApplicationContext或者FileSystemXmlApplicationContext
  * {@link ClassPathXmlApplicationContext} or {@link FileSystemXmlApplicationContext},
+ * 这两个类很容易去创建，但是缺乏灵活性，因为你仅能使用标准的XML bean定义资源路径，而不能
  * which are easier to set up - but less flexible, since you can just use standard
+ * 使用混合的任意bean定义格式。web环境中等价的是XmlWebApplicationContext。
  * resource locations for XML bean definitions, rather than mixing arbitrary bean
  * definition formats. The equivalent in a web environment is
  * {@link org.springframework.web.context.support.XmlWebApplicationContext}.
  *
  * <p>For custom application context implementations that are supposed to read
+ * 使用手工刷新方式刷新要读取特定bean定义格式的自定义应用上下文实现，从
  * special bean definition formats in a refreshable manner, consider deriving
+ * AbstractRefreshableApplicationContext基础类获得。
  * from the {@link AbstractRefreshableApplicationContext} base class.
  *
  * @author Juergen Hoeller

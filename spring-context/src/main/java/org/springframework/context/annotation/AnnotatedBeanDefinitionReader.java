@@ -35,7 +35,9 @@ import java.util.function.Supplier;
 
 /**
  * Convenient adapter for programmatic registration of annotated bean classes.
+ * 编程方式注册注解bean类的便利适配器。可选择ClassPathBeanDefinitionScanner，应用
  * This is an alternative to {@link ClassPathBeanDefinitionScanner}, applying
+ * 相同的注解解析规则，但是仅用于显式注册的类。
  * the same resolution of annotations but for explicitly registered classes only.
  *
  * @author Juergen Hoeller
@@ -58,7 +60,9 @@ public class AnnotatedBeanDefinitionReader {
 
 	/**
 	 * Create a new {@code AnnotatedBeanDefinitionReader} for the given registry.
+	 * 使用给定的注册表创建一个新的AnnotatedBeanDefinitionReader。如果注册表示EnvironmentCapable，
 	 * If the registry is {@link EnvironmentCapable}, e.g. is an {@code ApplicationContext},
+	 * 比如是一个ApplicationContext，则会继承Environment，否则会创建和使用一个新的StandardEnvironment
 	 * the {@link Environment} will be inherited, otherwise a new
 	 * {@link StandardEnvironment} will be created and used.
 	 * @param registry the {@code BeanFactory} to load bean definitions into,

@@ -33,17 +33,22 @@ import java.util.Set;
 
 /**
  * A bean definition scanner that detects bean candidates on the classpath,
+ * bean定义扫描器能够探测类路径上的匹配bean，将相应的bean定义注册到给定的注册表（BeanFactory
  * registering corresponding bean definitions with a given registry ({@code BeanFactory}
+ * 或者ApplicationContext）。
  * or {@code ApplicationContext}).
  *
  * <p>Candidate classes are detected through configurable type filters. The
+ * 通过配置的类型过滤器探测匹配的类。默认的过滤器会过滤出被@Component注解的类，
  * default filters include classes that are annotated with Spring's
+ * @Repository注解的类，@Service注解的类，或者@Controller注解的类。
  * {@link org.springframework.stereotype.Component @Component},
  * {@link org.springframework.stereotype.Repository @Repository},
  * {@link org.springframework.stereotype.Service @Service}, or
  * {@link org.springframework.stereotype.Controller @Controller} stereotype.
  *
  * <p>Also supports Java EE 6's {@link javax.annotation.ManagedBean} and
+ * 也支持Java EE 6 的@ManagedBean和@Named
  * JSR-330's {@link javax.inject.Named} annotations, if available.
  *
  * @author Mark Fisher
@@ -84,16 +89,23 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 
 	/**
 	 * Create a new {@code ClassPathBeanDefinitionScanner} for the given bean factory.
+	 * 根据给定bean容器创建新的ClassPathBeanDefinitionScanner。
 	 * <p>If the passed-in bean factory does not only implement the
+	 * 如果传入的bean容器不仅实现了BeanDefinitionRegistry接口还实现了ResourceLoader接口
 	 * {@code BeanDefinitionRegistry} interface but also the {@code ResourceLoader}
+	 * 那么该容器就会被用作默认的ResourceLoader。通常，该容器是ApplicationContext实现类。
 	 * interface, it will be used as default {@code ResourceLoader} as well. This will
 	 * usually be the case for {@link org.springframework.context.ApplicationContext}
 	 * implementations.
 	 * <p>If given a plain {@code BeanDefinitionRegistry}, the default {@code ResourceLoader}
+	 * 如果给定一个普通的BeanDefinitionRegistry，默认的ResourceLoader会是PathMatchingResourcePatternResolver
 	 * will be a {@link org.springframework.core.io.support.PathMatchingResourcePatternResolver}.
 	 * <p>If the passed-in bean factory also implements {@link EnvironmentCapable} its
+	 * 如果传入的bean容器实现了EnvironmentCapable，那么该读取器就会使用该容器环境。否则，该读取器
 	 * environment will be used by this reader.  Otherwise, the reader will initialize and
+	 * 会初始化和使用StandardEnvironment。所有的ApplicationContext实现都是EnvironmentCapable，
 	 * use a {@link org.springframework.core.env.StandardEnvironment}. All
+	 * 而正常的BeanFactory实现不是。
 	 * {@code ApplicationContext} implementations are {@code EnvironmentCapable}, while
 	 * normal {@code BeanFactory} implementations are not.
 	 * @param registry the {@code BeanFactory} to load bean definitions into, in the form
@@ -143,7 +155,9 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 
 	/**
 	 * Create a new {@code ClassPathBeanDefinitionScanner} for the given bean factory and
+	 * 给句给定的bean容器创建新的ClassPathBeanDefinitionScanner，在解析bean定义概述元信息时
 	 * using the given {@link Environment} when evaluating bean definition profile metadata.
+	 * 使用给定Environment
 	 * @param registry the {@code BeanFactory} to load bean definitions into, in the form
 	 * of a {@code BeanDefinitionRegistry}
 	 * @param useDefaultFilters whether to include the default filters for the
@@ -160,14 +174,14 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 			Environment environment, @Nullable ResourceLoader resourceLoader) {
 
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");
-		//为容器设置加载Bean定义的注册器
+		//为扫描器设置加载Bean定义的注册器
 		this.registry = registry;
 
 		if (useDefaultFilters) {
 			registerDefaultFilters();
 		}
 		setEnvironment(environment);
-		//为容器设置资源加载器
+		//为扫描器设置资源加载器
 		setResourceLoader(resourceLoader);
 	}
 

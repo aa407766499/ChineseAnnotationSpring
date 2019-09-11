@@ -42,7 +42,9 @@ import org.springframework.util.ClassUtils;
 
 /**
  * Utility class that allows for convenient registration of common
+ * 工具类，便利注册公共的BeanPostProcessor以及BeanFactoryPostProcessor，
  * {@link org.springframework.beans.factory.config.BeanPostProcessor} and
+ * 基于注解配置的定义。也可以注册公共的AutowireCandidateResolver
  * {@link org.springframework.beans.factory.config.BeanFactoryPostProcessor}
  * definitions for annotation-based configuration. Also registers a common
  * {@link org.springframework.beans.factory.support.AutowireCandidateResolver}.
@@ -129,6 +131,7 @@ public class AnnotationConfigUtils {
 
 	/**
 	 * Register all relevant annotation post processors in the given registry.
+	 * 在给定registry中注册所有相关的注解后置处理器。
 	 * @param registry the registry to operate on
 	 */
 	public static void registerAnnotationConfigProcessors(BeanDefinitionRegistry registry) {

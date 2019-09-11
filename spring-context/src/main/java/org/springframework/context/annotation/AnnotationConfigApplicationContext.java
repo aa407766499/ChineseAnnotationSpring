@@ -28,19 +28,24 @@ import java.util.function.Supplier;
 
 /**
  * Standalone application context, accepting annotated classes as input - in particular
- * 单独的应用上下文，接收注解类作为输入-特别是@Configuration注解的类，
+ * 单独的应用上下文，接收注解类作为输入-特别是@Configuration注解的类，也包括普通@Component
  * {@link Configuration @Configuration}-annotated classes, but also plain
+ * 注解类型以及遵从JSR-330使用javax.inject包下的注解。允许使用register(Class...)一个一个注册
  * {@link org.springframework.stereotype.Component @Component} types and JSR-330 compliant
+ * 类，也可以使用scan(String...)扫描类路径。
  * classes using {@code javax.inject} annotations. Allows for registering classes one by
  * one using {@link #register(Class...)} as well as for classpath scanning using
  * {@link #scan(String...)}.
  *
  * <p>In case of multiple {@code @Configuration} classes, @{@link Bean} methods defined in
+ * 如果有多个@Configuration注解的类，在后面类中定义的@Bean方法会覆盖那些前面类中定义的@Bean方法。
  * later classes will override those defined in earlier classes. This can be leveraged to
+ * 这可以促使有意地通过额外的@Configuration注解类重写确定的bean定义。
  * deliberately override certain bean definitions via an extra {@code @Configuration}
  * class.
  *
  * <p>See @{@link Configuration}'s javadoc for usage examples.
+ * 查看@Configuration java文档的用例。
  *
  * @author Juergen Hoeller
  * @author Chris Beams
@@ -53,7 +58,7 @@ import java.util.function.Supplier;
  */
 public class AnnotationConfigApplicationContext extends GenericApplicationContext implements AnnotationConfigRegistry {
 
-	//保存一个读取注解的Bean定义读取器，并将其设置到容器中
+	//保存一个读取注解Bean定义的读取器，并将其设置到容器中
 	private final AnnotatedBeanDefinitionReader reader;
 
 	//保存一个扫描指定类路径中注解Bean定义的扫描器，并将其设置到容器中
@@ -62,7 +67,9 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 
 	/**
 	 * Create a new AnnotationConfigApplicationContext that needs to be populated
+	 * 创建一个新的AnnotationConfigApplicationContext，该容器需要通过调用register方法填充
 	 * through {@link #register} calls and then manually {@linkplain #refresh refreshed}.
+	 * 然后手工调用refresh方法刷新
 	 */
 	//默认构造函数，初始化一个空容器，容器不包含任何 Bean 信息，需要在稍后通过调用其register()
 	//方法注册配置类，并调用refresh()方法刷新容器，触发容器对注解Bean的载入、解析和注册过程

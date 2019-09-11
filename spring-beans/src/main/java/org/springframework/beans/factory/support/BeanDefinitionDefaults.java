@@ -21,7 +21,7 @@ import org.springframework.util.StringUtils;
 
 /**
  * A simple holder for {@code BeanDefinition} property defaults.
- *
+ * BeanDefinition属性默认值的简单持有器。
  * @author Mark Fisher
  * @since 2.5
  */

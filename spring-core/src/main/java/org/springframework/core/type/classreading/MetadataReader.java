@@ -22,7 +22,9 @@ import org.springframework.core.type.ClassMetadata;
 
 /**
  * Simple facade for accessing class metadata,
+ * 访问类元数据的简单封装。
  * as read by an ASM {@link org.springframework.asm.ClassReader}.
+ * 因为元数据是由ASM ClassReader读取的。
  *
  * @author Juergen Hoeller
  * @since 2.5

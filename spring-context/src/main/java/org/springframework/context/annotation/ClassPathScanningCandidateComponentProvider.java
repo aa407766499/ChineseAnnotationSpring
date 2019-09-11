@@ -54,14 +54,20 @@ import java.util.*;
 
 /**
  * A component provider that provides candidate components from a base package. Can
+ * 组件提供器从基础包提供候选者组件。否则如果能够扫描类路径，可以使用CandidateComponentsIndex
  * use {@link CandidateComponentsIndex the index} if it is available of scans the
+ * 索引。可以使用排除以及包含过滤器识别候选者组件。AnnotationTypeFilter，AssignableTypeFilter
  * classpath otherwise. Candidate components are identified by applying exclude and
+ *
  * include filters. {@link AnnotationTypeFilter}, {@link AssignableTypeFilter} include
+ * 支持AnnotationTypeFilter，AssignableTypeFilter过滤器，可以过滤@Indexed注解的注解/父类：
  * filters on an annotation/superclass that are annotated with {@link Indexed} are
+ * 如果指定了任何其他的包含过滤器，会忽略index，使用类路径扫描代替。
  * supported: if any other include filter is specified, the index is ignored and
  * classpath scanning is used instead.
  *
  * <p>This implementation is based on Spring's
+ * 实现是基于Spring的MetadataReader功能，底层基于ASM的ClassReader。
  * {@link org.springframework.core.type.classreading.MetadataReader MetadataReader}
  * facility, backed by an ASM {@link org.springframework.asm.ClassReader ClassReader}.
  *
@@ -190,8 +196,11 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 
 	/**
 	 * Register the default filter for {@link Component @Component}.
+	 * 注册默认过滤器用于过滤@Component。
 	 * <p>This will implicitly register all annotations that have the
+	 * 这会隐式注册所有注解了@Component的注解：包括@Repository，@Service
 	 * {@link Component @Component} meta-annotation including the
+	 * @Controller。
 	 * {@link Repository @Repository}, {@link Service @Service}, and
 	 * {@link Controller @Controller} stereotype annotations.
 	 * <p>Also supports Java EE 6's {@link javax.annotation.ManagedBean} and

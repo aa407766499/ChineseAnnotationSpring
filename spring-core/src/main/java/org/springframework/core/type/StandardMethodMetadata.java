@@ -27,6 +27,7 @@ import org.springframework.util.MultiValueMap;
 
 /**
  * {@link MethodMetadata} implementation that uses standard reflection
+ * 通过反射方式获取方法元信息。
  * to introspect a given {@code Method}.
  *
  * @author Juergen Hoeller

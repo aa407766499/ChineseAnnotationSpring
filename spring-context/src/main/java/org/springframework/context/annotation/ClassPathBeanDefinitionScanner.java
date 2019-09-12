@@ -155,7 +155,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 
 	/**
 	 * Create a new {@code ClassPathBeanDefinitionScanner} for the given bean factory and
-	 * 给句给定的bean容器创建新的ClassPathBeanDefinitionScanner，在解析bean定义概述元信息时
+	 * 根据给定的bean容器创建新的ClassPathBeanDefinitionScanner，在解析bean定义概述元信息时
 	 * using the given {@link Environment} when evaluating bean definition profile metadata.
 	 * 使用给定Environment
 	 * @param registry the {@code BeanFactory} to load bean definitions into, in the form

@@ -20,6 +20,7 @@ import org.springframework.lang.Nullable;
 
 /**
  * Interface that defines abstract metadata of a specific class,
+ * 该接口定义了指定类的抽象元数据。该表单不需要加载类。
  * in a form that does not require that class to be loaded yet.
  *
  * @author Juergen Hoeller

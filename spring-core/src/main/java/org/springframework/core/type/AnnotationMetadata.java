@@ -20,6 +20,7 @@ import java.util.Set;
 
 /**
  * Interface that defines abstract access to the annotations of a specific
+ * 该接口定义了访问指定类注解的方法，该表单不需要加载类。
  * class, in a form that does not require that class to be loaded yet.
  *
  * @author Juergen Hoeller

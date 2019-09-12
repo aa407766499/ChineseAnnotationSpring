@@ -29,9 +29,11 @@ import org.springframework.lang.Nullable;
 
 /**
  * {@link MetadataReader} implementation based on an ASM
+ * 基于ASM ClassReader的MetadataReader实现。
  * {@link org.springframework.asm.ClassReader}.
  *
  * <p>Package-visible in order to allow for repackaging the ASM library
+ * 设置成包可见，是为了允许在重新打包ASM库时对使用type包的用户不造成影响。
  * without effect on users of the {@code core.type} package.
  *
  * @author Juergen Hoeller

@@ -21,7 +21,7 @@ import org.springframework.util.ClassUtils;
 
 /**
  * A simple filter which matches classes that are assignable to a given type.
- *
+ * 一个简单过滤器，该过滤器匹配指定类型的类。
  * @author Rod Johnson
  * @author Mark Fisher
  * @author Ramnivas Laddad

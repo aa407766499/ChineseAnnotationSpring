@@ -90,7 +90,9 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 
 	/**
 	 * Create a new AnnotationConfigApplicationContext, deriving bean definitions
+	 * 创建一个新的AnnotationConfigApplicationContext，从给定的注解类中获取bean定义
 	 * from the given annotated classes and automatically refreshing the context.
+	 * 然后自动刷新容器
 	 * @param annotatedClasses one or more annotated classes,
 	 * e.g. {@link Configuration @Configuration} classes
 	 */
@@ -103,7 +105,9 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 
 	/**
 	 * Create a new AnnotationConfigApplicationContext, scanning for bean definitions
+	 * 创建一个新的AnnotationConfigApplicationContext，从给定包下扫描bean定义
 	 * in the given packages and automatically refreshing the context.
+	 * 然后自动刷新容器
 	 * @param basePackages the packages to check for annotated classes
 	 */
 	//该构造函数会自动扫描以给定的包及其子包下的所有类，并自动识别所有的Spring Bean，将其注册到容器中
@@ -158,11 +162,14 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 
 	//---------------------------------------------------------------------
 	// Implementation of AnnotationConfigRegistry
+	// AnnotationConfigRegistry实现
 	//---------------------------------------------------------------------
 
 	/**
 	 * Register one or more annotated classes to be processed.
+	 * 注册要处理的一个或者多个注解类。
 	 * <p>Note that {@link #refresh()} must be called in order for the context
+	 * 注意必须调用refresh()方法去触发容器对新类的完整处理
 	 * to fully process the new classes.
 	 * @param annotatedClasses one or more annotated classes,
 	 * e.g. {@link Configuration @Configuration} classes
@@ -178,6 +185,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 
 	/**
 	 * Perform a scan within the specified base packages.
+	 * 对指定基础包进行扫描。
 	 * <p>Note that {@link #refresh()} must be called in order for the context
 	 * to fully process the new classes.
 	 * @param basePackages the packages to check for annotated classes

@@ -27,10 +27,13 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.lang.Nullable;
 
 /**
+ * 类型层次遍历过滤器
  * Type filter that is aware of traversing over hierarchy.
- *
+ * 可以感知层级的类型过滤器
  * <p>This filter is useful when matching needs to be made based on potentially the
+ * 该过滤器被使用在需要基于整个类/接口层级进行过滤的场景。算法采用快速成功的策略：
  * whole class/interface hierarchy. The algorithm employed uses a succeed-fast
+ * 如果在任何时候宣布匹配，则不执行进一步的处理。
  * strategy: if at any time a match is declared, no further processing is
  * carried out.
  *

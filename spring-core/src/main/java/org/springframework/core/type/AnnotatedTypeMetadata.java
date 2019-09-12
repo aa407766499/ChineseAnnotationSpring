@@ -23,7 +23,9 @@ import org.springframework.util.MultiValueMap;
 
 /**
  * Defines access to the annotations of a specific type ({@link AnnotationMetadata class}
+ * 定义了访问指定类型（AnnotationMetadata类或者MethodMetadata方法）注解的方法，该表单不需要
  * or {@link MethodMetadata method}), in a form that does not necessarily require the
+ * 类加载。
  * class-loading.
  *
  * @author Juergen Hoeller

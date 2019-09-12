@@ -60,7 +60,7 @@ public class AnnotatedBeanDefinitionReader {
 
 	/**
 	 * Create a new {@code AnnotatedBeanDefinitionReader} for the given registry.
-	 * 使用给定的注册表创建一个新的AnnotatedBeanDefinitionReader。如果注册表示EnvironmentCapable，
+	 * 使用给定的注册表创建一个新的AnnotatedBeanDefinitionReader。如果注册表是EnvironmentCapable，
 	 * If the registry is {@link EnvironmentCapable}, e.g. is an {@code ApplicationContext},
 	 * 比如是一个ApplicationContext，则会继承Environment，否则会创建和使用一个新的StandardEnvironment
 	 * the {@link Environment} will be inherited, otherwise a new
@@ -130,6 +130,7 @@ public class AnnotatedBeanDefinitionReader {
 	/**
 	 * Register one or more annotated classes to be processed.
 	 * <p>Calls to {@code register} are idempotent; adding the same
+	 * 调用register时幂等的；多次添加相同的注解类没有副作用。
 	 * annotated class more than once has no additional effect.
 	 * @param annotatedClasses one or more annotated classes,
 	 * e.g. {@link Configuration @Configuration} classes
@@ -143,6 +144,7 @@ public class AnnotatedBeanDefinitionReader {
 
 	/**
 	 * Register a bean from the given bean class, deriving its metadata from
+	 * 注册给定bean类的bean，从类型注解中获取元数据。
 	 * class-declared annotations.
 	 * @param annotatedClass the class of the bean
 	 */
@@ -209,21 +211,28 @@ public class AnnotatedBeanDefinitionReader {
 	 * Register a bean from the given bean class, deriving its metadata from
 	 * class-declared annotations.
 	 * @param annotatedClass the class of the bean
+	 *                       bean类
 	 * @param instanceSupplier a callback for creating an instance of the bean
+	 *                         创建bean实例的回调（可以为null）
 	 * (may be {@code null})
 	 * @param name an explicit name for the bean
+	 *             bean的确定名称
 	 * @param qualifiers specific qualifier annotations to consider, if any,
+	 *                   指定需要的匹配注解，如果有的话，也匹配bean类级别。
 	 * in addition to qualifiers at the bean class level
 	 * @param definitionCustomizers one or more callbacks for customizing the
+	 *                              定制化工厂的BeanDefinition的一个或者多个回调，
 	 * factory's {@link BeanDefinition}, e.g. setting a lazy-init or primary flag
+	 *                              比如设置懒加载标志或者主要标志。
 	 * @since 5.0
 	 */
 	//Bean定义读取器向容器注册注解Bean定义类
 	<T> void doRegisterBean(Class<T> annotatedClass, @Nullable Supplier<T> instanceSupplier, @Nullable String name,
 			@Nullable Class<? extends Annotation>[] qualifiers, BeanDefinitionCustomizer... definitionCustomizers) {
 
-		//根据指定的注解Bean定义类，创建Spring容器中对注解Bean的封装的数据结构
+		//根据指定的注解Bean定义类，创建Spring容器中对注解Bean的封装数据结构
 		AnnotatedGenericBeanDefinition abd = new AnnotatedGenericBeanDefinition(annotatedClass);
+		//@Conditional注解解析器决定该bean定义是否需要跳过。
 		if (this.conditionEvaluator.shouldSkip(abd.getMetadata())) {
 			return;
 		}
@@ -231,6 +240,7 @@ public class AnnotatedBeanDefinitionReader {
 		abd.setInstanceSupplier(instanceSupplier);
 		//解析注解Bean定义的作用域，若@Scope("prototype")，则Bean为原型类型；
 		//若@Scope("singleton")，则Bean为单态类型
+		// 解析该bean定义上的@Scope注解，将解析出的@Scope注解的属性值封装为ScopeMetadata
 		ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(abd);
 		//为注解Bean定义设置作用域
 		abd.setScope(scopeMetadata.getScopeName());
@@ -244,11 +254,11 @@ public class AnnotatedBeanDefinitionReader {
 		//Spring自动依赖注入装配默认是按类型装配，如果使用@Qualifier则按名称
 		if (qualifiers != null) {
 			for (Class<? extends Annotation> qualifier : qualifiers) {
-				//如果配置了@Primary注解，设置该Bean为autowiring自动依赖注入装//配时的首选
+				//如果配置了@Primary注解，设置该Bean为autowiring自动依赖注入装配时的首选
 				if (Primary.class == qualifier) {
 					abd.setPrimary(true);
 				}
-				//如果配置了@Lazy注解，则设置该Bean为非延迟初始化，如果没有配置，
+				//如果配置了@Lazy注解，则设置该Bean为延迟初始化，如果没有配置，
 				//则该Bean为预实例化
 				else if (Lazy.class == qualifier) {
 					abd.setLazyInit(true);

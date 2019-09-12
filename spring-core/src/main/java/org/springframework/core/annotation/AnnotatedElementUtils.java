@@ -36,6 +36,7 @@ import org.springframework.util.MultiValueMap;
 
 /**
  * General utility methods for finding annotations, meta-annotations, and
+ * 通用功能方法，用于查找被注解元素上的注解，元注解，或重复注解。
  * repeatable annotations on {@link AnnotatedElement AnnotatedElements}.
  *
  * <p>{@code AnnotatedElementUtils} defines the public API for Spring's

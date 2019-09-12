@@ -237,6 +237,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	/**
 	 * Set a {@link java.util.Comparator} for dependency Lists and arrays.
+	 * 设置Lists和arrays依赖的比较器
 	 * @since 4.0
 	 * @see org.springframework.core.OrderComparator
 	 * @see org.springframework.core.annotation.AnnotationAwareOrderComparator

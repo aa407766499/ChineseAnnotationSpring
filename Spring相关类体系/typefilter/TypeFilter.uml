@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.springframework.core.type.filter.TypeFilter</OriginalElement>
+  <nodes>
+    <node x="369.75" y="0.0">java.lang.FunctionalInterface</node>
+    <node x="396.25" y="80.0">org.springframework.core.type.filter.TypeFilter</node>
+    <node x="43.75" y="160.0">org.springframework.core.type.filter.AbstractTypeHierarchyTraversingFilter</node>
+    <node x="335.75" y="160.0">org.springframework.core.type.filter.AbstractClassTestingTypeFilter</node>
+    <node x="0.0" y="240.0">org.springframework.core.type.filter.AssignableTypeFilter</node>
+    <node x="582.75" y="160.0">org.springframework.core.type.filter.AspectJTypeFilter</node>
+    <node x="189.0" y="240.0">org.springframework.core.type.filter.AnnotationTypeFilter</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.springframework.core.type.filter.AnnotationTypeFilter" target="org.springframework.core.type.filter.AbstractTypeHierarchyTraversingFilter">
+      <point x="0.0" y="-15.0" />
+      <point x="275.0" y="215.0" />
+      <point x="247.75" y="215.0" />
+      <point x="68.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.core.type.filter.AssignableTypeFilter" target="org.springframework.core.type.filter.AbstractTypeHierarchyTraversingFilter">
+      <point x="0.0" y="-15.0" />
+      <point x="84.5" y="215.0" />
+      <point x="111.75" y="215.0" />
+      <point x="-68.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.core.type.filter.TypeFilter" target="java.lang.FunctionalInterface">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.core.type.filter.AspectJTypeFilter" target="org.springframework.core.type.filter.TypeFilter">
+      <point x="0.0" y="-15.0" />
+      <point x="658.75" y="135.0" />
+      <point x="484.58333333333337" y="135.0" />
+      <point x="35.33333333333337" y="15.0" />
+    </edge>
+    <edge source="org.springframework.core.type.filter.AbstractTypeHierarchyTraversingFilter" target="org.springframework.core.type.filter.TypeFilter">
+      <point x="0.0" y="-15.0" />
+      <point x="179.75" y="135.0" />
+      <point x="413.9166666666667" y="135.0" />
+      <point x="-35.333333333333314" y="15.0" />
+    </edge>
+    <edge source="org.springframework.core.type.filter.AbstractClassTestingTypeFilter" target="org.springframework.core.type.filter.TypeFilter">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="358.5" y="122.5" />
+  <SelectedNodes>
+    <node>org.springframework.core.type.filter.TypeFilter</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

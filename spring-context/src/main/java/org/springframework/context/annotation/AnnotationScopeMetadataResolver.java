@@ -25,9 +25,11 @@ import java.lang.annotation.Annotation;
 
 /**
  * A {@link ScopeMetadataResolver} implementation that by default checks for
+ * ScopeMetadataResolver实现类默认检查bean类上的@Scope注解。
  * the presence of Spring's {@link Scope @Scope} annotation on the bean class.
  *
  * <p>The exact type of annotation that is checked for is configurable via
+ * 通过setScopeAnnotationType(Class)配置检查的注解的精确类型。
  * {@link #setScopeAnnotationType(Class)}.
  *
  * @author Mark Fisher
@@ -80,12 +82,12 @@ public class AnnotationScopeMetadataResolver implements ScopeMetadataResolver {
 		ScopeMetadata metadata = new ScopeMetadata();
 		if (definition instanceof AnnotatedBeanDefinition) {
 			AnnotatedBeanDefinition annDef = (AnnotatedBeanDefinition) definition;
-			//从注解Bean定义类的属性中查找属性为”Scope”的值，即@Scope注解的值
+			//从注解Bean定义类的属性中查找属性为”Scope”的值，即@Scope注解的属性值
 			//annDef.getMetadata().getAnnotationAttributes()方法将Bean
-			//中所有的注解和注解的值存放在一个map集合中
+			//中所有的注解和注解的属性值存放在一个map集合中
 			AnnotationAttributes attributes = AnnotationConfigUtils.attributesFor(
 					annDef.getMetadata(), this.scopeAnnotationType);
-			//将获取到的@Scope注解的值设置到要返回的对象中
+			//将获取到的@Scope注解的属性值设置到要返回的对象中
 			if (attributes != null) {
 				metadata.setScopeName(attributes.getString("value"));
 				//获取@Scope注解中的proxyMode属性值，在创建代理对象时会用到

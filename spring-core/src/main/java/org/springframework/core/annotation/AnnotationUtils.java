@@ -795,6 +795,7 @@ public abstract class AnnotationUtils {
 
 	/**
 	 * Determine whether an annotation of the specified {@code annotationType}
+	 * 确定指定的注解类型的注解是否是本地声明（在提供的类上直接存在）
 	 * is declared locally (i.e., <em>directly present</em>) on the supplied
 	 * {@code clazz}.
 	 * <p>The supplied {@link Class} may represent any type.

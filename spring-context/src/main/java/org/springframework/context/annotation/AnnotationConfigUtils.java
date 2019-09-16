@@ -131,7 +131,7 @@ public class AnnotationConfigUtils {
 
 	/**
 	 * Register all relevant annotation post processors in the given registry.
-	 * 在给定registry中注册所有相关的注解后置处理器。
+	 * 在给定registry中注册所有相关的注解后处理器。
 	 * @param registry the registry to operate on
 	 */
 	public static void registerAnnotationConfigProcessors(BeanDefinitionRegistry registry) {

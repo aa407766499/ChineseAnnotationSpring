@@ -29,9 +29,11 @@ import org.springframework.util.MultiValueMap;
 
 /**
  * Provide access to the candidates that are defined in {@code META-INF/spring.components}.
- *
+ * 提供访问META-INF/spring.components定义的合格者。
  * <p>An arbitrary number of stereotypes can be registered (and queried) on the index: a
+ * 任意数量的类型能用索引注册（查找）：一个典型的例子是一个标识确定用途类的注解的全限定类名。
  * typical example is the fully qualified name of an annotation that flags the class for
+ * 下面调用返回基础包及其子包下的所有的@Component匹配类型
  * a certain use case. The following call returns all the {@code @Component}
  * <b>candidate</b> types for the {@code com.example} package (and its sub-packages):
  * <pre class="code">
@@ -40,7 +42,9 @@ import org.springframework.util.MultiValueMap;
  * </pre>
  *
  * <p>The {@code type} is usually the fully qualified name of a class, though this is
+ * 虽然不是一个规则，通常type是一个类的全限定名称。同样地，stereotype通常是一个目标类型的
  * not a rule. Similarly, the {@code stereotype} is usually the fully qualified name of
+ * 全限定名称但是它确实可以是任何标记。
  * a target type but it can be any marker really.
  *
  * @author Stephane Nicoll
@@ -60,12 +64,14 @@ public class CandidateComponentsIndex {
 
 	/**
 	 * Return the candidate types that are associated with the specified stereotype.
+	 * 返回指定stereotype相关的匹配类型。
 	 * @param basePackage the package to check for candidates
 	 * @param stereotype the stereotype to use
 	 * @return the candidate types associated with the specified {@code stereotype}
 	 * or an empty set if none has been found for the specified {@code basePackage}
 	 */
 	public Set<String> getCandidateTypes(String basePackage, String stereotype) {
+		//先查找所有匹配的类型，然后看匹配的类型是不是指定包下的。
 		List<Entry> candidates = this.index.get(stereotype);
 		if (candidates != null) {
 			return candidates.parallelStream()

@@ -260,6 +260,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 
 	/**
 	 * Perform a scan within the specified base packages.
+	 * 执行对指定基础包的扫描。
 	 * @param basePackages the packages to check for annotated classes
 	 * @return number of beans registered
 	 */
@@ -272,6 +273,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		doScan(basePackages);
 
 		// Register annotation config processors, if necessary.
+		// 如果需要，注册注解配置处理器。
 		//注册注解配置(Annotation config)处理器
 		if (this.includeAnnotationConfig) {
 			AnnotationConfigUtils.registerAnnotationConfigProcessors(this.registry);
@@ -283,8 +285,10 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 
 	/**
 	 * Perform a scan within the specified base packages,
+	 * 执行对指定基础包的扫描，返回注册的bean定义。
 	 * returning the registered bean definitions.
 	 * <p>This method does <i>not</i> register an annotation config processor
+	 * 该方法注册一个注解配置处理器而且将该处理器留给调用者。
 	 * but rather leaves this up to the caller.
 	 * @param basePackages the packages to check for annotated classes
 	 * @return set of beans registered if any for tooling registration purposes (never {@code null})
@@ -292,14 +296,14 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	//类路径Bean定义扫描器扫描给定包及其子包
 	protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
-		//创建一个集合，存放扫描到Bean定义的封装类
+		//创建一个集合，存放扫描到的Bean定义的封装类
 		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
 		//遍历扫描所有给定的包
 		for (String basePackage : basePackages) {
 			//调用父类ClassPathScanningCandidateComponentProvider的方法
 			//扫描给定类路径，获取符合条件的Bean定义
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
-			//遍历扫描到的Bean
+			//遍历扫描到的Bean定义
 			for (BeanDefinition candidate : candidates) {
 				//获取Bean定义类中@Scope注解的值，即获取Bean的作用域
 				ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(candidate);
@@ -334,6 +338,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 
 	/**
 	 * Apply further settings to the given bean definition,
+	 * 基于从扫描的组件类中获取的内容，对给定bean定义进行更多设置。
 	 * beyond the contents retrieved from scanning the component class.
 	 * @param beanDefinition the scanned bean definition
 	 * @param beanName the generated bean name for the given bean
@@ -359,6 +364,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 
 	/**
 	 * Check the given candidate's bean name, determining whether the corresponding
+	 * 检查给定合格者的bean名称，确定相应的bean定义是否需要被注册或者和已存在的定义冲突。
 	 * bean definition needs to be registered or conflicts with an existing definition.
 	 * @param beanName the suggested name for the bean
 	 * @param beanDefinition the corresponding bean definition
@@ -387,8 +393,10 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 
 	/**
 	 * Determine whether the given new bean definition is compatible with
+	 * 确定给定的新的bean定义和给定已存在的bean定义是否兼容。
 	 * the given existing bean definition.
 	 * <p>The default implementation considers them as compatible when the existing
+	 * 默认实现认为是兼容的，在已经在的bean定义是来自相同的源或者来自非扫描源的时候。
 	 * bean definition comes from the same source or from a non-scanning source.
 	 * @param newDefinition the new bean definition, originated from scanning
 	 * @param existingDefinition the existing bean definition, potentially an

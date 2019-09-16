@@ -467,6 +467,7 @@ public abstract class ClassUtils {
 
 	/**
 	 * Determine the name of the package of the given fully-qualified class name,
+	 * 确定给定全限定类名的包名。
 	 * e.g. "java.lang" for the {@code java.lang.String} class name.
 	 * @param fqClassName the fully-qualified class name
 	 * @return the package name, or the empty String if the class

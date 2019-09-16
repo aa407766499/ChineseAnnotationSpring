@@ -316,6 +316,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 
 	/**
 	 * Scan the class path for candidate components.
+	 * 扫描类路径匹配组件。
 	 * @param basePackage the package to check for annotated classes
 	 * @return a corresponding Set of autodetected bean definitions
 	 */
@@ -331,6 +332,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 
 	/**
 	 * Determine if the index can be used by this instance.
+	 * 确定该索引是否能被该实例使用。
 	 * @return {@code true} if the index is available and the configuration of this
 	 * instance is supported by it, {@code false} otherwise
 	 * @since 5.0
@@ -346,6 +348,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 
 	/**
 	 * Determine if the specified include {@link TypeFilter} is supported by the index.
+	 * 确定指定包含TypeFilter是否被index支持。
 	 * @param filter the filter to check
 	 * @return whether the index supports this include filter
 	 * @since 5.0
@@ -499,6 +502,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 
 	/**
 	 * Determine whether the given class does not match any exclude filter
+	 * 确定给定类不匹配任何排除过滤器，至少匹配一个包含过滤器。
 	 * and does match at least one include filter.
 	 * @param metadataReader the ASM ClassReader for the class
 	 * @return whether the class qualifies as a candidate component
@@ -511,7 +515,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 				return false;
 			}
 		}
-		//如果读取的类的注解在包含的注解的过滤规则中，则返回ture
+		//如果读取的类的注解在包含的注解的过滤规则中，则返回true
 		for (TypeFilter tf : this.includeFilters) {
 			if (tf.match(metadataReader, getMetadataReaderFactory())) {
 				return isConditionMatch(metadataReader);
@@ -537,9 +541,12 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 
 	/**
 	 * Determine whether the given bean definition qualifies as candidate.
+	 * 确定给定bean定义是否合格。
 	 * <p>The default implementation checks whether the class is not an interface
+	 * 默认实现检查该类不是一个接口以及不依赖外部类。
 	 * and not dependent on an enclosing class.
 	 * <p>Can be overridden in subclasses.
+	 * 能被子类重写。
 	 * @param beanDefinition the bean definition to check
 	 * @return whether the bean definition qualifies as a candidate component
 	 */

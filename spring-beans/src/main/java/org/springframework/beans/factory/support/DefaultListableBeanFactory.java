@@ -769,7 +769,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	// BeanDefinitionRegistry接口实现
 	//---------------------------------------------------------------------
 
-	//向IOC容器注册解析的BeanDefiniton
+	//向IOC容器注册解析的BeanDefinition
 	@Override
 	public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition)
 			throws BeanDefinitionStoreException {
@@ -777,7 +777,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		Assert.hasText(beanName, "Bean name must not be empty");
 		Assert.notNull(beanDefinition, "BeanDefinition must not be null");
 
-		//校验解析的BeanDefiniton
+		//校验解析的BeanDefinition
 		if (beanDefinition instanceof AbstractBeanDefinition) {
 			try {
 				((AbstractBeanDefinition) beanDefinition).validate();

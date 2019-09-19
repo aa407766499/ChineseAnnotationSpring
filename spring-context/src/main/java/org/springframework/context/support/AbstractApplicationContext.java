@@ -489,7 +489,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	/**
 	 * Set the parent of this application context.
-	 * 设置父容器。如果父环境ConfigurableEnvironment的实例，那么父环境可以被子环境合并。
+	 * 设置父容器。如果父环境是ConfigurableEnvironment的实例，那么父环境可以被子环境合并。
 	 * <p>The parent {@linkplain ApplicationContext#getEnvironment() environment} is
 	 * {@linkplain ConfigurableEnvironment#merge(ConfigurableEnvironment) merged} with
 	 * this (child) application context environment if the parent is non-{@code null} and

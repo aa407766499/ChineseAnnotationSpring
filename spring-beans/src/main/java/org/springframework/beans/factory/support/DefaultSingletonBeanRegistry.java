@@ -415,7 +415,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		// No entry yet -> fully synchronized manipulation of the dependentBeans Set
 		// 没有条目 ->完整同步操作依赖bean集合。
 		//多线程同步，保证容器内数据的一致性
-		//先从容器中：bean名称-->全部依赖Bean名称集合找查找给定名称Bean的依赖Bean
+		//先从容器中：bean名称-->全部依赖Bean名称集合查找给定名称Bean的依赖Bean
 		synchronized (this.dependentBeanMap) {
 			//获取给定名称Bean的所有依赖Bean名称
 			dependentBeans = this.dependentBeanMap.get(canonicalName);

@@ -268,7 +268,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			// 如果我们已经创建了此Bean实例，则失败
 			// We're assumably within a circular reference.
 			// 我们应该在一个循环引用内
-			//缓存没有正在创建的单例模式Bean
+			//缓存创建好的单例模式Bean
 			//缓存中已经有已经创建的原型模式Bean
 			//但是由于循环引用的问题导致实例化对象失败
 			if (isPrototypeCurrentlyInCreation(beanName)) {
@@ -278,13 +278,13 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			// Check if bean definition exists in this factory.
 			// 检查bean定义是否存在于该容器中。
 			//对IOC容器中是否存在指定名称的BeanDefinition进行检查，首先检查是否
-			//能在当前的BeanFactory中获取的所需要的Bean，如果不能则委托当前容器
-			//的父级容器去查找，如果还是找不到则沿着容器的继承体系向父级容器查找
+			//能在当前的BeanFactory中获取所需要的Bean，如果不能则委托当前容器
+			//的父级容器去查找，如果还是找不到则沿着容器的继承体系查找
 			BeanFactory parentBeanFactory = getParentBeanFactory();
 			//当前容器的父级容器存在，且当前容器中不存在指定名称的Bean
 			if (parentBeanFactory != null && !containsBeanDefinition(beanName)) {
 				// Not found -> check parent.
-				// 没找到 -> 父容器中查找。
+				// 没找到 -> 去父容器中查找。
 				//解析指定Bean名称的原始名称
 				String nameToLookup = originalBeanName(name);
 				if (parentBeanFactory instanceof AbstractBeanFactory) {
@@ -311,7 +311,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 			try {
 				//根据指定Bean名称获取其父级的Bean定义
-				//主要解决Bean继承时子类合并父类公共属性问题
+				//主要解决Bean继承时子类合并父类公共属性的问题
 				final RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
 				checkMergedBeanDefinition(mbd, beanName, args);
 
@@ -1687,6 +1687,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		//如果调用本身就想获得一个工厂的引用，则指定返回这个工厂Bean实例对象
 		//如果指定的名称是容器的间接引用(dereference，即是对象本身而非内存地址)，
 		//且Bean实例也不是创建Bean实例对象的工厂Bean
+		// 名称前缀是"&"，要取工厂本身，但是该bean实例又不是一个工厂Bean，抛出异常
 		if (BeanFactoryUtils.isFactoryDereference(name) && !(beanInstance instanceof FactoryBean)) {
 			throw new BeanIsNotAFactoryException(transformedBeanName(name), beanInstance.getClass());
 		}
@@ -1698,14 +1699,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		// caller actually wants a reference to the factory.
 		//如果Bean实例不是工厂Bean，或者指定名称是容器的解引用，
 		//调用者向获取对容器的引用，则直接返回当前的Bean实例
-		/*如果bean实例不是工厂bean，调用者传的名称也没有前缀"&"（不取工厂本身），直接返回当前的bean实例*/
+		/*如果bean实例不是工厂bean，直接返回当前的bean实例*/
+		/*bean实例是工厂bean，名称前缀是"&"，要取工厂本身，直接返回bean实例*/
 		if (!(beanInstance instanceof FactoryBean) || BeanFactoryUtils.isFactoryDereference(name)) {
 			return beanInstance;
 		}
 
-		//处理指定名称不是容器的解引用，或者根据名称获取的Bean实例对象是一个工厂Bean
-		/*bean实例是工厂bean，传"&"前缀的名称就取工厂变身，没传就取工厂创建的对象*/
-		/*这里没有处理取工厂本身？？？*/
+		//指定名称不是容器的间接引用，根据名称获取的Bean实例对象是一个工厂Bean
+		/*bean实例是工厂bean，取工厂创建的对象*/
 		//使用工厂Bean创建一个Bean的实例对象
 		Object object = null;
 		if (mbd == null) {
@@ -1715,18 +1716,20 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		//让Bean工厂生产给定名称的Bean对象实例
 		if (object == null) {
 			// Return bean instance from factory.
+			// 返回工厂生产的bean实例
 			FactoryBean<?> factory = (FactoryBean<?>) beanInstance;
 			// Caches object obtained from FactoryBean if it is a singleton.
+			// 如果是一个单例,缓存从FactoryBean获得的对象。
 			//如果从Bean工厂生产的Bean是单例模式的，则缓存
 			if (mbd == null && containsBeanDefinition(beanName)) {
 				//从容器中获取指定名称的Bean定义，如果继承基类，则合并基类相关属性
 				mbd = getMergedLocalBeanDefinition(beanName);
 			}
-			//如果从容器得到Bean定义信息，并且Bean定义信息不是虚构的，
+			//如果从容器得到Bean定义信息，并且Bean定义信息不是抽象的，
 			//则让工厂Bean生产Bean实例对象
 			boolean synthetic = (mbd != null && mbd.isSynthetic());
 			//调用FactoryBeanRegistrySupport类的getObjectFromFactoryBean方法，
-			//实现工厂Bean生产Bean对象实例的过程
+			//工厂Bean生产Bean对象实例
 			object = getObjectFromFactoryBean(factory, beanName, !synthetic);
 		}
 		return object;

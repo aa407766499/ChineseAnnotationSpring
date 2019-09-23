@@ -70,7 +70,9 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 
 	/**
 	 * Obtain an object to expose from the given FactoryBean, if available
+	 * 如果能够以缓存的形式获得，则获取从给定FactoryBean暴露的对象。快速检查
 	 * in cached form. Quick check for minimal synchronization.
+	 * 最小化同步。
 	 * @param beanName the name of the bean
 	 * @return the object obtained from the FactoryBean,
 	 * or {@code null} if not available
@@ -161,7 +163,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 				AccessControlContext acc = getAccessControlContext();
 				try {
 					//实现PrivilegedExceptionAction接口的匿名内置类
-					//根据JVM检查权限，然后决定FactoryBean创建实例对象
+					//根据JVM检查权限，然后决定FactoryBean是否创建实例对象
 					object = AccessController.doPrivileged((PrivilegedExceptionAction<Object>) () ->
 							factory.getObject(), acc);
 				}

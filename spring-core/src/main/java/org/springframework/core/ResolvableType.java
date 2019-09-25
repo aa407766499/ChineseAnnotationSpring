@@ -43,12 +43,15 @@ import org.springframework.util.StringUtils;
 
 /**
  * Encapsulates a Java {@link java.lang.reflect.Type}, providing access to
+ * Java Type的包装类，提供访问父类型的方法，获取所有接口的方法，获取类型参数的方法。
  * {@link #getSuperType() supertypes}, {@link #getInterfaces() interfaces}, and
  * {@link #getGeneric(int...) generic parameters} along with the ability to ultimately
  * {@link #resolve() resolve} to a {@link java.lang.Class}.
  *
  * <p>{@code ResolvableTypes} may be obtained from {@link #forField(Field) fields},
+ * 可以获取字段类型，某个方法参数类型，方法返回值类型，或者classes。
  * {@link #forMethodParameter(Method, int) method parameters},
+ * 该类的大多数方法都返回ResolvableType，如下：
  * {@link #forMethodReturnType(Method) method returns} or
  * {@link #forClass(Class) classes}. Most methods on this class will themselves return
  * {@link ResolvableType}s, allowing easy navigation. For example:
@@ -445,6 +448,7 @@ public class ResolvableType implements Serializable {
 
 	/**
 	 * Return a {@link ResolvableType} representing the direct supertype of this type.
+	 * 返回该类型直接的父类型。没有父类型返回null。
 	 * If no supertype is available this method returns {@link #NONE}.
 	 * @see #getInterfaces()
 	 */
@@ -461,6 +465,7 @@ public class ResolvableType implements Serializable {
 
 	/**
 	 * Return a {@link ResolvableType} array representing the direct interfaces
+	 * 返回该类型的接口数组。如果没有实现接口返回空数组。
 	 * implemented by this type. If this type does not implement any interfaces an
 	 * empty array is returned.
 	 * @see #getSuperType()

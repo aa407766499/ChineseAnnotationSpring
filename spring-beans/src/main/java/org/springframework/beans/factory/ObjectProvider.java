@@ -24,6 +24,7 @@ import org.springframework.lang.Nullable;
 
 /**
  * A variant of {@link ObjectFactory} designed specifically for injection points,
+ * 针对注入点设计的ObjectFactory的变体。允许以编程的方式选择性的以及全局性的处理。
  * allowing for programmatic optionality and lenient not-unique handling.
  *
  * @author Juergen Hoeller
@@ -35,8 +36,10 @@ public interface ObjectProvider<T> extends ObjectFactory<T> {
 	 * Return an instance (possibly shared or independent) of the object
 	 * managed by this factory.
 	 * <p>Allows for specifying explicit construction arguments, along the
+	 * 沿着BeanFactory#getBean(String, Object...)这条线，允许指定明确的构造参数。
 	 * lines of {@link BeanFactory#getBean(String, Object...)}.
 	 * @param args arguments to use when creating a corresponding instance
+	 *             创建相应实例使用的参数。
 	 * @return an instance of the bean
 	 * @throws BeansException in case of creation errors
 	 * @see #getObject()
@@ -47,6 +50,7 @@ public interface ObjectProvider<T> extends ObjectFactory<T> {
 	 * Return an instance (possibly shared or independent) of the object
 	 * managed by this factory.
 	 * @return an instance of the bean, or {@code null} if not available
+	 * 能够获得返回bean实例，不能获得返回null。
 	 * @throws BeansException in case of creation errors
 	 * @see #getObject()
 	 */
@@ -57,6 +61,7 @@ public interface ObjectProvider<T> extends ObjectFactory<T> {
 	 * Return an instance (possibly shared or independent) of the object
 	 * managed by this factory.
 	 * @param defaultSupplier a callback for supplying a default object
+	 *                        如果容器中没有，提供一个默认对象
 	 * if none is present in the factory
 	 * @return an instance of the bean, or the supplied default object
 	 * if no such bean is available
@@ -73,6 +78,7 @@ public interface ObjectProvider<T> extends ObjectFactory<T> {
 	 * Consume an instance (possibly shared or independent) of the object
 	 * managed by this factory, if available.
 	 * @param dependencyConsumer a callback for processing the target object
+	 *                           如果能够获得，处理目标对象。
 	 * if available (not called otherwise)
 	 * @throws BeansException in case of creation errors
 	 * @since 5.0
@@ -89,6 +95,7 @@ public interface ObjectProvider<T> extends ObjectFactory<T> {
 	 * Return an instance (possibly shared or independent) of the object
 	 * managed by this factory.
 	 * @return an instance of the bean, or {@code null} if not available or
+	 * 能够获得并且唯一返回bean实例，否则返回null（多个匹配中没有一个被标记为primary）
 	 * not unique (i.e. multiple candidates found with none marked as primary)
 	 * @throws BeansException in case of creation errors
 	 * @see #getObject()

@@ -30,26 +30,37 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Generic registry for shared bean instances, implementing the
+ * 共享bean实例的一般注册表，实现了SingletonBeanRegistry接口。
  * {@link org.springframework.beans.factory.config.SingletonBeanRegistry}.
+ * 允许注册注册表中所有调用者都共享的单例实例,通过bean名称获得。
  * Allows for registering singleton instances that should be shared
  * for all callers of the registry, to be obtained via bean name.
  *
  * <p>Also supports registration of
+ * 也支持注册DisposableBean实例。
  * {@link org.springframework.beans.factory.DisposableBean} instances,
+ * （该实例可以是单例也可以不是），在注册表关闭时销毁。注册bean之间的
  * (which might or might not correspond to registered singletons),
+ * 依赖来遵循一种合适的关闭顺序。
  * to be destroyed on shutdown of the registry. Dependencies between
  * beans can be registered to enforce an appropriate shutdown order.
  *
  * <p>This class mainly serves as base class for
+ * 该类主要作为基础类服务于BeanFactory实现类，
  * {@link org.springframework.beans.factory.BeanFactory} implementations,
+ * 抽取出对单例bean实例的公共管理。注意ConfigurableBeanFactory扩展了SingletonBeanRegistry
  * factoring out the common management of singleton bean instances. Note that
  * the {@link org.springframework.beans.factory.config.ConfigurableBeanFactory}
  * interface extends the {@link SingletonBeanRegistry} interface.
  *
  * <p>Note that this class assumes neither a bean definition concept
+ * 注意：该类没有假设bean定义的概念，也没有特定的bean实例创建过程，
  * nor a specific creation process for bean instances, in contrast to
+ * 与AbstractBeanFactory以及DefaultListableBeanFactory相反
  * {@link AbstractBeanFactory} and {@link DefaultListableBeanFactory}
+ * (继承自DefaultSingletonBeanRegistry)。能选择将其作为一个内嵌的工具
  * (which inherit from it). Can alternatively also be used as a nested
+ * 执行委派的任务。
  * helper to delegate to.
  *
  * @author Juergen Hoeller
@@ -172,7 +183,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * Return the (raw) singleton object registered under the given name.
 	 * 返回给定名称注册的单例对象。
 	 * <p>Checks already instantiated singletons and also allows for an early
-	 * 检查已经实例化的单例以及允许
+	 * 检查已经实例化的单例以及允许引用当前已经创建好的单例(解析循环引用)
 	 * reference to a currently created singleton (resolving a circular reference).
 	 * @param beanName the name of the bean to look for
 	 * @param allowEarlyReference whether early references should be created or not
@@ -199,9 +210,11 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 	/**
 	 * Return the (raw) singleton object registered under the given name,
+	 * 返回给定名称注册的单例对象，如果当前还没有注册则创建和注册一个新的。
 	 * creating and registering a new one if none registered yet.
 	 * @param beanName the name of the bean
 	 * @param singletonFactory the ObjectFactory to lazily create the singleton
+	 *                         如果需要，懒创建单例的ObjectFactory。
 	 * with, if necessary
 	 * @return the registered singleton object
 	 */

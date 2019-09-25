@@ -28,7 +28,9 @@ import org.springframework.util.StringValueResolver;
 
 /**
  * Simple implementation of the {@link AliasRegistry} interface.
+ * AliasRegistry接口的简单实现。
  * Serves as base class for
+ * 作为基类服务于BeanDefinitionRegistry实现类。
  * {@link org.springframework.beans.factory.support.BeanDefinitionRegistry}
  * implementations.
  *

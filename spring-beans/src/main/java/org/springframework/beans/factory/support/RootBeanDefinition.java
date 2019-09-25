@@ -228,6 +228,7 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 
 	/**
 	 * Create a new RootBeanDefinition as deep copy of the given
+	 * 对给定bean定义进行深拷贝创建新的RootBeanDefinition。
 	 * bean definition.
 	 * @param original the original bean definition to copy from
 	 */

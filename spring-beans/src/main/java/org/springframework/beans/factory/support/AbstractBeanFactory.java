@@ -45,7 +45,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * <p>This class provides a singleton cache (through its base class
  * 该类提供了单例缓存（通过其基础类DefaultSingletonBeanRegistry，确定单例/原型，
  * {@link org.springframework.beans.factory.support.DefaultSingletonBeanRegistry},
- * FactoryBean处理，别名，覆盖子bean定义的bean定义，以及bean销毁（接口DisposableBean，定制销
+ * FactoryBean处理，别名，合并子bean定义的bean定义，以及bean销毁（接口DisposableBean，定制销
  * singleton/prototype determination, {@link org.springframework.beans.factory.FactoryBean}
  * 毁方法）。）此外，该类能管理bean容器层级（对未知bean的查找委派给父类），
  * handling, aliases, bean definition merging for child bean definitions,
@@ -58,7 +58,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * <p>The main template methods to be implemented by subclasses are
  * 由子类实现的主要的模板方法有getBeanDefinition和createBean，分别是搜索给定bean名称的
  * {@link #getBeanDefinition} and {@link #createBean}, retrieving a bean definition
- * bean定义以及创建给定bean定义的bean实例。这两个方法的默认实现可以在DefaultListableBeanFactory
+ * bean定义以及创建给定bean定义的bean实例。这两个方法的默认实现可以分别在DefaultListableBeanFactory
  * for a given bean name and creating a bean instance for a given bean definition,
  * 以及AbstractAutowireCapableBeanFactory中找到
  * respectively. Default implementations of those operations can be found in
@@ -1280,12 +1280,18 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	/**
 	 * Return a RootBeanDefinition for the given bean, by merging with the
+	 * 返回给定bean的RootBeanDefinition，如果给定的bean定义是一个子bean定义
 	 * parent if the given bean's definition is a child bean definition.
+	 * 则要合并父bean定义。
 	 * @param beanName the name of the bean definition
 	 * @param bd the original bean definition (Root/ChildBeanDefinition)
+	 *           原始bean定义（Root/ChildBeanDefinition）
 	 * @param containingBd the containing bean definition in case of inner bean,
+	 *                     如果有内部bean（也叫匿名bean）则包含bean定义，如果是
 	 * or {@code null} in case of a top-level bean
+	 *                     顶层级别的bean则为null。
 	 * @return a (potentially merged) RootBeanDefinition for the given bean
+	 * 给定bean的（可能合并过的）RootBeanDefinition
 	 * @throws BeanDefinitionStoreException in case of an invalid bean definition
 	 */
 	protected RootBeanDefinition getMergedBeanDefinition(
@@ -1296,6 +1302,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			RootBeanDefinition mbd = null;
 
 			// Check with full lock now in order to enforce the same merged instance.
+			// 现在使用全锁检查，以便强制执行相同的合并实例。
 			if (containingBd == null) {
 				mbd = this.mergedBeanDefinitions.get(beanName);
 			}
@@ -1303,6 +1310,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			if (mbd == null) {
 				if (bd.getParentName() == null) {
 					// Use copy of given root bean definition.
+					// 复制给定根bean定义
 					if (bd instanceof RootBeanDefinition) {
 						mbd = ((RootBeanDefinition) bd).cloneBeanDefinition();
 					}
@@ -1819,11 +1827,16 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	/**
 	 * Return the bean definition for the given bean name.
+	 * 返回给定bean名称的bean定义。
 	 * Subclasses should normally implement caching, as this method is invoked
+	 * 一般子类应该实现缓存，每一次需要bean定义元数据的时候，通过该类调用该方法。
 	 * by this class every time bean definition metadata is needed.
 	 * <p>Depending on the nature of the concrete bean factory implementation,
+	 * 依赖于bean容器的具体实现类型，该操作可能昂贵（比如，因为在外部注册表中进行目
 	 * this operation might be expensive (for example, because of directory lookups
+	 * 录查找）。然而，对于列表化bean容器，通常在本地仅进行hash查找：因此该操作是
 	 * in external registries). However, for listable bean factories, this usually
+	 * 公共接口的一部分。在这种情况下，相同的实现可以用于模板方法和公共接口方法。
 	 * just amounts to a local hash lookup: The operation is therefore part of the
 	 * public interface there. The same implementation can serve for both this
 	 * template method and the public interface method in that case.
@@ -1840,9 +1853,12 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	/**
 	 * Create a bean instance for the given merged bean definition (and arguments).
+	 * 根据给定的合并bean定义（以及参数）创建bean实例。该bean定义如果是子bean定义，
 	 * The bean definition will already have been merged with the parent definition
+	 * 则已经和父bean定义合并了。
 	 * in case of a child definition.
 	 * <p>All bean retrieval methods delegate to this method for actual bean creation.
+	 * 所有bean检索的方法都会委派给该实际创建bean的方法。
 	 * @param beanName the name of the bean
 	 * @param mbd the merged bean definition for the bean
 	 * @param args explicit arguments to use for constructor or factory method invocation

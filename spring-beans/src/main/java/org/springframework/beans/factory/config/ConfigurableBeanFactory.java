@@ -385,7 +385,7 @@ public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, Single
 
 	/**
 	 * Return a merged BeanDefinition for the given bean name,
-	 * 返回给定bean名称的已被覆盖的BeanDefinition，必要时用父bean定义覆盖
+	 * 返回给定bean名称的已被合并的BeanDefinition，必要时用父bean定义合并
 	 * merging a child bean definition with its parent if necessary.
 	 * 子bean定义。
 	 * Considers bean definitions in ancestor factories as well.

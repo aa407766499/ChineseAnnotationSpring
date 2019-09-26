@@ -38,6 +38,7 @@ import org.springframework.util.StringUtils;
 
 /**
  * Standard implementation of the
+ * BeanExpressionResolver的标准实现,解析和求取Spring表达式模块的Spring EL。
  * {@link org.springframework.beans.factory.config.BeanExpressionResolver}
  * interface, parsing and evaluating Spring EL using Spring's expression module.
  *

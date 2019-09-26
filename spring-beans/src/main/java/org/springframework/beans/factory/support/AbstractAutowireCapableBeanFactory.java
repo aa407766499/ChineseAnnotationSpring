@@ -476,10 +476,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	//---------------------------------------------------------------------
 	// Implementation of relevant AbstractBeanFactory template methods
+	// AbstractBeanFactory模板方法的相关实现。
 	//---------------------------------------------------------------------
 
 	/**
 	 * Central method of this class: creates a bean instance,
+	 * 该类的核心方法：创建bean实例，填充bean实例，应用后处理器，等。
 	 * populates the bean instance, applies post-processors, etc.
 	 * @see #doCreateBean
 	 */
@@ -494,7 +496,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		RootBeanDefinition mbdToUse = mbd;
 
 		// Make sure bean class is actually resolved at this point, and
+		// 确保在这一点上实际解析了Bean类，如果动态解析的类不能被存储在
 		// clone the bean definition in case of a dynamically resolved Class
+		// 共享的合并bean定义中则克隆bean定义。
 		// which cannot be stored in the shared merged bean definition.
 		//判断需要创建的Bean是否可以实例化，即是否可以通过当前的类加载器加载
 		Class<?> resolvedClass = resolveBeanClass(mbd, beanName);

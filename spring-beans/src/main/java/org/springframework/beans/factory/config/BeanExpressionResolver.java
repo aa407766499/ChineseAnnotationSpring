@@ -21,10 +21,13 @@ import org.springframework.lang.Nullable;
 
 /**
  * Strategy interface for resolving a value through evaluating it
+ * 解析值的策略接口，将值看做一个表达式进行解析。
  * as an expression, if applicable.
  *
  * <p>A raw {@link org.springframework.beans.factory.BeanFactory} does not
+ * 一个原生的BeanFactory不会包含该策略的默认实现。然而ApplicationContext实现
  * contain a default implementation of this strategy. However,
+ * 会提供表达式解包（解析）支持。
  * {@link org.springframework.context.ApplicationContext} implementations
  * will provide expression support out of the box.
  *
@@ -35,6 +38,7 @@ public interface BeanExpressionResolver {
 
 	/**
 	 * Evaluate the given value as an expression, if applicable;
+	 * 将给定值作为表达式解析；否则返回原值。
 	 * return the value as-is otherwise.
 	 * @param value the value to check
 	 * @param evalContext the evaluation context

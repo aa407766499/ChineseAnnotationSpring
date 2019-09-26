@@ -25,6 +25,7 @@ import org.springframework.util.Assert;
 
 /**
  * Base class for decorating ClassLoaders such as {@link OverridingClassLoader}
+ * 类加载器的包装类。
  * and {@link org.springframework.instrument.classloading.ShadowingClassLoader},
  * providing common handling of excluded packages and classes.
  *
@@ -72,7 +73,9 @@ public abstract class DecoratingClassLoader extends ClassLoader {
 
 	/**
 	 * Add a class name to exclude from decoration (e.g. overriding).
+	 * 排除一个类名
 	 * <p>Any class name registered here will be handled by the parent
+	 * 通常任何在这里注册的类名由父类加载器处理。
 	 * ClassLoader in the usual fashion.
 	 * @param className the class name to exclude
 	 */

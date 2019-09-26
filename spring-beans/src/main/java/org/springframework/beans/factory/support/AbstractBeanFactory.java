@@ -1031,10 +1031,12 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		String beanName = transformedBeanName(name);
 
 		// Efficiently check whether bean definition exists in this factory.
+		// 高效检查该容器中是否有该bean定义。
 		if (!containsBeanDefinition(beanName) && getParentBeanFactory() instanceof ConfigurableBeanFactory) {
 			return ((ConfigurableBeanFactory) getParentBeanFactory()).getMergedBeanDefinition(beanName);
 		}
 		// Resolve merged bean definition locally.
+		// 本地解析合并的bean定义
 		return getMergedLocalBeanDefinition(beanName);
 	}
 
@@ -1310,7 +1312,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			if (mbd == null) {
 				if (bd.getParentName() == null) {
 					// Use copy of given root bean definition.
-					// 复制给定根bean定义
+					// 复制给定的根bean定义
 					if (bd instanceof RootBeanDefinition) {
 						mbd = ((RootBeanDefinition) bd).cloneBeanDefinition();
 					}
@@ -1344,24 +1346,33 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 								"Could not resolve parent bean definition '" + bd.getParentName() + "'", ex);
 					}
 					// Deep copy with overridden values.
+					// 深拷贝重写值
+					// bd是原始bean定义也就是子bean定义
+					// pbd是父bean定义
+					// mbd是mergedBeanDefinition即合并的bean定义
 					mbd = new RootBeanDefinition(pbd);
 					mbd.overrideFrom(bd);
 				}
 
 				// Set default singleton scope, if not configured before.
+				// 如果之前没有配置，则设置默认的单例作用域。
 				if (!StringUtils.hasLength(mbd.getScope())) {
 					mbd.setScope(RootBeanDefinition.SCOPE_SINGLETON);
 				}
 
 				// A bean contained in a non-singleton bean cannot be a singleton itself.
+				// 一个包含非单例bean的bean不能是一个单例。我们来纠正一下，因为这可能是
 				// Let's correct this on the fly here, since this might be the result of
+				// 外部bean父子合并的结果，在这种情况下，原始的内部bean定义不会继承已合并的外部bean
 				// parent-child merging for the outer bean, in which case the original inner bean
+				// 的单例状态。
 				// definition will not have inherited the merged outer bean's singleton status.
 				if (containingBd != null && !containingBd.isSingleton() && mbd.isSingleton()) {
 					mbd.setScope(containingBd.getScope());
 				}
 
 				// Cache the merged bean definition for the time being
+				// 暂且缓存合并的bean定义(为了获取元数据的变化之后可能会重新合并)
 				// (it might still get re-merged later on in order to pick up metadata changes)
 				if (containingBd == null && isCacheBeanMetadata()) {
 					this.mergedBeanDefinitions.put(beanName, mbd);
@@ -1418,12 +1429,16 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	/**
 	 * Resolve the bean class for the specified bean definition,
+	 * 解析指定bean定义的bean class，（如果需要）将bean类名称解析为
 	 * resolving a bean class name into a Class reference (if necessary)
+	 * Class引用然后将其存储在bean定义中，待后续使用。
 	 * and storing the resolved Class in the bean definition for further use.
 	 * @param mbd the merged bean definition to determine the class for
 	 * @param beanName the name of the bean (for error handling purposes)
 	 * @param typesToMatch the types to match in case of internal type matching purposes
+	 *                     用于匹配内部类的类型（也表示返回的类决不能暴露给应用代码）。
 	 * (also signals that the returned {@code Class} will never be exposed to application code)
+	 *
 	 * @return the resolved bean class (or {@code null} if none)
 	 * @throws CannotLoadBeanClassException if we failed to load the class
 	 */
@@ -1462,7 +1477,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		ClassLoader classLoaderToUse = beanClassLoader;
 		if (!ObjectUtils.isEmpty(typesToMatch)) {
 			// When just doing type checks (i.e. not creating an actual instance yet),
+			// 仅做类型检查（当前不创建实际实例），
 			// use the specified temporary class loader (e.g. in a weaving scenario).
+			// 使用指定的临时类加载器（在织入的时候）。
 			ClassLoader tempClassLoader = getTempClassLoader();
 			if (tempClassLoader != null) {
 				classLoaderToUse = tempClassLoader;
@@ -1500,10 +1517,12 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	/**
 	 * Evaluate the given String as contained in a bean definition,
+	 * 求取bean定义包含的给定字符串，可能将其作为表达式解析
 	 * potentially resolving it as an expression.
 	 * @param value the value to check
 	 * @param beanDefinition the bean definition that the value comes from
 	 * @return the resolved value
+	 * 已解析的值
 	 * @see #setBeanExpressionResolver
 	 */
 	@Nullable

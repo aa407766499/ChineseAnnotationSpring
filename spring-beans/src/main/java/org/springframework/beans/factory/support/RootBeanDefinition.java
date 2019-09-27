@@ -105,6 +105,7 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 	boolean postProcessed = false;
 
 	/** Package-visible field that indicates a before-instantiation post-processor having kicked in */
+	/*包可见字段，该字段指示启用实例化前后处理器。*/
 	@Nullable
 	volatile Boolean beforeInstantiationResolved;
 
@@ -317,6 +318,7 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 
 	/**
 	 * Return the target type of this bean definition, if known
+	 * 如果有返回该bean定义的目标类型，（要么提前指定要么首次实例化时解析）
 	 * (either specified in advance or resolved on first instantiation).
 	 * @since 3.2.2
 	 */

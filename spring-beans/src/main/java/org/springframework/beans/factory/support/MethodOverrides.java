@@ -25,9 +25,12 @@ import org.springframework.lang.Nullable;
 
 /**
  * Set of method overrides, determining which, if any, methods on a
+ * 覆盖方法的集合，如果有的话，确定Spring IOC容器管理的对象在运行期会
  * managed object the Spring IoC container will override at runtime.
+ * 覆盖的方法。
  *
  * <p>The currently supported {@link MethodOverride} variants are
+ * 当前支持的MethodOverride变体有LookupOverride以及ReplaceOverride。
  * {@link LookupOverride} and {@link ReplaceOverride}.
  *
  * @author Rod Johnson
@@ -76,6 +79,7 @@ public class MethodOverrides {
 
 	/**
 	 * Return all method overrides contained by this object.
+	 * 该对象包含的所有覆盖方法，
 	 * @return Set of MethodOverride objects
 	 * @see MethodOverride
 	 */

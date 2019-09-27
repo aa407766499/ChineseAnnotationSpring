@@ -25,9 +25,11 @@ import org.springframework.util.ObjectUtils;
 
 /**
  * Object representing the override of a method on a managed object by the IoC
+ * 该类表示IOC容器管理对象的覆盖方法。
  * container.
  *
  * <p>Note that the override mechanism is <em>not</em> intended as a generic
+ * 注意覆盖机制不要用于插入横切代码，如果要插入横切代码，用AOP
  * means of inserting crosscutting code: use AOP for that.
  *
  * @author Rod Johnson

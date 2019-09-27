@@ -508,6 +508,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		// Prepare method overrides.
+		// 准备方法覆盖。
 		//校验和准备Bean中的方法覆盖
 		try {
 			mbdToUse.prepareMethodOverrides();
@@ -519,6 +520,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		try {
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
+			// 给BeanPostProcessors一个机会去返回替换目标bean实例的代理。
 			//如果Bean配置了初始化前和初始化后的处理器，则试图返回一个需要创建Bean的代理对象
 			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
 			if (bean != null) {
@@ -705,6 +707,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	/**
 	 * Determine the target type for the given bean definition.
+	 * 确定给定bean定义的目标类型。
 	 * @param beanName the name of the bean (for error handling purposes)
 	 * @param mbd the merged bean definition for the bean
 	 * @param typesToMatch the types to match in case of internal type matching purposes
@@ -1070,6 +1073,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	/**
 	 * Apply before-instantiation post-processors, resolving whether there is a
+	 * 应用实例化前后处理器，解析是否有一个指定bean的实例化前快照。
 	 * before-instantiation shortcut for the specified bean.
 	 * @param beanName the name of the bean
 	 * @param mbd the bean definition for the bean
@@ -1080,6 +1084,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		Object bean = null;
 		if (!Boolean.FALSE.equals(mbd.beforeInstantiationResolved)) {
 			// Make sure bean class is actually resolved at this point.
+			// 确保bean 类在这里已经解析。
 			if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
 				Class<?> targetType = determineTargetType(beanName, mbd);
 				if (targetType != null) {
@@ -1096,13 +1101,18 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	/**
 	 * Apply InstantiationAwareBeanPostProcessors to the specified bean definition
+	 * 将InstantiationAwareBeanPostProcessors应用到指定bean定义（通过类以及名称），
 	 * (by class and name), invoking their {@code postProcessBeforeInstantiation} methods.
+	 * 调用后处理器的postProcessBeforeInstantiation方法。
 	 * <p>Any returned object will be used as the bean instead of actually instantiating
+	 * 任何返回的对象会用作替换实际实例化目标bean的bean。如果目标bean已经实例化，则后处理器
 	 * the target bean. A {@code null} return value from the post-processor will
+	 * 返回null。
 	 * result in the target bean being instantiated.
 	 * @param beanClass the class of the bean to be instantiated
 	 * @param beanName the name of the bean
 	 * @return the bean object to use instead of a default instance of the target bean, or {@code null}
+	 * 用于替换目标bean默认实例的bean对象
 	 * @see InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation
 	 */
 	@Nullable

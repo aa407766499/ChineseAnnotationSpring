@@ -127,11 +127,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
 	/** Indicates whether any InstantiationAwareBeanPostProcessors have been registered */
-	//表明是否已经注册了InstantiationAwareBeanPostProcessors
+	//表明是否注册了InstantiationAwareBeanPostProcessors
 	private boolean hasInstantiationAwareBeanPostProcessors;
 
 	/** Indicates whether any DestructionAwareBeanPostProcessors have been registered */
-	//表明是否已经注册了hasDestructionAwareBeanPostProcessors
+	//表明是否注册了hasDestructionAwareBeanPostProcessors
 	private boolean hasDestructionAwareBeanPostProcessors;
 
 	/** Map from scope identifier String to corresponding Scope */
@@ -1496,6 +1496,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			Object evaluated = evaluateBeanDefinitionString(className, mbd);
 			if (!className.equals(evaluated)) {
 				// A dynamically resolved expression, supported as of 4.2...
+				// 动态解析表达式，4.2版本支持
 				if (evaluated instanceof Class) {
 					return (Class<?>) evaluated;
 				}
@@ -1507,6 +1508,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 			}
 			// When resolving against a temporary class loader, exit early in order
+			// 不使用临时类加载器解析，是为了防止将解析的Class过早的存放在bean定义中
 			// to avoid storing the resolved Class in the bean definition.
 			if (classLoaderToUse != beanClassLoader) {
 				return ClassUtils.forName(className, classLoaderToUse);

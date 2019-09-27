@@ -196,6 +196,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 	private boolean enforceDestroyMethod = true;
 
+	//是否是abstract
 	private boolean synthetic = false;
 
 	private int role = BeanDefinition.ROLE_APPLICATION;
@@ -434,7 +435,9 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 	/**
 	 * Determine the class of the wrapped bean, resolving it from a
+	 * 确定包装bean的class，如果需要从指定的类名进行解析。在调用以及bean
 	 * specified class name if necessary. Will also reload a specified
+	 * class已经解析时从指定名称重新加载指定的Class。
 	 * Class from its name when called with the bean class already resolved.
 	 * @param classLoader the ClassLoader to use for resolving a (potential) class name
 	 * @return the resolved bean class
@@ -1076,11 +1079,13 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 	/**
 	 * Validate and prepare the method overrides defined for this bean.
+	 * 校验和准备该bean中定义的方法覆盖。检查指定名称的方法是否存在，
 	 * Checks for existence of a method with the specified name.
 	 * @throws BeanDefinitionValidationException in case of validation failure
 	 */
 	public void prepareMethodOverrides() throws BeanDefinitionValidationException {
 		// Check that lookup methods exists.
+		// 检查查找的方法是否存在
 		if (hasMethodOverrides()) {
 			Set<MethodOverride> overrides = getMethodOverrides().getOverrides();
 			synchronized (overrides) {
@@ -1093,7 +1098,9 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 	/**
 	 * Validate and prepare the given method override.
+	 * 校验和准备该bean中定义的方法覆盖。检查指定名称的方法是否存在，
 	 * Checks for existence of a method with the specified name,
+	 * 如果不存在，将其标记为不重载。
 	 * marking it as not overloaded if none found.
 	 * @param mo the MethodOverride object to validate
 	 * @throws BeanDefinitionValidationException in case of validation failure
@@ -1107,6 +1114,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 		}
 		else if (count == 1) {
 			// Mark override as not overloaded, to avoid the overhead of arg type checking.
+			// 标记为非重载，防止参数类型检查。
 			mo.setOverloaded(false);
 		}
 	}

@@ -54,8 +54,10 @@ public interface BeanPostProcessor {
 	 * initialization callbacks (like InitializingBean's {@code afterPropertiesSet}
 	 * 方法）将该BeanPostProcessor应用于给定的新bean实例。该bean已经被填充属性值。
 	 * or a custom init-method). The bean will already be populated with property values.
+	 * 返回的bean实例可能是原始bean的包装器。
 	 * The returned bean instance may be a wrapper around the original.
 	 * <p>The default implementation returns the given {@code bean} as-is.
+	 * 默认实现返回给定bean自身。
 	 * @param bean the new bean instance
 	 * @param beanName the name of the bean
 	 * @return the bean instance to use, either the original or a wrapped one;
@@ -71,10 +73,14 @@ public interface BeanPostProcessor {
 
 	/**
 	 * Apply this BeanPostProcessor to the given new bean instance <i>after</i> any bean
+	 * 在任何bean实例化回调之后（比如InitializingBean的afterPropertiesSet或者自定义的初始化
 	 * initialization callbacks (like InitializingBean's {@code afterPropertiesSet}
+	 * 方法）将该BeanPostProcessor应用于给定的新bean实例。该bean已经被填充属性值。
 	 * or a custom init-method). The bean will already be populated with property values.
+	 * 返回的bean实例可能是原始bean的包装器。
 	 * The returned bean instance may be a wrapper around the original.
 	 * <p>In case of a FactoryBean, this callback will be invoked for both the FactoryBean
+	 * 如果是一个FactoryBean，该回调
 	 * instance and the objects created by the FactoryBean (as of Spring 2.0). The
 	 * post-processor can decide whether to apply to either the FactoryBean or created
 	 * objects or both through corresponding {@code bean instanceof FactoryBean} checks.

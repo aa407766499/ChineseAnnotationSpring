@@ -36,9 +36,9 @@ public interface ConversionService {
 	 * 如果该方法返回true，意味着convert方法能够将sourceType的实例转换为targetType的实例。
 	 * of converting an instance of {@code sourceType} to {@code targetType}.
 	 * <p>Special note on collections, arrays, and maps types:
-	 * 对于集合类型，数组类型，map类型：集合，数组，map类型之间的转换，该方法会返回true，即使转换调用会产生
+	 * 对于集合类型，数组类型，map类型：集合，数组，map类型之间的转换，如果底层的元素不能转换,即使转换调用
 	 * For conversion between collection, array, and map types, this method will return {@code true}
-	 * ConversionException如果底层的元素不能转换。调用者需要处理异常情况，在处理集合和map时。看
+	 * 可能会产生ConversionException,该方法会返回true。在处理集合和map时，调用者需要处理异常情况。
 	 * even though a convert invocation may still generate a {@link ConversionException} if the
 	 * underlying elements are not convertible. Callers are expected to handle this exceptional case
 	 * when working with collections and maps.

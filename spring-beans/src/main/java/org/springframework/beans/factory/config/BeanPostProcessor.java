@@ -80,12 +80,16 @@ public interface BeanPostProcessor {
 	 * 返回的bean实例可能是原始bean的包装器。
 	 * The returned bean instance may be a wrapper around the original.
 	 * <p>In case of a FactoryBean, this callback will be invoked for both the FactoryBean
-	 * 如果是一个FactoryBean，该回调
+	 * 如果是一个FactoryBean，该回调会被FactoryBean以及FactoryBean创建的对象调用。该后处理器
 	 * instance and the objects created by the FactoryBean (as of Spring 2.0). The
+	 * 会决定是否应用于FactoryBean或者FactoryBean创建的对象或者两者都应用，通过检查相应的
 	 * post-processor can decide whether to apply to either the FactoryBean or created
+	 * FactoryBean的bean实例。
 	 * objects or both through corresponding {@code bean instanceof FactoryBean} checks.
 	 * <p>This callback will also be invoked after a short-circuiting triggered by a
+	 * 与其他所有的BeanPostProcessor回调相反，InstantiationAwareBeanPostProcessor的
 	 * {@link InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation} method,
+	 * postProcessBeforeInstantiation方法触发短路之后，会调用该回调。
 	 * in contrast to all other BeanPostProcessor callbacks.
 	 * <p>The default implementation returns the given {@code bean} as-is.
 	 * @param bean the new bean instance

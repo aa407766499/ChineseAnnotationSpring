@@ -23,11 +23,16 @@ import org.springframework.lang.Nullable;
 
 /**
  * Extension of the {@link InstantiationAwareBeanPostProcessor} interface,
+ * InstantiationAwareBeanPostProcessor接口的扩展接口，添加一个回调来预测
  * adding a callback for predicting the eventual type of a processed bean.
+ * 处理bean的最终类型。
  *
  * <p><b>NOTE:</b> This interface is a special purpose interface, mainly for
+ * 注意：该接口用于特殊目的，主要框架内部使用。一般，应用提供的后处理应该实现
  * internal use within the framework. In general, application-provided
+ * 原生的BeanPostProcessor接口或者继承InstantiationAwareBeanPostProcessorAdapter。
  * post-processors should simply implement the plain {@link BeanPostProcessor}
+ * 即使在点版本中，新方法也可能添加到此接口中。
  * interface or derive from the {@link InstantiationAwareBeanPostProcessorAdapter}
  * class. New methods might be added to this interface even in point releases.
  *
@@ -39,6 +44,7 @@ public interface SmartInstantiationAwareBeanPostProcessor extends InstantiationA
 
 	/**
 	 * Predict the type of the bean to be eventually returned from this
+	 * 预测该后处理器的postProcessBeforeInstantiation回调返回的bean的最终类型。
 	 * processor's {@link #postProcessBeforeInstantiation} callback.
 	 * <p>The default implementation returns {@code null}.
 	 * @param beanClass the raw class of the bean
@@ -53,6 +59,7 @@ public interface SmartInstantiationAwareBeanPostProcessor extends InstantiationA
 
 	/**
 	 * Determine the candidate constructors to use for the given bean.
+	 * 确定用于给定bean的匹配的构造器。
 	 * <p>The default implementation returns {@code null}.
 	 * @param beanClass the raw class of the bean (never {@code null})
 	 * @param beanName the name of the bean
@@ -68,13 +75,20 @@ public interface SmartInstantiationAwareBeanPostProcessor extends InstantiationA
 
 	/**
 	 * Obtain a reference for early access to the specified bean,
+	 * 获取可以早期访问指定bean的引用，通常用于解决循环引用问题。
 	 * typically for the purpose of resolving a circular reference.
 	 * <p>This callback gives post-processors a chance to expose a wrapper
+	 * 该回调给了后处理器一个机会去过早暴露包装器-换句话说，在目标bean完全实例化之前。
 	 * early - that is, before the target bean instance is fully initialized.
+	 * 否则暴露出的对象应该和postProcessBeforeInitialization/postProcessAfterInitialization
 	 * The exposed object should be equivalent to the what
+	 * 暴露出的对象相同。注意：除非后处理器返回一个调用后处理回调返回的不同的包装器，否则
 	 * {@link #postProcessBeforeInitialization} / {@link #postProcessAfterInitialization}
+	 * 该方法返回的对象会被用作bean引用。换句话说：那些后处理回调要么最后暴露相同的引用
 	 * would expose otherwise. Note that the object returned by this method will
+	 * 要么有选择返回那些回调的原始bean实例（如果已经调用该方法构建了目标bean的包装器），
 	 * be used as bean reference unless the post-processor returns a different
+	 * 默认会将其作为最终的bean引用。
 	 * wrapper from said post-process callbacks. In other words: Those post-process
 	 * callbacks may either eventually expose the same reference or alternatively
 	 * return the raw bean instance from those subsequent callbacks (if the wrapper

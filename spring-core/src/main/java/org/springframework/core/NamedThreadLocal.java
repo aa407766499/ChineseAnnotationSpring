@@ -20,6 +20,7 @@ import org.springframework.util.Assert;
 
 /**
  * {@link ThreadLocal} subclass that exposes a specified name
+ * ThreadLocal子类暴露指定名称
  * as {@link #toString()} result (allowing for introspection).
  *
  * @author Juergen Hoeller

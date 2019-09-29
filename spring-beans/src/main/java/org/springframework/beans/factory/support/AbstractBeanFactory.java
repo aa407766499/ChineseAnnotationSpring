@@ -1187,9 +1187,12 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	/**
 	 * Initialize the given BeanWrapper with the custom editors registered
+	 * 使用该容器注册的自定义编辑器初始化给定BeanWrapper。将要创建和填充bean实例
 	 * with this factory. To be called for BeanWrappers that will create
+	 * 的BeanWrappers会调用该方法，
 	 * and populate bean instances.
 	 * <p>The default implementation delegates to {@link #registerCustomEditors}.
+	 * 默认实现委派给registerCustomEditors。能被子类重写。
 	 * Can be overridden in subclasses.
 	 * @param bw the BeanWrapper to initialize
 	 */

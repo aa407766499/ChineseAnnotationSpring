@@ -32,19 +32,26 @@ import org.springframework.util.ReflectionUtils;
 
 /**
  * Default {@link BeanWrapper} implementation that should be sufficient
+ * BeanWrapper的默认实现，可以满足所有使用情况。缓存有效的拦截结果。
  * for all typical use cases. Caches introspection results for efficiency.
  *
  * <p>Note: Auto-registers default property editors from the
+ * 注意：除了应用JDK标准的属性编辑器，还应用自动注册的来自propertyeditors包
  * {@code org.springframework.beans.propertyeditors} package, which apply
+ * 的默认属性编辑器。应用能调用registerCustomEditor方法来注册特定实例的编辑器
  * in addition to the JDK's standard PropertyEditors. Applications can call
+ * （比如：这些编辑器不是应用内共享的）。查看PropertyEditorRegistrySupport基础类的细节。
  * the {@link #registerCustomEditor(Class, java.beans.PropertyEditor)} method
  * to register an editor for a particular instance (i.e. they are not shared
  * across the application). See the base class
  * {@link PropertyEditorRegistrySupport} for details.
  *
  * <p><b>NOTE: As of Spring 2.5, this is - for almost all purposes - an
+ * 注意：Spring2.5版本，这是一个用于所有用途的内部类。标记为public是为了让其他
  * internal class.</b> It is just public in order to allow for access from
+ * 框架包访问。对于标准应用访问目的，使用PropertyAccessorFactory的forBeanPropertyAccess
  * other framework packages. For standard application access purposes, use the
+ * 工厂方法代替。
  * {@link PropertyAccessorFactory#forBeanPropertyAccess} factory method instead.
  *
  * @author Rod Johnson

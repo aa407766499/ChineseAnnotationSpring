@@ -1172,6 +1172,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		// Shortcut when re-creating the same bean...
+		// 重新创建相同bean时的快捷方式
 		//使用容器的自动装配方法进行实例化
 		boolean resolved = false;
 		boolean autowireNecessary = false;
@@ -1287,6 +1288,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	/**
 	 * Instantiate the given bean using its default constructor.
+	 * 使用默认的构造器实例化给定bean。
 	 * @param beanName the name of the bean
 	 * @param mbd the bean definition for the bean
 	 * @return a BeanWrapper for the new instance
@@ -1298,7 +1300,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			final BeanFactory parent = this;
 			//获取系统的安全管理接口，JDK标准的安全管理API
 			if (System.getSecurityManager() != null) {
-				//这里是一个匿名内置类，根据实例化策略创建实例对象
+				//这里是一个匿名内部类，根据实例化策略创建实例对象
 				beanInstance = AccessController.doPrivileged((PrivilegedAction<Object>) () ->
 						getInstantiationStrategy().instantiate(mbd, beanName, parent),
 						getAccessControlContext());
@@ -1319,12 +1321,16 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	/**
 	 * Instantiate the bean using a named factory method. The method may be static, if the
+	 * 使用命名的工厂方法实例化bean。方法可以是静态的，如果bean定义参数指定了一个class，而不是
 	 * mbd parameter specifies a class, rather than a factoryBean, or an instance variable
+	 * 一个factoryBean，或者使用DI配置容器的实例变量。
 	 * on a factory object itself configured using Dependency Injection.
 	 * @param beanName the name of the bean
 	 * @param mbd the bean definition for the bean
 	 * @param explicitArgs argument values passed in programmatically via the getBean method,
+	 *                     以编程的方式通过getBean方法传入的参数值或者没传就是null(->使用bean定义
 	 * or {@code null} if none (-> use constructor argument values from bean definition)
+	 *                     的构造器参数值)
 	 * @return a BeanWrapper for the new instance
 	 * @see #getBean(String, Object[])
 	 */
@@ -1336,14 +1342,19 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	/**
 	 * "autowire constructor" (with constructor arguments by type) behavior.
+	 * 自动注入构造器(根据类型匹配构造器参数)。也可以应用指定的构造器参数，
 	 * Also applied if explicit constructor argument values are specified,
+	 * 用容器中的bean匹配所有的剩余参数。
 	 * matching all remaining arguments with beans from the bean factory.
 	 * <p>This corresponds to constructor injection: In this mode, a Spring
+	 * 对应于构造器注入：使用这种方式，Spring容器可以管理所有基于构造器依赖解析
 	 * bean factory is able to host components that expect constructor-based
+	 * 的组件。
 	 * dependency resolution.
 	 * @param beanName the name of the bean
 	 * @param mbd the bean definition for the bean
 	 * @param ctors the chosen candidate constructors
+	 *              可选择的匹配参数
 	 * @param explicitArgs argument values passed in programmatically via the getBean method,
 	 * or {@code null} if none (-> use constructor argument values from bean definition)
 	 * @return a BeanWrapper for the new instance

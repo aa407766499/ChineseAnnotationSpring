@@ -35,8 +35,9 @@ public interface ConfigurablePropertyAccessor extends PropertyAccessor, Property
 
 	/**
 	 * Specify a Spring 3.0 ConversionService to use for converting
-	 * 指定
+	 * 指定Spring3.0的ConversionService，用于转换属性值，也可以选择
 	 * property values, as an alternative to JavaBeans PropertyEditors.
+	 * JavaBeans的PropertyEditor。
 	 */
 	void setConversionService(@Nullable ConversionService conversionService);
 

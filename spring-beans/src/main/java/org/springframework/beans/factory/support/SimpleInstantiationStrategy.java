@@ -33,8 +33,9 @@ import java.security.PrivilegedExceptionAction;
 
 /**
  * Simple object instantiation strategy for use in a BeanFactory.
- *
+ * 容器中使用的简单对象实例化策略
  * <p>Does not support Method Injection, although it provides hooks for subclasses
+ * 不支持方法注入，虽然其提供了钩子让子类重写来支持方法注入，比如重写方法。
  * to override to add Method Injection support, for example by overriding methods.
  *
  * @author Rod Johnson

@@ -1203,9 +1203,12 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	/**
 	 * Initialize the given PropertyEditorRegistry with the custom editors
+	 * 用容器中已经注册的自定义编辑器初始化给定的PropertyEditorRegistry。
 	 * that have been registered with this BeanFactory.
 	 * <p>To be called for BeanWrappers that will create and populate bean
+	 * 创建和填充bean实例的BeanWrappers调用该方法，用于构造器参数和工厂方法类型
 	 * instances, and for SimpleTypeConverter used for constructor argument
+	 * 转换的SimpleTypeConverter会调用该方法。
 	 * and factory method type conversion.
 	 * @param registry the PropertyEditorRegistry to initialize
 	 */

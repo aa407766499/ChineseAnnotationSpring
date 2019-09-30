@@ -50,7 +50,9 @@ import org.springframework.util.StringUtils;
 
 /**
  * Base {@link ConversionService} implementation suitable for use in most environments.
+ * ConversionService的基础实现，适用于大多数环境。通过ConfigurableConversionService接口间接
  * Indirectly implements {@link ConverterRegistry} as registration API through the
+ * 实现了ConverterRegistry，可以作为注册API
  * {@link ConfigurableConversionService} interface.
  *
  * @author Keith Donald

@@ -27,10 +27,13 @@ import org.springframework.lang.Nullable;
 
 /**
  * A specialization of {@link GenericConversionService} configured by default
+ * GenericConversionService的扩展类，默认配置了适用于大多数环境的converter。
  * with converters appropriate for most environments.
  *
  * <p>Designed for direct instantiation but also exposes the static
+ * 设计成可以直接实例化，而且添加了静态addDefaultConverters(ConverterRegistry)工具
  * {@link #addDefaultConverters(ConverterRegistry)} utility method for ad-hoc
+ * 方法用于添加任何的ConverterRegistry实例。
  * use against any {@code ConverterRegistry} instance.
  *
  * @author Chris Beams

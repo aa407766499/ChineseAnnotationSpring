@@ -43,7 +43,9 @@ public interface ConversionService {
 	 * underlying elements are not convertible. Callers are expected to handle this exceptional case
 	 * when working with collections and maps.
 	 * @param sourceType the source type to convert from (may be {@code null} if source is {@code null})
+	 *                   原类型
 	 * @param targetType the target type to convert to (required)
+	 *                   目标类型
 	 * @return {@code true} if a conversion can be performed, {@code false} if not
 	 * @throws IllegalArgumentException if {@code targetType} is {@code null}
 	 */
@@ -51,9 +53,12 @@ public interface ConversionService {
 
 	/**
 	 * Return {@code true} if objects of {@code sourceType} can be converted to the {@code targetType}.
+	 * 如果sourceType的对象能被转换为targetType的对象，返回true。TypeDescriptors提供了关于source和target
 	 * The TypeDescriptors provide additional context about the source and target locations
+	 * 的定位的额外的上下文，可以确定转换发生的位置，通常是对象字段或者属性的位置。
 	 * where conversion would occur, often object fields or property locations.
 	 * <p>If this method returns {@code true}, it means {@link #convert(Object, TypeDescriptor, TypeDescriptor)}
+	 * 如果该方法返回true，说明convert方法能够将源类型转换为目标类型。
 	 * is capable of converting an instance of {@code sourceType} to {@code targetType}.
 	 * <p>Special note on collections, arrays, and maps types:
 	 * For conversion between collection, array, and map types, this method will return {@code true}
@@ -71,6 +76,7 @@ public interface ConversionService {
 
 	/**
 	 * Convert the given {@code source} to the specified {@code targetType}.
+	 * sourceType的对象能被转换为targetType的对象
 	 * @param source the source object to convert (may be {@code null})
 	 * @param targetType the target type to convert to (required)
 	 * @return the converted object, an instance of targetType
@@ -82,6 +88,7 @@ public interface ConversionService {
 
 	/**
 	 * Convert the given {@code source} to the specified {@code targetType}.
+	 * sourceType的对象能被转换为targetType的对象
 	 * The TypeDescriptors provide additional context about the source and target locations
 	 * where conversion will occur, often object fields or property locations.
 	 * @param source the source object to convert (may be {@code null})

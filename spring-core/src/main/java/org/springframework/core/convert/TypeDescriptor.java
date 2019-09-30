@@ -37,6 +37,7 @@ import org.springframework.util.ObjectUtils;
 
 /**
  * Context about a type to convert from or to.
+ * 类型转换上下文
  *
  * @author Keith Donald
  * @author Andy Clement

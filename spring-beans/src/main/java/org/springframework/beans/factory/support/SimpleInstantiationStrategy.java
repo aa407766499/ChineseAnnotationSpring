@@ -105,8 +105,11 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 
 	/**
 	 * Subclasses can override this method, which is implemented to throw
+	 * 如果调用者在给定的RootBeanDefinition中指定了方法注入来实例化对象，那么子类可以
 	 * UnsupportedOperationException, if they can instantiate an object with
+	 * 覆盖该方法，该方法实现抛出UnsupportedOperationException。实例化应该
 	 * the Method Injection specified in the given RootBeanDefinition.
+	 * 使用无参构造函数。
 	 * Instantiation should use a no-arg constructor.
 	 */
 	protected Object instantiateWithMethodInjection(RootBeanDefinition bd, @Nullable String beanName, BeanFactory owner) {

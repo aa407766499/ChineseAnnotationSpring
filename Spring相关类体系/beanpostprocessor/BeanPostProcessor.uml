@@ -2,73 +2,11 @@
 <Diagram>
   <ID>JAVA</ID>
   <OriginalElement>org.springframework.beans.factory.config.BeanPostProcessor</OriginalElement>
-  <nodes>
-    <node x="665.25" y="0.0">org.springframework.beans.factory.config.BeanPostProcessor</node>
-    <node x="434.75" y="160.0">org.springframework.aop.framework.autoproxy.AbstractBeanFactoryAwareAdvisingPostProcessor</node>
-    <node x="112.75" y="160.0">org.springframework.beans.factory.config.SmartInstantiationAwareBeanPostProcessor</node>
-    <node x="474.75" y="80.0">org.springframework.aop.framework.AbstractAdvisingBeanPostProcessor</node>
-    <node x="245.5" y="240.0">org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter</node>
-    <node x="1036.75" y="80.0">org.springframework.beans.factory.config.DestructionAwareBeanPostProcessor</node>
-    <node x="753.75" y="74.62223688551634">org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor</node>
-    <node x="0.0" y="320.0">org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator</node>
-    <node x="129.75" y="80.0">org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor</node>
-    <node x="22.5" y="240.0">org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator</node>
-  </nodes>
+  <nodes />
   <notes />
-  <edges>
-    <edge source="org.springframework.aop.framework.AbstractAdvisingBeanPostProcessor" target="org.springframework.beans.factory.config.BeanPostProcessor">
-      <point x="0.0" y="-15.0" />
-      <point x="604.25" y="60.0" />
-      <point x="724.875" y="60.0" />
-      <point x="-19.875" y="15.0" />
-    </edge>
-    <edge source="org.springframework.beans.factory.config.SmartInstantiationAwareBeanPostProcessor" target="org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor">
-      <point x="0.0" y="-15.0" />
-      <point x="0.0" y="15.0" />
-    </edge>
-    <edge source="org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor" target="org.springframework.beans.factory.config.BeanPostProcessor">
-      <point x="0.0" y="-15.0" />
-      <point x="885.25" y="60.0" />
-      <point x="764.625" y="60.0" />
-      <point x="19.875" y="15.0" />
-    </edge>
-    <edge source="org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter" target="org.springframework.beans.factory.config.SmartInstantiationAwareBeanPostProcessor">
-      <point x="-5.6843418860808015E-14" y="-15.0" />
-      <point x="403.49999999999994" y="215.0" />
-      <point x="339.25" y="215.0" />
-      <point x="75.5" y="15.0" />
-    </edge>
-    <edge source="org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor" target="org.springframework.beans.factory.config.BeanPostProcessor">
-      <point x="0.0" y="-15.0" />
-      <point x="263.75" y="50.0" />
-      <point x="685.125" y="50.0" />
-      <point x="-59.625" y="15.0" />
-    </edge>
-    <edge source="org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator" target="org.springframework.beans.factory.config.SmartInstantiationAwareBeanPostProcessor">
-      <point x="0.0" y="-15.0" />
-      <point x="124.0" y="215.0" />
-      <point x="188.25" y="215.0" />
-      <point x="-75.5" y="15.0" />
-    </edge>
-    <edge source="org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator" target="org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator">
-      <point x="0.0" y="-15.0" />
-      <point x="0.0" y="15.0" />
-    </edge>
-    <edge source="org.springframework.aop.framework.autoproxy.AbstractBeanFactoryAwareAdvisingPostProcessor" target="org.springframework.aop.framework.AbstractAdvisingBeanPostProcessor">
-      <point x="0.0" y="-15.0" />
-      <point x="0.0" y="15.0" />
-    </edge>
-    <edge source="org.springframework.beans.factory.config.DestructionAwareBeanPostProcessor" target="org.springframework.beans.factory.config.BeanPostProcessor">
-      <point x="0.0" y="-15.0" />
-      <point x="1168.75" y="50.0" />
-      <point x="804.375" y="50.0" />
-      <point x="59.625" y="15.0" />
-    </edge>
-  </edges>
-  <settings layout="Hierarchic Group" zoom="0.929754601226994" x="722.8739689871328" y="183.47921436111335" />
-  <SelectedNodes>
-    <node>org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor</node>
-  </SelectedNodes>
+  <edges />
+  <settings layout="Hierarchic Group" zoom="1.0" x="549.5" y="294.0" />
+  <SelectedNodes />
   <Categories />
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>

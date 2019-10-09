@@ -117,7 +117,7 @@ class BeanDefinitionValueResolver {
 			//调用引用类型属性的解析方法
 			return resolveReference(argName, ref);
 		}
-		//对属性值是容器中另一个Bean的名称的解析
+		//对属性值是容器中另一个Bean的名称进行解析
 		else if (value instanceof RuntimeBeanNameReference) {
 			String refName = ((RuntimeBeanNameReference) value).getBeanName();
 			refName = String.valueOf(doEvaluate(refName));
@@ -128,13 +128,14 @@ class BeanDefinitionValueResolver {
 			}
 			return refName;
 		}
-		//对Bean类型属性的解析，主要是Bean中的内部类
+		//对BeanDefinitionHolder类型属性进行解析，主要是Bean中的内部bean
 		else if (value instanceof BeanDefinitionHolder) {
 			// Resolve BeanDefinitionHolder: contains BeanDefinition with name and aliases.
 			// 解析BeanDefinitionHolder:包含了有名称和别名的BeanDefinition.
 			BeanDefinitionHolder bdHolder = (BeanDefinitionHolder) value;
 			return resolveInnerBean(argName, bdHolder.getBeanName(), bdHolder.getBeanDefinition());
 		}
+		//对BeanDefinition类型属性进行解析，主要是Bean中的内部bean
 		else if (value instanceof BeanDefinition) {
 			// Resolve plain BeanDefinition, without contained name: use dummy name.
 			// 解析普通BeanDefinition,不包含名称:使用假名称.
@@ -148,7 +149,7 @@ class BeanDefinitionValueResolver {
 			// May need to resolve contained runtime references.
 			// 可能需要解析包含的运行时引用.
 			ManagedArray array = (ManagedArray) value;
-			//获取数组的类型
+			//获取数组元素的类型
 			Class<?> elementType = array.resolvedElementType;
 			if (elementType == null) {
 				//获取数组元素的类型

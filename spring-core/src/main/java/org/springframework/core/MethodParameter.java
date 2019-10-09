@@ -16,34 +16,29 @@
 
 package org.springframework.core;
 
+import kotlin.reflect.KFunction;
+import kotlin.reflect.KParameter;
+import kotlin.reflect.jvm.ReflectJvmMapping;
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
+
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Executable;
-import java.lang.reflect.Member;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import kotlin.reflect.KFunction;
-import kotlin.reflect.KParameter;
-import kotlin.reflect.jvm.ReflectJvmMapping;
-
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
-
 /**
  * Helper class that encapsulates the specification of a method parameter, i.e. a {@link Method}
+ * 该辅助类包含了方法参数的说明，比如方法或者构造器的参数索引以及声明的参数类型的类型索引。该类用作可传递的
  * or {@link Constructor} plus a parameter index and a nested type index for a declared generic
+ * 说明对象。
  * type. Useful as a specification object to pass along.
  *
  * <p>As of 4.2, there is a {@link org.springframework.core.annotation.SynthesizingMethodParameter}
+ * 4.2版本中，多了一个SynthesizingMethodParameter子类，该类使用属性别名综合了注解。该类专用于web和消息终端处理。
  * subclass available which synthesizes annotations with attribute aliases. That subclass is used
  * for web and message endpoint processing, in particular.
  *

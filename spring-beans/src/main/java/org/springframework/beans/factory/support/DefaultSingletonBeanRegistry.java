@@ -80,6 +80,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
 
 	/** Cache of singleton factories: bean name --> ObjectFactory */
+	/*单例工厂缓存*/
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
 
 	/** Cache of early singleton objects: bean name --> bean instance */
@@ -116,11 +117,11 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	private final Map<String, Set<String>> containedBeanMap = new ConcurrentHashMap<>(16);
 
 	/** Map between dependent bean names: bean name --> Set of dependent bean names */
-	//别人依赖我
+	//别人依赖我（图的入度）
 	private final Map<String, Set<String>> dependentBeanMap = new ConcurrentHashMap<>(64);
 
 	/** Map between depending bean names: bean name --> Set of bean names for the bean's dependencies */
-	//我依赖别人
+	//我依赖别人（图的出度）
 	private final Map<String, Set<String>> dependenciesForBeanMap = new ConcurrentHashMap<>(64);
 
 
@@ -156,6 +157,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 	/**
 	 * Add the given singleton factory for building the specified singleton
+	 * 如果需要，为了创建指定单例，添加指定的单例工厂。
 	 * if necessary.
 	 * <p>To be called for eager registration of singletons, e.g. to be able to
 	 * resolve circular references.
@@ -343,6 +345,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 	/**
 	 * Return whether the specified singleton bean is currently in creation
+	 * 返回指定的单例bean当前是否在创建中（完整容器中）。
 	 * (within the entire factory).
 	 * @param beanName the name of the bean
 	 */

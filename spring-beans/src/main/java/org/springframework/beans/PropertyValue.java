@@ -16,11 +16,11 @@
 
 package org.springframework.beans;
 
-import java.io.Serializable;
-
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+
+import java.io.Serializable;
 
 /**
  * Object to hold information and value for an individual bean property.
@@ -32,9 +32,9 @@ import org.springframework.util.ObjectUtils;
  * ability to handle indexed properties etc in an optimized way.
  *
  * <p>Note that the value doesn't need to be the final required type:
- * 注意：该值不需要是最终需要的类型。BeanWrapper的实现类应该处理任何必要的转换，
+ * 注意：因为这个对象不知道它将被应用到的对象，该值不需要是最终需要的类型，
  * A {@link BeanWrapper} implementation should handle any necessary conversion,
- * 因为这个对象不知道它将被应用到的对象
+ * BeanWrapper的实现类应该处理任何需要的转换。
  * as this object doesn't know anything about the objects it will be applied to.
  *
  * @author Rod Johnson

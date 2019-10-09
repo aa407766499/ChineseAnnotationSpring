@@ -16,13 +16,14 @@
 
 package org.springframework.beans;
 
-import java.util.Map;
-
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.lang.Nullable;
 
+import java.util.Map;
+
 /**
  * Common interface for classes that can access named properties
+ * 能访问命名的属性的类的公共接口（比如对象的bean属性或者对象的字段）
  * (such as bean properties of an object or fields in an object)
  * Serves as base interface for {@link BeanWrapper}.
  *

@@ -16,10 +16,10 @@
 
 package org.springframework.beans.factory.config;
 
-import java.lang.reflect.Constructor;
-
 import org.springframework.beans.BeansException;
 import org.springframework.lang.Nullable;
+
+import java.lang.reflect.Constructor;
 
 /**
  * Extension of the {@link InstantiationAwareBeanPostProcessor} interface,
@@ -78,7 +78,7 @@ public interface SmartInstantiationAwareBeanPostProcessor extends InstantiationA
 	 * 获取可以早期访问指定bean的引用，通常用于解决循环引用问题。
 	 * typically for the purpose of resolving a circular reference.
 	 * <p>This callback gives post-processors a chance to expose a wrapper
-	 * 该回调给了后处理器一个机会去过早暴露包装器-换句话说，在目标bean完全实例化之前。
+	 * 换句话说，在目标bean完全实例化之前，回调给了后处理器一个机会去过早暴露包装器。
 	 * early - that is, before the target bean instance is fully initialized.
 	 * 否则暴露出的对象应该和postProcessBeforeInitialization/postProcessAfterInitialization
 	 * The exposed object should be equivalent to the what

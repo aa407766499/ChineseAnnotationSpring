@@ -16,17 +16,20 @@
 
 package org.springframework.beans;
 
-import java.lang.reflect.Field;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.Nullable;
 
+import java.lang.reflect.Field;
+
 /**
  * Interface that defines type conversion methods. Typically (but not necessarily)
+ * 该接口定义了类型转换方法。通常和PropertyEditorRegistry接口一起被实现。
  * implemented in conjunction with the {@link PropertyEditorRegistry} interface.
  *
  * <p><b>Note:</b> Since TypeConverter implementations are typically based on
+ * 注意：因为TypeConverter实现通常是基于PropertyEditor，而PropertyEditor不是线程安全的，
  * {@link java.beans.PropertyEditor PropertyEditors} which aren't thread-safe,
+ * 所以TypeConverter也不是线程安全的。
  * TypeConverters themselves are <em>not</em> to be considered as thread-safe either.
  *
  * @author Juergen Hoeller

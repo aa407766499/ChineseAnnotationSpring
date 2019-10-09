@@ -114,7 +114,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	private final Map<Class<?>, Class<? extends PropertyEditor>> customEditors = new HashMap<>(4);
 
 	/** A custom TypeConverter to use, overriding the default PropertyEditor mechanism */
-	//使用自定义类型转换器，重写默认的属性编辑器机制
+	//使用自定义类型转换器，覆盖默认的属性编辑器机制
 	@Nullable
 	private TypeConverter typeConverter;
 

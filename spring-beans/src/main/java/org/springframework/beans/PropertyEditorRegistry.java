@@ -16,14 +16,15 @@
 
 package org.springframework.beans;
 
-import java.beans.PropertyEditor;
-
 import org.springframework.lang.Nullable;
+
+import java.beans.PropertyEditor;
 
 /**
  * Encapsulates methods for registering JavaBeans {@link PropertyEditor PropertyEditors}.
+ * 注册JavaBeans PropertyEditor的包装方法。
  * This is the central interface that a {@link PropertyEditorRegistrar} operates on.
- *
+ * PropertyEditorRegistrar操作的中心接口
  * <p>Extended by {@link BeanWrapper}; implemented by {@link BeanWrapperImpl}
  * and {@link org.springframework.validation.DataBinder}.
  *

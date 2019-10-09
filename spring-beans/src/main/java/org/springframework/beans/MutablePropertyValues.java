@@ -16,15 +16,11 @@
 
 package org.springframework.beans;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
+
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Default implementation of the {@link PropertyValues} interface.
@@ -60,14 +56,18 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 
 	/**
 	 * Deep copy constructor. Guarantees PropertyValue references
+	 * 这是一个深拷贝构造器。保证PropertyValue引用是独立的，虽然它不能深
 	 * are independent, although it can't deep copy objects currently
+	 * 拷贝当前被单个PropertyValue对象引用的对象。
 	 * referenced by individual PropertyValue objects.
 	 * @param original the PropertyValues to copy
 	 * @see #addPropertyValues(PropertyValues)
 	 */
 	public MutablePropertyValues(@Nullable PropertyValues original) {
 		// We can optimize this because it's all new:
+		// 因为他们都是新的，所以我们能优化它。
 		// There is no replacement of existing property values.
+		// 没有替换已存在的属性值。
 		if (original != null) {
 			PropertyValue[] pvs = original.getPropertyValues();
 			this.propertyValueList = new ArrayList<>(pvs.length);
@@ -193,6 +193,7 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 
 	/**
 	 * Add a PropertyValue object, replacing any existing one for the
+	 * 添加一个PropertyValue对象，替换或者合并已存在的PropertyValue对象。
 	 * corresponding property or getting merged with it (if applicable).
 	 * @param propertyName name of the property
 	 * @param propertyValue value of the property

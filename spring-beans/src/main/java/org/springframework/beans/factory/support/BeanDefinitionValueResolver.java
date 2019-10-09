@@ -34,11 +34,15 @@ import java.util.*;
 
 /**
  * Helper class for use in bean factory implementations,
+ * bean容器实现类中使用的辅助类，将bean定义对象中包含的值解析为
  * resolving values contained in bean definition objects
+ * 要应用于目标bean实例的实际值。
  * into the actual values applied to the target bean instance.
  *
  * <p>Operates on an {@link AbstractBeanFactory} and a plain
+ * 对AbstractBeanFactory和BeanDefinition对象进行操作，
  * {@link org.springframework.beans.factory.config.BeanDefinition} object.
+ * AbstractAutowireCapableBeanFactory使用该类。
  * Used by {@link AbstractAutowireCapableBeanFactory}.
  *
  * @author Juergen Hoeller
@@ -75,18 +79,28 @@ class BeanDefinitionValueResolver {
 
 	/**
 	 * Given a PropertyValue, return a value, resolving any references to other
+	 * 给定一个PropertyValue，返回一个值，如果需要解析成容器中其他bean的引用。
 	 * beans in the factory if necessary. The value could be:
+	 * 该值可以是：
 	 * <li>A BeanDefinition, which leads to the creation of a corresponding
+	 * 一个BeanDefinition，该BeanDefinition会创建相应的新bean实例。内部bean的
 	 * new bean instance. Singleton flags and names of such "inner beans"
+	 * 名称以及单例标识会被忽略：内部bean是匿名的原型bean。
 	 * are always ignored: Inner beans are anonymous prototypes.
 	 * <li>A RuntimeBeanReference, which must be resolved.
+	 * 一个RuntimeBeanReference，必须是已解析的。
 	 * <li>A ManagedList. This is a special collection that may contain
+	 * 一个ManagedList。这是一个特殊的集合，该集合可能包含RuntimeBeanReferences
 	 * RuntimeBeanReferences or Collections that will need to be resolved.
+	 * 或者要被解析的Collections。
 	 * <li>A ManagedSet. May also contain RuntimeBeanReferences or
+	 * 一个ManagedSet。同上。
 	 * Collections that will need to be resolved.
 	 * <li>A ManagedMap. In this case the value may be a RuntimeBeanReference
+	 * 一个ManagedMap。同上。
 	 * or Collection that will need to be resolved.
 	 * <li>An ordinary object or {@code null}, in which case it's left alone.
+	 * 一个普通对象或者null，这种情况下是单独的。
 	 * @param argName the name of the argument that the value is defined for
 	 * @param value the value object to resolve
 	 * @return the resolved object
@@ -95,6 +109,7 @@ class BeanDefinitionValueResolver {
 	@Nullable
 	public Object resolveValueIfNecessary(Object argName, @Nullable Object value) {
 		// We must check each value to see whether it requires a runtime reference
+		// 我们必须检查每一个值，看它是否需要一个已解析的另一个bean的运行时引用。
 		// to another bean to be resolved.
 		//对引用类型的属性进行解析
 		if (value instanceof RuntimeBeanReference) {
@@ -102,7 +117,7 @@ class BeanDefinitionValueResolver {
 			//调用引用类型属性的解析方法
 			return resolveReference(argName, ref);
 		}
-		//对属性值是引用容器中另一个Bean名称的解析
+		//对属性值是容器中另一个Bean的名称的解析
 		else if (value instanceof RuntimeBeanNameReference) {
 			String refName = ((RuntimeBeanNameReference) value).getBeanName();
 			refName = String.valueOf(doEvaluate(refName));
@@ -116,19 +131,22 @@ class BeanDefinitionValueResolver {
 		//对Bean类型属性的解析，主要是Bean中的内部类
 		else if (value instanceof BeanDefinitionHolder) {
 			// Resolve BeanDefinitionHolder: contains BeanDefinition with name and aliases.
+			// 解析BeanDefinitionHolder:包含了有名称和别名的BeanDefinition.
 			BeanDefinitionHolder bdHolder = (BeanDefinitionHolder) value;
 			return resolveInnerBean(argName, bdHolder.getBeanName(), bdHolder.getBeanDefinition());
 		}
 		else if (value instanceof BeanDefinition) {
 			// Resolve plain BeanDefinition, without contained name: use dummy name.
+			// 解析普通BeanDefinition,不包含名称:使用假名称.
 			BeanDefinition bd = (BeanDefinition) value;
 			String innerBeanName = "(inner bean)" + BeanFactoryUtils.GENERATED_BEAN_NAME_SEPARATOR +
 					ObjectUtils.getIdentityHexString(bd);
 			return resolveInnerBean(argName, innerBeanName, bd);
 		}
-		//对集合数组类型的属性解析
+		//对集合数组类型的属性进行解析
 		else if (value instanceof ManagedArray) {
 			// May need to resolve contained runtime references.
+			// 可能需要解析包含的运行时引用.
 			ManagedArray array = (ManagedArray) value;
 			//获取数组的类型
 			Class<?> elementType = array.resolvedElementType;
@@ -270,6 +288,7 @@ class BeanDefinitionValueResolver {
 
 	/**
 	 * Evaluate the given String value as an expression, if necessary.
+	 * 将给定的字符串作为表达式解析。
 	 * @param value the original value (may be an expression)
 	 * @return the resolved value if necessary, or the original String value
 	 */
@@ -295,6 +314,7 @@ class BeanDefinitionValueResolver {
 
 	/**
 	 * Resolve an inner bean definition.
+	 * 解析内部bean定义。
 	 * @param argName the name of the argument that the inner bean is defined for
 	 * @param innerBeanName the name of the inner bean
 	 * @param innerBd the bean definition for the inner bean
@@ -359,6 +379,7 @@ class BeanDefinitionValueResolver {
 
 	/**
 	 * Resolve a reference to another bean in the factory.
+	 * 解析容器中另一个bean的引用。
 	 */
 	//解析引用类型的属性值
 	@Nullable
@@ -382,7 +403,7 @@ class BeanDefinitionValueResolver {
 			//则会递归触发引用Bean的初始化和依赖注入
 			else {
 				bean = this.beanFactory.getBean(refName);
-				//将当前实例化对象的依赖引用对象
+				//当前实例化对象的依赖引用依赖对象
 				this.beanFactory.registerDependentBean(refName, this.beanName);
 			}
 			if (bean instanceof NullBean) {

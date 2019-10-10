@@ -162,13 +162,14 @@ class BeanDefinitionValueResolver {
 					}
 					catch (Throwable ex) {
 						// Improve the message by showing the context.
+						// 改进展示的上下文信息。
 						throw new BeanCreationException(
 								this.beanDefinition.getResourceDescription(), this.beanName,
 								"Error resolving array type for " + argName, ex);
 					}
 				}
 				//没有获取到数组的类型，也没有获取到数组元素的类型
-				//则直接设置数组的类型为Object
+				//则直接设置数组元素的类型为Object
 				else {
 					elementType = Object.class;
 				}
@@ -179,6 +180,7 @@ class BeanDefinitionValueResolver {
 		//解析list类型的属性值
 		else if (value instanceof ManagedList) {
 			// May need to resolve contained runtime references.
+			// 可能需要解析包含的运行时引用.
 			return resolveManagedList(argName, (List<?>) value);
 		}
 		//解析set类型的属性值
@@ -212,9 +214,10 @@ class BeanDefinitionValueResolver {
 			});
 			return copy;
 		}
-		//解析字符串类型的属性值
+		//解析TypedStringValue类型的属性值
 		else if (value instanceof TypedStringValue) {
 			// Convert value to target type here.
+			// 在这里将值转换为目标类型。
 			TypedStringValue typedStringValue = (TypedStringValue) value;
 			Object valueObject = evaluate(typedStringValue);
 			try {
@@ -421,6 +424,7 @@ class BeanDefinitionValueResolver {
 
 	/**
 	 * For each element in the managed array, resolve reference if necessary.
+	 * 如果需要，对数组中每一个元素进行引用解析。
 	 */
 	//解析array类型的属性
 	private Object resolveManagedArray(Object argName, List<?> ml, Class<?> elementType) {

@@ -379,7 +379,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 				//要创建的Bean既不是单例模式，也不是原型模式，则根据Bean定义资源中
 				//配置的生命周期范围，选择实例化Bean的合适方法，这种在Web应用程序中
-				//比较常用，如：request、session、application等生命周期
+				//比较常用，如：request、session、application等作用域
 				else {
 					String scopeName = mbd.getScope();
 					final Scope scope = this.scopes.get(scopeName);
@@ -388,7 +388,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 						throw new IllegalStateException("No Scope registered for scope name '" + scopeName + "'");
 					}
 					try {
-						//这里又使用了一个匿名内部类，获取一个指定生命周期范围的实例
+						//这里又使用了一个匿名内部类，获取一个指定作用域的实例
 						Object scopedInstance = scope.get(beanName, () -> {
 							beforePrototypeCreation(beanName);
 							try {
@@ -416,6 +416,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		}
 
 		// Check if required type matches the type of the actual bean instance.
+		// 检查是否需要对实际bean实例的类型进行类型匹配。
 		//对创建的Bean实例对象进行类型检查
 		if (requiredType != null && !requiredType.isInstance(bean)) {
 			try {
@@ -1102,7 +1103,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	/**
 	 * Callback after prototype creation.
+	 * 原型创建回调。
 	 * <p>The default implementation marks the prototype as not in creation anymore.
+	 * 默认实现标记原型对象不再创建
 	 * @param beanName the name of the prototype that has been created
 	 * @see #isPrototypeCurrentlyInCreation
 	 */
@@ -1678,6 +1681,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	/**
 	 * Remove the singleton instance (if any) for the given bean name,
+	 * 如果仅被用于类型检查，移除给定名称的单例实例。
 	 * but only if it hasn't been used for other purposes than type checking.
 	 * @param beanName the name of the bean
 	 * @return {@code true} if actually removed, {@code false} otherwise
@@ -1799,7 +1803,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 	/**
 	 * Add the given bean to the list of disposable beans in this factory,
+	 * 添加指定bean到容器中的处理bean列表中，注册它的DisposableBean接口或者在容器关闭
 	 * registering its DisposableBean interface and/or the given destroy method
+	 * 时要调用的给定销毁方法。仅用于单例bean。
 	 * to be called on factory shutdown (if applicable). Only applies to singletons.
 	 * @param beanName the name of the bean
 	 * @param bean the bean instance

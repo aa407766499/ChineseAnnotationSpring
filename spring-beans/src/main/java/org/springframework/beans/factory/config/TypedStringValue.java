@@ -156,7 +156,9 @@ public class TypedStringValue implements BeanMetadataElement {
 
 	/**
 	 * Determine the type to convert to, resolving it from a specified class name
+	 * 确定要转换的类型，如果需要，从指定的类名解析。在已经解析的目标类型被调用的时候，也会
 	 * if necessary. Will also reload a specified Class from its name when called
+	 * 根据其名称重新加载指定Class。
 	 * with the target type already resolved.
 	 * @param classLoader the ClassLoader to use for resolving a (potential) class name
 	 * @return the resolved type to convert to

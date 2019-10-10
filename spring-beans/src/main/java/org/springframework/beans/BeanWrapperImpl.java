@@ -16,19 +16,15 @@
 
 package org.springframework.beans;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
-import java.security.AccessControlContext;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
-
 import org.springframework.core.ResolvableType;
 import org.springframework.core.convert.Property;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ReflectionUtils;
+
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
+import java.security.*;
 
 /**
  * Default {@link BeanWrapper} implementation that should be sufficient
@@ -203,7 +199,9 @@ public class BeanWrapperImpl extends AbstractNestablePropertyAccessor implements
 
 	/**
 	 * Convert the given value for the specified property to the latter's type.
+	 * 将给定值转换为后者类型的指定属性。
 	 * <p>This method is only intended for optimizations in a BeanFactory.
+	 * 该方法仅在BeanFactory中用于优化。使用convertIfNecessary方法来编程转换。
 	 * Use the {@code convertIfNecessary} methods for programmatic conversion.
 	 * @param value the value to convert
 	 * @param propertyName the target property

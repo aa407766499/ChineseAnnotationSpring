@@ -100,6 +100,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	/**
 	 * Whether to resort to injecting a raw bean instance in case of circular reference,
+	 * 是否在循环引用的情况下注入原始bean实例，即使被注入的bean最终被包装。
 	 * even if the injected bean eventually got wrapped.
 	 */
 	private boolean allowRawInjectionDespiteWrapping = false;
@@ -614,7 +615,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					//当前实例化的Bean初始化完成
 					exposedObject = earlySingletonReference;
 				}
-				//当前Bean依赖其他Bean，并且当发生循环引用时不允许新创建实例对象
+				//当前Bean依赖其他Bean，并且当发生循环引用时不允许创建新实例对象
 				else if (!this.allowRawInjectionDespiteWrapping && hasDependentBean(beanName)) {
 					String[] dependentBeans = getDependentBeans(beanName);
 					Set<String> actualDependentBeans = new LinkedHashSet<>(dependentBeans.length);
@@ -639,6 +640,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		// Register bean as disposable.
+		// 注册bean为处理的
 		//注册完成依赖注入的Bean
 		try {
 			registerDisposableBeanIfNecessary(beanName, bean, mbd);
@@ -1431,6 +1433,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		if (pvs != null) {
 			//对属性进行注入
+			//把合并bean定义中pvs转换后，设置到bw（bean实例）中。
 			applyPropertyValues(beanName, mbd, bw, pvs);
 		}
 	}
@@ -1746,7 +1749,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				String propertyName = pv.getName();
 				//原始的属性值，即转换之前的属性值
 				Object originalValue = pv.getValue();
-				//转换属性值，例如将引用转换为IOC容器中实例化对象引用
+				//转换属性值，例如将引用转换为IOC容器中实例化的对象引用
 				Object resolvedValue = valueResolver.resolveValueIfNecessary(pv, originalValue);
 				//转换之后的属性值
 				Object convertedValue = resolvedValue;
@@ -1758,7 +1761,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					convertedValue = convertForProperty(resolvedValue, propertyName, bw, converter);
 				}
 				// Possibly store converted value in merged bean definition,
+				// 可能在合并bean定义中存储已转换的值，为了防止每一个创建出来的bean实例的
 				// in order to avoid re-conversion for every created bean instance.
+				// 重复转换。
 				//存储转换后的属性值，避免每次属性注入时的转换工作
 				if (resolvedValue == originalValue) {
 					if (convertible) {
@@ -1767,7 +1772,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					}
 					deepCopy.add(pv);
 				}
-				//属性是可转换的，且属性原始值是字符串类型，且属性的原始类型值不是
+				//属性是可转换的，且属性原始值是字符串类型，且属性的原始值不是
 				//动态生成的字符串，且属性的原始值不是集合或者数组类型
 				else if (convertible && originalValue instanceof TypedStringValue &&
 						!((TypedStringValue) originalValue).isDynamic() &&
@@ -1783,11 +1788,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			}
 		}
 		if (mpvs != null && !resolveNecessary) {
-			//标记属性值已经转换过
+			//标记属性值已经转换
 			mpvs.setConverted();
 		}
 
 		// Set our (possibly massaged) deep copy.
+		// 设置我们的深拷贝
 		//进行属性依赖注入
 		try {
 			bw.setPropertyValues(new MutablePropertyValues(deepCopy));
@@ -1818,14 +1824,18 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	/**
 	 * Initialize the given bean instance, applying factory callbacks
+	 * 初始化给定bean实例，应用工厂回调，初始化方法和bean后处理器。
 	 * as well as init methods and bean post processors.
 	 * <p>Called from {@link #createBean} for traditionally defined beans,
+	 * 对于传统定义的bean从createBean调用，对于已存在的bean实例从initializeBean调用。
 	 * and from {@link #initializeBean} for existing bean instances.
 	 * @param beanName the bean name in the factory (for debugging purposes)
 	 * @param bean the new bean instance we may need to initialize
+	 *             我们需要初始化的新bean实例。
 	 * @param mbd the bean definition that the bean was created with
 	 * (can also be {@code null}, if given an existing bean instance)
 	 * @return the initialized bean instance (potentially wrapped)
+	 * 返回已初始化的bean实例（可能是包装类）
 	 * @see BeanNameAware
 	 * @see BeanClassLoaderAware
 	 * @see BeanFactoryAware
@@ -1833,7 +1843,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * @see #invokeInitMethods
 	 * @see #applyBeanPostProcessorsAfterInitialization
 	 */
-	//初始容器创建的Bean实例对象，为其添加BeanPostProcessor后置处理器
+	//初始化容器创建的Bean实例对象，为其添加BeanPostProcessor后置处理器
 	protected Object initializeBean(final String beanName, final Object bean, @Nullable RootBeanDefinition mbd) {
 		//JDK的安全机制验证权限
 		if (System.getSecurityManager() != null) {
@@ -1856,7 +1866,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		//调用Bean实例对象初始化的方法，这个初始化方法是在Spring Bean定义配置
-		//文件中通过init-method属性指定的
+		//文件中通过init-method属性指定的，如果bean实现了InitializingBean接口，则先调用afterPropertiesSet（）方法。
 		try {
 			invokeInitMethods(beanName, wrappedBean, mbd);
 		}
@@ -1874,6 +1884,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		return wrappedBean;
 	}
 
+	//调用感知方法，设置beanName、ClassLoader、BeanFactory
 	private void invokeAwareMethods(final String beanName, final Object bean) {
 		if (bean instanceof Aware) {
 			if (bean instanceof BeanNameAware) {
@@ -1893,7 +1904,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	/**
 	 * Give a bean a chance to react now all its properties are set,
+	 * 给bean一个机会响应现在所有属性已经被设置，给bean一个机会知道其所属的容器。
 	 * and a chance to know about its owning bean factory (this object).
+	 * 检查该bean是否实现了InitializingBean接口或者自定义了初始化方法，调用需要的回调。
 	 * This means checking whether the bean implements InitializingBean or defines
 	 * a custom init method, and invoking the necessary callback(s) if it does.
 	 * @param beanName the bean name in the factory (for debugging purposes)
@@ -1939,8 +1952,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	/**
 	 * Invoke the specified custom init method on the given bean.
+	 * 调用给定bean指定的自定义初始化方法。invokeInitMethods方法调用
 	 * Called by invokeInitMethods.
 	 * <p>Can be overridden in subclasses for custom resolution of init
+	 * 能被子类覆盖，用来自定义解析带参初始化方法。
 	 * methods with arguments.
 	 * @see #invokeInitMethods
 	 */

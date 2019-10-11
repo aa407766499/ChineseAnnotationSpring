@@ -91,6 +91,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	private InstantiationStrategy instantiationStrategy = new CglibSubclassingInstantiationStrategy();
 
 	/** Resolver strategy for method parameter names */
+	/*方法参数名称的解析策略*/
 	@Nullable
 	private ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
 
@@ -182,6 +183,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	/**
 	 * Return the ParameterNameDiscoverer to use for resolving method parameter
+	 * 返回ParameterNameDiscoverer用于解析方法的参数名称。
 	 * names if needed.
 	 */
 	@Nullable

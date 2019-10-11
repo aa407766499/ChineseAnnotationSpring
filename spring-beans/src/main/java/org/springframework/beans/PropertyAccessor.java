@@ -23,7 +23,7 @@ import java.util.Map;
 
 /**
  * Common interface for classes that can access named properties
- * 能访问命名的属性的类的公共接口（比如对象的bean属性或者对象的字段）
+ * 能访问命名属性的类的公共接口（比如对象的bean属性或者对象的字段）
  * (such as bean properties of an object or fields in an object)
  * Serves as base interface for {@link BeanWrapper}.
  *
@@ -155,15 +155,21 @@ public interface PropertyAccessor {
 
 	/**
 	 * The preferred way to perform a batch update.
+	 * 更好的方式进行批量更新。
 	 * <p>Note that performing a batch update differs from performing a single update,
+	 * 注意：执行批量更新不同于执行单个更新，该类的实现类会持续更新属性，如果遇到可恢复错误
 	 * in that an implementation of this class will continue to update properties
+	 * （比如类型不匹配，但不是一个无效字段名或者相似的），抛出PropertyBatchUpdateException
 	 * if a <b>recoverable</b> error (such as a type mismatch, but <b>not</b> an
+	 * 包含所有的个别错误。之后检查该异常查看所有的绑定错误。被成功更新的属性保留变化。
 	 * invalid field name or the like) is encountered, throwing a
 	 * {@link PropertyBatchUpdateException} containing all the individual errors.
 	 * This exception can be examined later to see all binding errors.
 	 * Properties that were successfully updated remain changed.
 	 * <p>Does not allow unknown fields or invalid fields.
+	 * 不允许未知字段或者无效字段。
 	 * @param pvs PropertyValues to set on the target object
+	 *            要给目标对象设置的PropertyValues
 	 * @throws InvalidPropertyException if there is no such property or
 	 * if the property isn't writable
 	 * @throws PropertyBatchUpdateException if one or more PropertyAccessExceptions

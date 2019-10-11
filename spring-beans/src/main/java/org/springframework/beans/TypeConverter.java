@@ -67,6 +67,7 @@ public interface TypeConverter {
 	 * @param requiredType the type we must convert to
 	 * (or {@code null} if not known, for example in case of a collection element)
 	 * @param methodParam the method parameter that is the target of the conversion
+	 *                    转换的目标是方法参数。
 	 * (for analysis of generic types; may be {@code null})
 	 * @return the new value, possibly the result of type conversion
 	 * @throws TypeMismatchException if type conversion failed
@@ -87,6 +88,7 @@ public interface TypeConverter {
 	 * @param requiredType the type we must convert to
 	 * (or {@code null} if not known, for example in case of a collection element)
 	 * @param field the reflective field that is the target of the conversion
+	 *              转换的目标是反射字段。
 	 * (for analysis of generic types; may be {@code null})
 	 * @return the new value, possibly the result of type conversion
 	 * @throws TypeMismatchException if type conversion failed

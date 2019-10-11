@@ -16,14 +16,14 @@
 
 package org.springframework.beans;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.core.ResolvableType;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * {@link ConfigurablePropertyAccessor} implementation that directly accesses
@@ -136,6 +136,7 @@ public class DirectFieldAccessor extends AbstractNestablePropertyAccessor {
 			}
 		}
 
+		//给被包装对象的字段直接赋值
 		@Override
 		public void setValue(@Nullable Object value) {
 			try {

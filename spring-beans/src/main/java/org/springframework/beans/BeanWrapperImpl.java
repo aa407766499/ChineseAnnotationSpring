@@ -295,6 +295,7 @@ public class BeanWrapperImpl extends AbstractNestablePropertyAccessor implements
 			return TypeDescriptor.nested(property(pd), level);
 		}
 
+		//利用反射机制根据属性的getter方法获取属性值
 		@Override
 		@Nullable
 		public Object getValue() throws Exception {
@@ -318,6 +319,7 @@ public class BeanWrapperImpl extends AbstractNestablePropertyAccessor implements
 			}
 		}
 
+		//调用被包装对象的属性setter方法给属性赋值。
 		@Override
 		public void setValue(final @Nullable Object value) throws Exception {
 			final Method writeMethod = (this.pd instanceof GenericTypeAwarePropertyDescriptor ?

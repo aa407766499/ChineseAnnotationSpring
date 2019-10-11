@@ -16,12 +16,12 @@
 
 package org.springframework.beans;
 
+import org.springframework.lang.Nullable;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.lang.Nullable;
 
 /**
  * Abstract implementation of the {@link PropertyAccessor} interface.
@@ -92,7 +92,9 @@ public abstract class AbstractPropertyAccessor extends TypeConverterSupport impl
 		for (PropertyValue pv : propertyValues) {
 			try {
 				// This method may throw any BeansException, which won't be caught
+				// 该方法会抛出任何BeansException，不在这里捕获异常，如果有严重的错误比如
 				// here, if there is a critical failure such as no matching field.
+				// 没有匹配的字段，我们能尝试处理严重程度更低的异常。
 				// We can attempt to deal only with less serious exceptions.
 				setPropertyValue(pv);
 			}
@@ -117,6 +119,7 @@ public abstract class AbstractPropertyAccessor extends TypeConverterSupport impl
 		}
 
 		// If we encountered individual exceptions, throw the composite exception.
+		// 如果我们遇到个别异常，抛出组合异常。
 		if (propertyAccessExceptions != null) {
 			PropertyAccessException[] paeArray =
 					propertyAccessExceptions.toArray(new PropertyAccessException[propertyAccessExceptions.size()]);
@@ -147,6 +150,7 @@ public abstract class AbstractPropertyAccessor extends TypeConverterSupport impl
 
 	/**
 	 * Actually set a property value.
+	 * 实际设置属性值。
 	 * @param propertyName name of the property to set value of
 	 * @param value the new value
 	 * @throws InvalidPropertyException if there is no such property or

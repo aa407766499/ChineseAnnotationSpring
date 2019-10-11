@@ -35,11 +35,15 @@ import java.util.*;
 
 /**
  * A basic {@link ConfigurablePropertyAccessor} that provides the necessary
+ * ConfigurablePropertyAccessor的基础类，提供了所有典型使用情况的基础设施。
  * infrastructure for all typical use cases.
  *
  * <p>This accessor will convert collection and array values to the corresponding
+ * 该访问器将集合和数组值转换到相应的目标集合或者数组中，如果需要的话。处理集合或者数组的
  * target collections or arrays, if necessary. Custom property editors that deal
+ * 自定义属性编辑器使用PropertyEditor的setValue方法写，或者针对逗号分隔的字符串使用
  * with collections or arrays can either be written via PropertyEditor's
+ * setAsText方法，将字符串数组转换为逗号分隔的格式，如果数组本身不可分配。
  * {@code setValue}, or against a comma-delimited String via {@code setAsText},
  * as String arrays are converted in such a format if the array itself is not
  * assignable.
@@ -66,11 +70,13 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 
 	private int autoGrowCollectionLimit = Integer.MAX_VALUE;
 
+	//被包装的对象
 	@Nullable
 	Object wrappedObject;
 
 	private String nestedPath = "";
 
+	//内嵌属性最外层的对象
 	@Nullable
 	Object rootObject;
 
@@ -292,7 +298,7 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 				}
 				Object convertedValue = convertIfNecessary(tokens.canonicalName, oldValue, pv.getValue(),
 						requiredType, ph.nested(tokens.keys.length));
-				//获取集合类型属性的长度
+				//获取数组类型属性的长度
 				int length = Array.getLength(propValue);
 				if (arrayIndex >= length && arrayIndex < this.autoGrowCollectionLimit) {
 					Class<?> componentType = propValue.getClass().getComponentType();
@@ -302,7 +308,7 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 					//调用属性的getter方法，获取属性的值
 					propValue = getPropertyValue(tokens.actualName);
 				}
-				//将属性的值赋值给数组中的元素
+				//将属性的值赋值给数组中的元素,覆盖原数组中的元素。
 				Array.set(propValue, arrayIndex, convertedValue);
 			}
 			catch (IndexOutOfBoundsException ex) {
@@ -387,6 +393,7 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 
 	private Object getPropertyHoldingValue(PropertyTokenHolder tokens) {
 		// Apply indexes and map keys: fetch value for all keys but the last one.
+		// 应用索引和map的key：为除最后一个键以外的所有键获取值.
 		Assert.state(tokens.keys != null, "No token keys");
 		PropertyTokenHolder getterTokens = new PropertyTokenHolder(tokens.actualName);
 		getterTokens.canonicalName = tokens.canonicalName;
@@ -620,6 +627,7 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 		return nestedPa.getPropertyValue(tokens);
 	}
 
+	//获取属性值
 	@SuppressWarnings("unchecked")
 	@Nullable
 	protected Object getPropertyValue(PropertyTokenHolder tokens) throws BeansException {
@@ -630,10 +638,12 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 			throw new NotReadablePropertyException(getRootClass(), this.nestedPath + propertyName);
 		}
 		try {
+			//利用反射机制获取值
 			Object value = ph.getValue();
 			if (tokens.keys != null) {
 				if (value == null) {
 					if (isAutoGrowNestedPaths()) {
+						//如果没值，设置默认值
 						value = setDefaultValue(new PropertyTokenHolder(tokens.actualName));
 					}
 					else {
@@ -878,9 +888,13 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 		return nestedPa;
 	}
 
+	//设置默认值
 	private Object setDefaultValue(PropertyTokenHolder tokens) {
+		//创建默认值
 		PropertyValue pv = createDefaultPropertyValue(tokens);
+		//设置默认值
 		setPropertyValue(tokens, pv);
+		//获取默认值
 		Object defaultValue = getPropertyValue(tokens);
 		Assert.state(defaultValue != null, "Default value must not be null");
 		return defaultValue;
@@ -892,10 +906,12 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 			throw new NullValueInNestedPathException(getRootClass(), this.nestedPath + tokens.canonicalName,
 					"Could not determine property type for auto-growing a default value");
 		}
+		//真正创建默认值
 		Object defaultValue = newValue(desc.getType(), desc, tokens.canonicalName);
 		return new PropertyValue(tokens.canonicalName, defaultValue);
 	}
 
+	//真正创建默认值，对数组类型，集合类型，Map类型属性创建空数组，空集合，空Map。对于其他类型，调用其无参构造器创建实例。
 	private Object newValue(Class<?> type, @Nullable TypeDescriptor desc, String name) {
 		try {
 			if (type.isArray()) {
@@ -918,6 +934,7 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 				TypeDescriptor keyDesc = (desc != null ? desc.getMapKeyTypeDescriptor() : null);
 				return CollectionFactory.createMap(type, (keyDesc != null ? keyDesc.getType() : null), 16);
 			}
+			//其他类型，调用无参构造器创建实例。
 			else {
 				Constructor<?> ctor = type.getDeclaredConstructor();
 				if (Modifier.isPrivate(ctor.getModifiers())) {
@@ -1045,8 +1062,11 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 			this.canonicalName = name;
 		}
 
+		//如果属性名称为name[key][key][key]
+		//那么实际名称为name
 		public String actualName;
 
+		//那么标准名称为name[key][key][key]
 		public String canonicalName;
 
 		@Nullable

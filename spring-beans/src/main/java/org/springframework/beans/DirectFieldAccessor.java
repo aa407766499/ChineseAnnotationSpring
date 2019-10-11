@@ -97,8 +97,10 @@ public class DirectFieldAccessor extends AbstractNestablePropertyAccessor {
 	}
 
 
+	//字段属性处理器
 	private class FieldPropertyHandler extends PropertyHandler {
 
+		//字段
 		private final Field field;
 
 		public FieldPropertyHandler(Field field) {
@@ -122,6 +124,7 @@ public class DirectFieldAccessor extends AbstractNestablePropertyAccessor {
 			return TypeDescriptor.nested(this.field, level);
 		}
 
+		//利用反射机制获取被包装对象的字段值
 		@Override
 		@Nullable
 		public Object getValue() {

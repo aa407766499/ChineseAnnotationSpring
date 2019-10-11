@@ -749,6 +749,7 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 
 	/**
 	 * Return a {@link PropertyHandler} for the specified local {@code propertyName}.
+	 * 返回指定本地属性名的PropertyHandler。仅用于在当前上下文中获取属性。
 	 * Only used to reach a property available in the current context.
 	 * @param propertyName the name of a local property
 	 * @return the handler for that property, or {@code null} if it has not been found
@@ -812,6 +813,7 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 
 	/**
 	 * Get the last component of the path. Also works if not nested.
+	 * 获取路径的最后的组件。没有内嵌也能工作。
 	 * @param pa property accessor to work on
 	 * @param nestedPath property path we know is nested
 	 * @return last component of the path (the property on the target bean)
@@ -825,6 +827,7 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 
 	/**
 	 * Recursively navigate to return a property accessor for the nested property path.
+	 * 递归导航到内嵌属性路径的属性访问器
 	 * @param propertyPath property path, which may be nested
 	 * @return a property accessor for the target bean
 	 */
@@ -1000,12 +1003,16 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 	}
 
 
+	/*属性处理器*/
 	protected abstract static class PropertyHandler {
 
+		//属性的类型
 		private final Class<?> propertyType;
 
+		//可读
 		private final boolean readable;
 
+		//可写
 		private final boolean writable;
 
 		public PropertyHandler(Class<?> propertyType, boolean readable, boolean writable) {
@@ -1054,7 +1061,7 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 		public abstract void setValue(@Nullable Object value) throws Exception;
 	}
 
-
+	/*属性令牌持有器*/
 	protected static class PropertyTokenHolder {
 
 		public PropertyTokenHolder(String name) {

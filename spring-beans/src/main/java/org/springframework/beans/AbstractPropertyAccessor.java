@@ -25,7 +25,9 @@ import java.util.Map;
 
 /**
  * Abstract implementation of the {@link PropertyAccessor} interface.
+ * PropertyAccessor接口的抽象实现类。提供了所有便利方法的基础实现，实际的属性
  * Provides base implementations of all convenience methods, with the
+ * 访问实现留给子类。
  * implementation of actual property access left to subclasses.
  *
  * @author Juergen Hoeller

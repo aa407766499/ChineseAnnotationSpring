@@ -270,6 +270,7 @@ public class BeanWrapperImpl extends AbstractNestablePropertyAccessor implements
 	}
 
 
+	//Bean属性处理器，调用属性的getter、setter进行读写
 	private class BeanPropertyHandler extends PropertyHandler {
 
 		private final PropertyDescriptor pd;

@@ -35,8 +35,9 @@ import java.lang.reflect.Method;
 
 /**
  * Default object instantiation strategy for use in BeanFactories.
- *
+ * bean容器使用的默认对象实例化策略。
  * <p>Uses CGLIB to generate subclasses dynamically if methods need to be
+ * 如果容器实现了方法注入，方法需要被覆盖，那么使用CGLIB动态生成子类。
  * overridden by the container to implement <em>Method Injection</em>.
  *
  * @author Rod Johnson
@@ -75,12 +76,14 @@ public class CglibSubclassingInstantiationStrategy extends SimpleInstantiationSt
 			@Nullable Constructor<?> ctor, @Nullable Object... args) {
 
 		// Must generate CGLIB subclass...
+		// 必须生成CGLIB子类
 		return new CglibSubclassCreator(bd, owner).instantiate(ctor, args);
 	}
 
 
 	/**
 	 * An inner class created for historical reasons to avoid external CGLIB dependency
+	 * 因为历史原因，该内部类被创建用于防止外部的在3.2版本前的CGLIB依赖。
 	 * in Spring versions earlier than 3.2.
 	 */
 	private static class CglibSubclassCreator {
@@ -99,6 +102,7 @@ public class CglibSubclassingInstantiationStrategy extends SimpleInstantiationSt
 
 		/**
 		 * Create a new instance of a dynamically generated subclass implementing the
+		 * 动态生成子类的新实例，实现要求的lookups功能
 		 * required lookups.
 		 * @param ctor constructor to use. If this is {@code null}, use the
 		 * no-arg constructor (no parameterization, or Setter Injection)
@@ -135,6 +139,7 @@ public class CglibSubclassingInstantiationStrategy extends SimpleInstantiationSt
 
 		/**
 		 * Create an enhanced subclass of the bean class for the provided bean
+		 * 为所提供的bean定义的bean类创建增强的子类，使用CGLIB。
 		 * definition, using CGLIB.
 		 */
 		private Class<?> createEnhancedSubclass(RootBeanDefinition beanDefinition) {
@@ -200,7 +205,7 @@ public class CglibSubclassingInstantiationStrategy extends SimpleInstantiationSt
 		}
 
 		@Override
-		public byte[] generate(ClassGenerator cg) {
+		public byte[] generate(ClassGenerator cg) throws Exception {
 			if (this.classLoader == null) {
 				return super.generate(cg);
 			}
@@ -234,6 +239,7 @@ public class CglibSubclassingInstantiationStrategy extends SimpleInstantiationSt
 
 	/**
 	 * CGLIB callback for filtering method interception behavior.
+	 * 过滤方法拦截行为的CGLIB回调。
 	 */
 	private static class MethodOverrideCallbackFilter extends CglibIdentitySupport implements CallbackFilter {
 

@@ -174,13 +174,18 @@ public interface Scope {
 
 	/**
 	 * Return the <em>conversation ID</em> for the current underlying scope, if any.
+	 * 如果有的话，返回当前底层作用域的存储ID。
 	 * <p>The exact meaning of the conversation ID depends on the underlying
+	 * 存储ID的明确意义取决于底层存储机制。如果是session作用域对象，则存储ID
 	 * storage mechanism. In the case of session-scoped objects, the
+	 * 通常会和session ID相等；如果自定义存储位于所有session中，那么
 	 * conversation ID would typically be equal to (or derived from) the
+	 * 最好指定当前存储的ID。
 	 * {@link javax.servlet.http.HttpSession#getId() session ID}; in the
 	 * case of a custom conversation that sits within the overall session,
 	 * the specific ID for the current conversation would be appropriate.
 	 * <p><b>Note: This is an optional operation.</b> It is perfectly valid to
+	 * 这是一个可选操作。在底层存储机制中没有匹配该ID的对象时，该方法最好返回null。
 	 * return {@code null} in an implementation of this method if the
 	 * underlying storage mechanism has no obvious candidate for such an ID.
 	 * @return the conversation ID, or {@code null} if there is no

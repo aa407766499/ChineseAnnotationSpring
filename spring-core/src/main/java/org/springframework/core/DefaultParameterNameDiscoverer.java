@@ -20,7 +20,9 @@ import org.springframework.util.ClassUtils;
 
 /**
  * Default implementation of the {@link ParameterNameDiscoverer} strategy interface,
+ * ParameterNameDiscoverer策略接口的默认实现类，使用Java 8 标准的反射机制，以及基于ASM
  * using the Java 8 standard reflection mechanism (if available), and falling back
+ * 检查class文件的debug信息。
  * to the ASM-based {@link LocalVariableTableParameterNameDiscoverer} for checking
  * debug information in the class file.
  *

@@ -16,19 +16,22 @@
 
 package org.springframework.core;
 
+import org.springframework.lang.Nullable;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.springframework.lang.Nullable;
-
 /**
  * {@link ParameterNameDiscoverer} implementation that tries several discoverer
+ * ParameterNameDiscoverer实现类，该类会将解析方法参数名称的工作委派给几个解析器。
  * delegates in succession. Those added first in the {@code addDiscoverer} method
+ * 调用addDiscoverer方法的第一个Discoverer有最高的优先级。如果返回null，那么就尝试下一个。
  * have highest priority. If one returns {@code null}, the next will be tried.
  *
  * <p>The default behavior is to return {@code null} if no discoverer matches.
+ * 如果没有解析器匹配，那么默认行为返回null
  *
  * @author Rod Johnson
  * @author Juergen Hoeller

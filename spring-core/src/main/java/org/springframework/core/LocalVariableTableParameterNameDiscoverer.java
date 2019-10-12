@@ -16,6 +16,12 @@
 
 package org.springframework.core;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.asm.*;
+import org.springframework.lang.Nullable;
+import org.springframework.util.ClassUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
@@ -25,26 +31,17 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.asm.ClassReader;
-import org.springframework.asm.ClassVisitor;
-import org.springframework.asm.Label;
-import org.springframework.asm.MethodVisitor;
-import org.springframework.asm.Opcodes;
-import org.springframework.asm.SpringAsmInfo;
-import org.springframework.asm.Type;
-import org.springframework.lang.Nullable;
-import org.springframework.util.ClassUtils;
-
 /**
  * Implementation of {@link ParameterNameDiscoverer} that uses the LocalVariableTable
+ * ParameterNameDiscoverer实现类，该类使用方法属性中的本地变量表信息解析参数名称。
  * information in the method attributes to discover parameter names. Returns
+ * 如果类文件编译时没有debug信息返回null。
  * {@code null} if the class file was compiled without debug information.
  *
  * <p>Uses ObjectWeb's ASM library for analyzing class files. Each discoverer instance
+ * 使用ObjectWeb的ASM库分析类文件。每一个解析器实例缓存每一个内省类的ASM解析信息，而且线程安全。
  * caches the ASM discovered information for each introspected Class, in a thread-safe
+ * 建议尽可能重用ParameterNameDiscoverer实例。
  * manner. It is recommended to reuse ParameterNameDiscoverer instances as far as possible.
  *
  * @author Adrian Colyer

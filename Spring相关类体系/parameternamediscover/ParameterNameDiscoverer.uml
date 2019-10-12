@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.springframework.core.ParameterNameDiscoverer</OriginalElement>
+  <nodes>
+    <node x="310.0" y="76.0">org.springframework.aop.aspectj.AspectJAdviceParameterNameDiscoverer</node>
+    <node x="700.0" y="0.0">org.springframework.core.ParameterNameDiscoverer</node>
+    <node x="996.0" y="76.0">org.springframework.core.KotlinReflectionParameterNameDiscoverer</node>
+    <node x="14.5" y="152.0">org.springframework.core.DefaultParameterNameDiscoverer</node>
+    <node x="635.0" y="76.0">org.springframework.core.StandardReflectionParameterNameDiscoverer</node>
+    <node x="0.0" y="76.0">org.springframework.core.PrioritizedParameterNameDiscoverer</node>
+    <node x="1342.0" y="76.0">org.springframework.core.LocalVariableTableParameterNameDiscoverer</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.springframework.core.DefaultParameterNameDiscoverer" target="org.springframework.core.PrioritizedParameterNameDiscoverer">
+      <point x="0.0" y="-13.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.springframework.core.StandardReflectionParameterNameDiscoverer" target="org.springframework.core.ParameterNameDiscoverer">
+      <point x="0.0" y="-13.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.springframework.core.PrioritizedParameterNameDiscoverer" target="org.springframework.core.ParameterNameDiscoverer">
+      <point x="0.0" y="-13.0" />
+      <point x="145.0" y="46.0" />
+      <point x="721.1" y="46.0" />
+      <point x="-84.39999999999998" y="13.0" />
+    </edge>
+    <edge source="org.springframework.core.LocalVariableTableParameterNameDiscoverer" target="org.springframework.core.ParameterNameDiscoverer">
+      <point x="0.0" y="-13.0" />
+      <point x="1512.5" y="46.0" />
+      <point x="889.9" y="46.0" />
+      <point x="84.39999999999998" y="13.0" />
+    </edge>
+    <edge source="org.springframework.core.KotlinReflectionParameterNameDiscoverer" target="org.springframework.core.ParameterNameDiscoverer">
+      <point x="0.0" y="-13.0" />
+      <point x="1159.0" y="56.0" />
+      <point x="847.7" y="56.0" />
+      <point x="42.200000000000045" y="13.0" />
+    </edge>
+    <edge source="org.springframework.aop.aspectj.AspectJAdviceParameterNameDiscoverer" target="org.springframework.core.ParameterNameDiscoverer">
+      <point x="0.0" y="-13.0" />
+      <point x="462.5" y="56.0" />
+      <point x="763.3" y="56.0" />
+      <point x="-42.200000000000045" y="13.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.6534422403733956" x="847.0" y="104.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -16,16 +16,18 @@
 
 package org.springframework.core;
 
+import org.springframework.lang.Nullable;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-import org.springframework.lang.Nullable;
-
 /**
  * Interface to discover parameter names for methods and constructors.
- *
+ * 该接口获取方法和构造器的参数名称。
  * <p>Parameter name discovery is not always possible, but various strategies are
+ * 参数名称不是总是可以获取的，但是可以尝试不同的策略，比如查看debug信息，该信息会在编译时
  * available to try, such as looking for debug information that may have been
+ * 发出，或者可选择从AspectJ注解方法查找参数名称注解值。
  * emitted at compile time, and looking for argname annotation values optionally
  * accompanying AspectJ annotated methods.
  *
@@ -37,6 +39,7 @@ public interface ParameterNameDiscoverer {
 
 	/**
 	 * Return parameter names for this method,
+	 * 返回该方法的参数名称。如果参数名称不能确定返回null。
 	 * or {@code null} if they cannot be determined.
 	 * @param method method to find parameter names for
 	 * @return an array of parameter names if the names can be resolved,
@@ -47,6 +50,7 @@ public interface ParameterNameDiscoverer {
 
 	/**
 	 * Return parameter names for this constructor,
+	 * 返回该构造器的参数名称。
 	 * or {@code null} if they cannot be determined.
 	 * @param ctor constructor to find parameter names for
 	 * @return an array of parameter names if the names can be resolved,

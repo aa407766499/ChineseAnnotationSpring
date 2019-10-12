@@ -16,14 +16,15 @@
 
 package org.springframework.core;
 
+import org.springframework.lang.Nullable;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 
-import org.springframework.lang.Nullable;
-
 /**
  * {@link ParameterNameDiscoverer} implementation which uses JDK 8's reflection facilities
+ * ParameterNameDiscoverer实现类，使用JDK8的反射功能内省参数名称。（基于-parameters编译参数）
  * for introspecting parameter names (based on the "-parameters" compiler flag).
  *
  * @author Juergen Hoeller

@@ -31,15 +31,18 @@ package org.springframework.beans.factory;
  * <p>This callback variant is somewhat similar to
  * 该回调变体与ContextRefreshedEvent有些相似，但不要求实现ApplicationListener，
  * {@link org.springframework.context.event.ContextRefreshedEvent} but doesn't
- * 不需要通过上下文层级过滤上下文引用。仅对beans包有更小化的依赖，
+ * 不需要通过上下文层级过滤上下文引用。仅对beans包有依赖，且依赖很少，单独的ListableBeanFactory实现
  * require an implementation of {@link org.springframework.context.ApplicationListener},
+ * 类使用该类。不仅是在ApplicationContext环境中。
  * with no need to filter context references across a context hierarchy etc.
  * It also implies a more minimal dependency on just the {@code beans} package
  * and is being honored by standalone {@link ListableBeanFactory} implementations,
  * not just in an {@link org.springframework.context.ApplicationContext} environment.
  *
  * <p><b>NOTE:</b> If you intend to start/manage asynchronous tasks, preferably
+ * 如果你想要启动或者管理异步任务，最好实现Lifecycle接口，该接口提供了丰富的模型用于运行时
  * implement {@link org.springframework.context.Lifecycle} instead which offers
+ * 管理，以及允许阶段的启动或者关闭。
  * a richer model for runtime management and allows for phased startup/shutdown.
  *
  * @author Juergen Hoeller

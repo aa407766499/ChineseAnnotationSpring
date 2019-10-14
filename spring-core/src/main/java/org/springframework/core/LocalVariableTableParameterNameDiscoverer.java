@@ -45,7 +45,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * manner. It is recommended to reuse ParameterNameDiscoverer instances as far as possible.
  *
  * @author Adrian Colyer
- * @author Costin Leau
+ * @author Costin LeauA
  * @author Juergen Hoeller
  * @author Chris Beams
  * @since 2.0

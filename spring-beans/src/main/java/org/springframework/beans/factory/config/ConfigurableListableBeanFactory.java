@@ -16,12 +16,12 @@
 
 package org.springframework.beans.factory.config;
 
-import java.util.Iterator;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.lang.Nullable;
+
+import java.util.Iterator;
 
 /**
  * Configuration interface to be implemented by most listable bean factories.
@@ -187,10 +187,10 @@ public interface ConfigurableListableBeanFactory
 
 	/**
 	 * Ensure that all non-lazy-init singletons are instantiated, also considering
-	 * 确保所有非懒加载的单例被实例化，FactoryBeans也考虑在内。
+	 * 确保所有非懒加载的单例被实例化，FactoryBean也考虑在内。
 	 * {@link org.springframework.beans.factory.FactoryBean FactoryBeans}.
 	 * Typically invoked at the end of factory setup, if desired.
-	 * 如果要用的话，通常在容器创建完成是调用。
+	 * 如果要用的话，通常在容器创建完成时调用。
 	 * @throws BeansException if one of the singleton beans could not be created.
 	 * Note: This may have left the factory with some beans already initialized!
 	 * 注意：这会使得工厂和有些bean都被初始化。这种情况下完全清理需要调用destroySingletons()

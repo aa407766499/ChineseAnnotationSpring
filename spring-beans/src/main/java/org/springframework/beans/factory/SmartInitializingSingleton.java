@@ -18,15 +18,20 @@ package org.springframework.beans.factory;
 
 /**
  * Callback interface triggered at the end of the singleton pre-instantiation phase
+ * 在容器启动期间单例预实例化阶段的末尾触发的回调接口。为了在常规的单例实例化后执行某些初始化，
  * during {@link BeanFactory} bootstrap. This interface can be implemented by
+ * 单例bean要实现该接口，防止意外初始化的副作用。（比如ListableBeanFactory的getBeansOfType调用）
  * singleton beans in order to perform some initialization after the regular
+ * 在这个意义上，可选择实现InitializingBean接口，该接口可以在本地bean构造（初始化）阶段触发。
  * singleton instantiation algorithm, avoiding side effects with accidental early
  * initialization (e.g. from {@link ListableBeanFactory#getBeansOfType} calls).
  * In that sense, it is an alternative to {@link InitializingBean} which gets
  * triggered right at the end of a bean's local construction phase.
  *
  * <p>This callback variant is somewhat similar to
+ * 该回调变体与ContextRefreshedEvent有些相似，但不要求实现ApplicationListener，
  * {@link org.springframework.context.event.ContextRefreshedEvent} but doesn't
+ * 不需要通过上下文层级过滤上下文引用。仅对beans包有更小化的依赖，
  * require an implementation of {@link org.springframework.context.ApplicationListener},
  * with no need to filter context references across a context hierarchy etc.
  * It also implies a more minimal dependency on just the {@code beans} package

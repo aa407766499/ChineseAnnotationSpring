@@ -53,11 +53,15 @@ public interface SmartInitializingSingleton {
 
 	/**
 	 * Invoked right at the end of the singleton pre-instantiation phase,
+	 * 单例预实例化阶段的末尾调用，保证所有的常规单例bean已经被创建。
 	 * with a guarantee that all regular singleton beans have been created
 	 * already. {@link ListableBeanFactory#getBeansOfType} calls within
+	 * 在启动期间ListableBeanFactory的getBeansOfType调用不会触发副作用。
 	 * this method won't trigger accidental side effects during bootstrap.
 	 * <p><b>NOTE:</b> This callback won't be triggered for singleton beans
+	 * 注意，在BeanFactory启动后对于需要懒加载初始化的单例bean不会触发该回调，
 	 * lazily initialized on demand after {@link BeanFactory} bootstrap,
+	 * 任何其他bean作用域也是。仅在想要启动语义下，小心使用该接口。
 	 * and not for any other bean scope either. Carefully use it for beans
 	 * with the intended bootstrap semantics only.
 	 */

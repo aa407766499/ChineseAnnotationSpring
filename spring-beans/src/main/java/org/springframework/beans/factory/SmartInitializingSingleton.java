@@ -61,7 +61,7 @@ public interface SmartInitializingSingleton {
 	 * <p><b>NOTE:</b> This callback won't be triggered for singleton beans
 	 * 注意，在BeanFactory启动后对于需要懒加载初始化的单例bean不会触发该回调，
 	 * lazily initialized on demand after {@link BeanFactory} bootstrap,
-	 * 任何其他bean作用域也是。仅在想要启动语义下，小心使用该接口。
+	 * 任何其他bean作用域也是。仅在想要启动语义时，小心使用该接口。
 	 * and not for any other bean scope either. Carefully use it for beans
 	 * with the intended bootstrap semantics only.
 	 */

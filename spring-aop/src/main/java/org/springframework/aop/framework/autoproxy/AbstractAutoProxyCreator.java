@@ -16,20 +16,9 @@
 
 package org.springframework.aop.framework.autoproxy;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.aopalliance.aop.Advice;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.aop.Advisor;
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.TargetSource;
@@ -50,6 +39,11 @@ import org.springframework.beans.factory.config.SmartInstantiationAwareBeanPostP
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Constructor;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * {@link org.springframework.beans.factory.config.BeanPostProcessor} implementation
@@ -291,6 +285,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	/**
 	 * Create a proxy with the configured interceptors if the bean is
+	 * 如果bean被识别为需要子类代理，那么使用配置的拦截器创建代理。
 	 * identified as one to proxy by the subclass.
 	 * @see #getAdvicesAndAdvisorsForBean
 	 */
@@ -308,9 +303,13 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	/**
 	 * Build a cache key for the given bean class and bean name.
+	 * 根据给定的bean class和bean名称创建一个缓存key。
 	 * <p>Note: As of 4.2.3, this implementation does not return a concatenated
+	 * 注意：4.2.3版本，该实现类不能再返回一个class/名称的字符串而是返回一个更高效的缓存key：
 	 * class/name String anymore but rather the most efficient cache key possible:
+	 * 一个普通bean名称，如果类型是FactoryBean，则返回带FACTORY_BEAN_PREFIX的bean名称；
 	 * a plain bean name, prepended with {@link BeanFactory#FACTORY_BEAN_PREFIX}
+	 * 或者如果没有指定bean名称，那么直接返回bean Class。
 	 * in case of a {@code FactoryBean}; or if no bean name specified, then the
 	 * given bean {@code Class} as-is.
 	 * @param beanClass the bean class
@@ -329,6 +328,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	/**
 	 * Wrap the given bean if necessary, i.e. if it is eligible for being proxied.
+	 * 如果需要，包装给定bean，比如需要被代理。
 	 * @param bean the raw bean instance
 	 * @param beanName the name of the bean
 	 * @param cacheKey the cache key for metadata access
@@ -344,9 +344,10 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		if (isInfrastructureClass(bean.getClass()) || shouldSkip(bean.getClass(), beanName)) {
 			this.advisedBeans.put(cacheKey, Boolean.FALSE);
 			return bean;
-		}
+	}
 
 		// Create proxy if we have advice.
+		// 如果我们有增强，那么就创建代理。
 		Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, null);
 		if (specificInterceptors != DO_NOT_PROXY) {
 			this.advisedBeans.put(cacheKey, Boolean.TRUE);
@@ -362,8 +363,10 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	/**
 	 * Return whether the given bean class represents an infrastructure class
+	 * 判断给定的bean class是否是基础设施类，基础设施类决不能被代理。
 	 * that should never be proxied.
 	 * <p>The default implementation considers Advices, Advisors and
+	 * 默认实现认为Advices，Advisors和AopInfrastructureBeans都是基础设施类。
 	 * AopInfrastructureBeans as infrastructure classes.
 	 * @param beanClass the class of the bean
 	 * @return whether the bean represents an infrastructure class
@@ -385,8 +388,10 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	/**
 	 * Subclasses should override this method to return {@code true} if the
+	 * 如果给定bean不能被该后置处理器创建代理，那么子类就应该重写该方法返回true。
 	 * given bean should not be considered for auto-proxying by this post-processor.
 	 * <p>Sometimes we need to be able to avoid this happening if it will lead to
+	 * 如果会导致循环引用，那么有时我们需要防止循环引用发生。该实现类返回false。
 	 * a circular reference. This implementation returns {@code false}.
 	 * @param beanClass the class of the bean
 	 * @param beanName the name of the bean

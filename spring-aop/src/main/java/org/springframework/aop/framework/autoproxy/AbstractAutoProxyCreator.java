@@ -328,7 +328,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	/**
 	 * Wrap the given bean if necessary, i.e. if it is eligible for being proxied.
-	 * 如果需要，包装给定bean，比如需要被代理。
+	 * 如果需要，包装给定bean，比如给定bean适合被代理。
 	 * @param bean the raw bean instance
 	 * @param beanName the name of the bean
 	 * @param cacheKey the cache key for metadata access
@@ -574,14 +574,20 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	/**
 	 * Return whether the given bean is to be proxied, what additional
+	 * 返回给定bean是否要被代理，要应用哪些增强和切面。
 	 * advices (e.g. AOP Alliance interceptors) and advisors to apply.
 	 * @param beanClass the class of the bean to advise
 	 * @param beanName the name of the bean
 	 * @param customTargetSource the TargetSource returned by the
+	 *                           getCustomTargetSource方法返回的
 	 * {@link #getCustomTargetSource} method: may be ignored.
+	 *                           TargetSource，可以忽略。如果没有
 	 * Will be {@code null} if no custom target source is in use.
+	 *                           自定义目标源要使用返回null。
 	 * @return an array of additional interceptors for the particular bean;
+	 * 特定bean的另外的拦截器数组；如果没有另外的拦截器只有公共的拦截器返回空数组。
 	 * or an empty array if no additional interceptors but just the common ones;
+	 * 即使有公共的拦截器，如果没有代理返回null。
 	 * or {@code null} if no proxy at all, not even with the common interceptors.
 	 * See constants DO_NOT_PROXY and PROXY_WITHOUT_ADDITIONAL_INTERCEPTORS.
 	 * @throws BeansException in case of errors

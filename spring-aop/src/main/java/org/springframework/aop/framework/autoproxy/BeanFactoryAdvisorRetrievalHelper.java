@@ -16,12 +16,8 @@
 
 package org.springframework.aop.framework.autoproxy;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.aop.Advisor;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.BeanCurrentlyInCreationException;
@@ -30,8 +26,12 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Helper for retrieving standard Spring Advisors from a BeanFactory,
+ * 从bean工厂获取标准Spring切面的辅助器，用于自动代理。
  * for use with auto-proxying.
  *
  * @author Juergen Hoeller
@@ -60,18 +60,23 @@ public class BeanFactoryAdvisorRetrievalHelper {
 
 	/**
 	 * Find all eligible Advisor beans in the current bean factory,
+	 * 在当前bean工厂中查找所有合适的切面Bean，忽略FactoryBean以及排除当前正在
 	 * ignoring FactoryBeans and excluding beans that are currently in creation.
+	 * 创建中的bean。
 	 * @return the list of {@link org.springframework.aop.Advisor} beans
 	 * @see #isEligibleBean
 	 */
 	public List<Advisor> findAdvisorBeans() {
 		// Determine list of advisor bean names, if not cached already.
+		// 如果没有缓存，确定切面bean的名称列表。
 		String[] advisorNames = null;
 		synchronized (this) {
 			advisorNames = this.cachedAdvisorBeanNames;
 			if (advisorNames == null) {
 				// Do not initialize FactoryBeans here: We need to leave all regular beans
+				// 在这里不初始化FactoryBean：我们需要留下所有未初始化的常规bean，这样自动
 				// uninitialized to let the auto-proxy creator apply to them!
+				// 自动代理创建器就可以应用它们。
 				advisorNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
 						this.beanFactory, Advisor.class, true, false);
 				this.cachedAdvisorBeanNames = advisorNames;

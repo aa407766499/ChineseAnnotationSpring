@@ -18,9 +18,11 @@ package org.springframework.aop;
 
 /**
  * Filter that restricts matching of a pointcut or introduction to
+ * 该过滤器限制切入点的匹配或者引介到给定目标类的集合
  * a given set of target classes.
  *
  * <p>Can be used as part of a {@link Pointcut} or for the entire
+ * 能被Pointcut使用或者被IntroductionAdvisor的整个目标使用
  * targeting of an {@link IntroductionAdvisor}.
  *
  * @author Rod Johnson

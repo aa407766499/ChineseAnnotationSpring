@@ -16,18 +16,14 @@
 
 package org.springframework.beans.factory;
 
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.BeansException;
 import org.springframework.core.ResolvableType;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import java.lang.annotation.Annotation;
+import java.util.*;
 
 /**
  * Convenience methods operating on bean factories, in particular
@@ -201,21 +197,33 @@ public abstract class BeanFactoryUtils {
 
 	/**
 	 * Get all bean names for the given type, including those defined in ancestor
+	 * 根据给定类型获取所有bean名称，包括那些在父级容器中定义的。如果覆盖bean定义，
 	 * factories. Will return unique names in case of overridden bean definitions.
+	 * 那么会返回唯一的名称。
 	 * <p>Does consider objects created by FactoryBeans if the "allowEagerInit"
+	 * 如果设置了allowEagerInit标识，会考虑FactoryBean创建的对象，这意味着FactoryBean
 	 * flag is set, which means that FactoryBeans will get initialized. If the
+	 * 会初始化。如果FactoryBean创建的对象不匹配，FactoryBean自身会去进行匹配。
 	 * object created by the FactoryBean doesn't match, the raw FactoryBean itself
+	 * 如果allowEagerInit没有设置，仅对FactoryBean进行匹配（这样不需要初始化每个FactoryBean）
 	 * will be matched against the type. If "allowEagerInit" is not set,
 	 * only raw FactoryBeans will be checked (which doesn't require initialization
 	 * of each FactoryBean).
 	 * @param lbf the bean factory
 	 * @param includeNonSingletons whether to include prototype or scoped beans too
+	 *                             是否包含原型bean或者作用域bean或者仅包含单例bean
 	 * or just singletons (also applies to FactoryBeans)
+	 *                             （也应用于FactoryBean）
 	 * @param allowEagerInit whether to initialize <i>lazy-init singletons</i> and
+	 *                       是否初始化懒加载单例以及FactoryBean创建的对象（或者是由
 	 * <i>objects created by FactoryBeans</i> (or by factory methods with a
+	 *                        工厂bean引用的工厂方法创建的对象），对这些对象进行类型检查。
 	 * "factory-bean" reference) for the type check. Note that FactoryBeans need to be
+	 *                       注意： FactoryBean需要饿汉式初始化来确定他们的类型：因此
 	 * eagerly initialized to determine their type: So be aware that passing in "true"
+	 *                       可以知道该标识传入为true时将会初始化FactoryBean以及
 	 * for this flag will initialize FactoryBeans and "factory-bean" references.
+	 *                       factory-bean引用。
 	 * @param type the type that beans must match
 	 * @return the array of matching bean names, or an empty array if none
 	 */

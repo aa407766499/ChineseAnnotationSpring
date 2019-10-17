@@ -20,13 +20,18 @@ import org.aopalliance.aop.Advice;
 
 /**
  * Base interface holding AOP <b>advice</b> (action to take at a joinpoint)
+ * 持有AOP增强（在连接点上执行动作）以及确定增强应用在哪里的过滤器（比如切入点）
  * and a filter determining the applicability of the advice (such as
+ * 的基础接口。该接口不能被Spring用户使用，而允许对不同类型的增强提供共性支持
  * a pointcut). <i>This interface is not for use by Spring users, but to
  * allow for commonality in support for different types of advice.</i>
  *
  * <p>Spring AOP is based around <b>around advice</b> delivered via method
+ * Spring AOP 基于通过方法拦截器的环绕通知，以及AOP联盟的拦截API。
  * <b>interception</b>, compliant with the AOP Alliance interception API.
+ * 该切面接口允许支持不同类型的增强，比如前置，后置，这些在使用拦截的时候不需要
  * The Advisor interface allows support for different types of advice,
+ * 被实现。
  * such as <b>before</b> and <b>after</b> advice, which need not be
  * implemented using interception.
  *

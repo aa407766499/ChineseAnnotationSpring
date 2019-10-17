@@ -16,6 +16,14 @@
 
 package org.springframework.aop.support;
 
+import org.springframework.aop.*;
+import org.springframework.core.BridgeMethodResolver;
+import org.springframework.core.MethodIntrospector;
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.ReflectionUtils;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -25,29 +33,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.aop.Advisor;
-import org.springframework.aop.AopInvocationException;
-import org.springframework.aop.IntroductionAdvisor;
-import org.springframework.aop.IntroductionAwareMethodMatcher;
-import org.springframework.aop.MethodMatcher;
-import org.springframework.aop.Pointcut;
-import org.springframework.aop.PointcutAdvisor;
-import org.springframework.aop.SpringProxy;
-import org.springframework.aop.TargetClassAware;
-import org.springframework.core.BridgeMethodResolver;
-import org.springframework.core.MethodIntrospector;
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.ReflectionUtils;
-
 /**
  * Utility methods for AOP support code.
- *
+ * AOP支持代码的功能方法
  * <p>Mainly for internal use within Spring's AOP support.
- *
+ * 主要在Spring AOP支持内部使用。
  * <p>See {@link org.springframework.aop.framework.AopProxyUtils} for a
+ * 查看AopProxyUtils，框架专用的AOP功能方法的集合，这些功能方法依赖于
  * collection of framework-specific AOP utility methods which depend
+ * Spring AOP框架的内部实现。
  * on internals of Spring's AOP framework implementation.
  *
  * @author Rod Johnson
@@ -254,7 +248,9 @@ public abstract class AopUtils {
 
 	/**
 	 * Can the given advisor apply at all on the given class?
+	 * 给定切面能应用到给定class?这是一个重要的测试，因为该方法
 	 * This is an important test as it can be used to optimize
+	 * 能用于优化去排除一个class的切面。
 	 * out a advisor for a class.
 	 * @param advisor the advisor to check
 	 * @param targetClass class we're testing
@@ -268,6 +264,7 @@ public abstract class AopUtils {
 	 * Can the given advisor apply at all on the given class?
 	 * <p>This is an important test as it can be used to optimize out a advisor for a class.
 	 * This version also takes into account introductions (for IntroductionAwareMethodMatchers).
+	 * 该版本也考虑了引介（引介感知方法匹配器）。
 	 * @param advisor the advisor to check
 	 * @param targetClass class we're testing
 	 * @param hasIntroductions whether or not the advisor chain for this bean includes
@@ -290,6 +287,7 @@ public abstract class AopUtils {
 
 	/**
 	 * Determine the sublist of the {@code candidateAdvisors} list
+	 * 确定候选切面列表的子列表，该子列表可以应用到给定的class。
 	 * that is applicable to the given class.
 	 * @param candidateAdvisors the Advisors to evaluate
 	 * @param clazz the target class
@@ -310,6 +308,7 @@ public abstract class AopUtils {
 		for (Advisor candidate : candidateAdvisors) {
 			if (candidate instanceof IntroductionAdvisor) {
 				// already processed
+				// 已经处理过了
 				continue;
 			}
 			if (canApply(candidate, clazz, hasIntroductions)) {

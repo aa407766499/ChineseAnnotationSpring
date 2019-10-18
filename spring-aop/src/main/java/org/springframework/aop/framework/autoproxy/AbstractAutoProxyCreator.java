@@ -435,6 +435,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	/**
 	 * Create an AOP proxy for the given bean.
+	 * 创建给定bean的AOP代理对象。
 	 * @param beanClass the class of the bean
 	 * @param beanName the name of the bean
 	 * @param specificInterceptors the set of interceptors that is

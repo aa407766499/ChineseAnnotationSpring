@@ -222,6 +222,7 @@ public abstract class AopUtils {
 		MethodMatcher methodMatcher = pc.getMethodMatcher();
 		if (methodMatcher == MethodMatcher.TRUE) {
 			// No need to iterate the methods if we're matching any method anyway...
+			// 如果我们需要匹配任何方法，不需要迭代方法数组。
 			return true;
 		}
 
@@ -281,6 +282,7 @@ public abstract class AopUtils {
 		}
 		else {
 			// It doesn't have a pointcut so we assume it applies.
+			// 切面没有切入点因此我们假设该切面能用。
 			return true;
 		}
 	}

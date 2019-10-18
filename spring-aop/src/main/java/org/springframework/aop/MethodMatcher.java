@@ -60,7 +60,9 @@ public interface MethodMatcher {
 
 	/**
 	 * Perform static checking whether the given method matches. If this
+	 * 执行静态检查，检查给定方法是否匹配。如果返回false或者如果isRuntime()
 	 * returns {@code false} or if the {@link #isRuntime()} method
+	 * 返回false，没有进行运行时检查(比如matches(java.lang.reflect.Method, Class, Object[])调用)
 	 * returns {@code false}, no runtime check (i.e. no.
 	 * {@link #matches(java.lang.reflect.Method, Class, Object[])} call) will be made.
 	 * @param method the candidate method
@@ -72,9 +74,12 @@ public interface MethodMatcher {
 
 	/**
 	 * Is this MethodMatcher dynamic, that is, must a final call be made on the
+	 * 该方法匹配器是动态的吗，换句话说，即使两个参数的matches方法返回true，
 	 * {@link #matches(java.lang.reflect.Method, Class, Object[])} method at
+	 * 也必须在最后调用matches(java.lang.reflect.Method, Class, Object[]) 方法
 	 * runtime even if the 2-arg matches method returns {@code true}?
 	 * <p>Can be invoked when an AOP proxy is created, and need not be invoked
+	 * 在AOP代理被创建的时候会调用该方法，而在每一个方法调用前不需要调用该方法。
 	 * again before each method invocation,
 	 * @return whether or not a runtime match via the 3-arg
 	 * {@link #matches(java.lang.reflect.Method, Class, Object[])} method
@@ -84,10 +89,14 @@ public interface MethodMatcher {
 
 	/**
 	 * Check whether there a runtime (dynamic) match for this method,
+	 * 检查该方法是否有运行时（动态）匹配，该方法必须已经静态匹配。
 	 * which must have matched statically.
 	 * <p>This method is invoked only if the 2-arg matches method returns
+	 * 如果isRuntime()方法返回true，只有对于给定的方法和目标类两个参数的
 	 * {@code true} for the given method and target class, and if the
+	 * matches方法返回true，那么该方法才会被调用。在增强链中任何早期的增强
 	 * {@link #isRuntime()} method returns {@code true}. Invoked
+	 * 已经运行后，在可能要运行的增强之前会调用该方法。
 	 * immediately before potential running of the advice, after any
 	 * advice earlier in the advice chain has run.
 	 * @param method the candidate method
@@ -102,6 +111,7 @@ public interface MethodMatcher {
 
 	/**
 	 * Canonical instance that matches all methods.
+	 * 匹配所有方法的标准实例。
 	 */
 	MethodMatcher TRUE = TrueMethodMatcher.INSTANCE;
 

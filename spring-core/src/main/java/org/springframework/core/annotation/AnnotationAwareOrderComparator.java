@@ -16,25 +16,29 @@
 
 package org.springframework.core.annotation;
 
+import org.springframework.core.DecoratingProxy;
+import org.springframework.core.OrderComparator;
+import org.springframework.lang.Nullable;
+
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.springframework.core.DecoratingProxy;
-import org.springframework.core.OrderComparator;
-import org.springframework.lang.Nullable;
-
 /**
  * {@code AnnotationAwareOrderComparator} is an extension of
+ * OrderComparator的扩展类AnnotationAwareOrderComparator
  * {@link OrderComparator} that supports Spring's
+ * 该类支持Spring的Ordered接口也支持@Order和@Priority注解，Ordered
  * {@link org.springframework.core.Ordered} interface as well as the
+ * 接口提供的排序值会覆盖静态定义的注解值（如果有的话）。
  * {@link Order @Order} and {@link javax.annotation.Priority @Priority}
  * annotations, with an order value provided by an {@code Ordered}
  * instance overriding a statically defined annotation value (if any).
  *
  * <p>Consult the Javadoc for {@link OrderComparator} for details on the
+ * 参考OrderComparator的文档查看对无序对象进行排序的细节。
  * sort semantics for non-ordered objects.
  *
  * @author Juergen Hoeller
@@ -116,7 +120,9 @@ public class AnnotationAwareOrderComparator extends OrderComparator {
 
 	/**
 	 * Sort the given List with a default AnnotationAwareOrderComparator.
+	 * 用默认的AnnotationAwareOrderComparator给给定列表排序。
 	 * <p>Optimized to skip sorting for lists with size 0 or 1,
+	 * 优化跳过大小为0或者1的列表，为了防止不必要的数组遍历。
 	 * in order to avoid unnecessary array extraction.
 	 * @param list the List to sort
 	 * @see java.util.Collections#sort(java.util.List, java.util.Comparator)

@@ -16,20 +16,24 @@
 
 package org.springframework.aop.target;
 
-import java.io.Serializable;
-
 import org.springframework.aop.TargetSource;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
+import java.io.Serializable;
+
 /**
  * Implementation of the {@link TargetSource} interface
+ * TargetSource接口的实现类，该类持有给定对象。这是TargetSource接口的默认实现类，
  * that holds a given object. This is the default implementation of the TargetSource
+ * Spring AOP框架使用该类。通常不需要在应用代码中创建该类的对象。
  * interface, as used by the Spring AOP framework. There is usually no need to
  * create objects of this class in application code.
  *
  * <p>This class is serializable. However, the actual serializability of a
+ * 该类可以序列化。然而，实际上SingletonTargetSource的序列化取决于目标对象
  * SingletonTargetSource will depend on whether the target is serializable.
+ * 是否可以序列化。
  *
  * @author Rod Johnson
  * @author Juergen Hoeller

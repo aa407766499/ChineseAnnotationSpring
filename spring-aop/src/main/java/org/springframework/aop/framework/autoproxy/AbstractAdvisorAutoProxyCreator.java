@@ -143,6 +143,7 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 
 	/**
 	 * Sort advisors based on ordering. Subclasses may choose to override this
+	 * 基于顺序给切面排序。子类可以选择覆盖该方法来自定义排序策略。
 	 * method to customize the sorting strategy.
 	 * @param advisors the source List of Advisors
 	 * @return the sorted List of Advisors
@@ -157,9 +158,12 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 
 	/**
 	 * Extension hook that subclasses can override to register additional Advisors,
+	 * 扩展钩子，子类可以覆盖该方法来注册另外的切面，当前已经获得的已排序的切面。
 	 * given the sorted Advisors obtained to date.
 	 * <p>The default implementation is empty.
+	 * 默认实现为空。
 	 * <p>Typically used to add Advisors that expose contextual information
+	 * 通常用于添加切面，该切面能给后面的切面暴露他们需要的上下文信息。
 	 * required by some of the later advisors.
 	 * @param candidateAdvisors Advisors that have already been identified as
 	 * applying to a given bean

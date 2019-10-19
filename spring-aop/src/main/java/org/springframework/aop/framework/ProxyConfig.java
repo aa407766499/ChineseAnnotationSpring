@@ -16,9 +16,9 @@
 
 package org.springframework.aop.framework;
 
-import java.io.Serializable;
-
 import org.springframework.util.Assert;
+
+import java.io.Serializable;
 
 /**
  * Convenience superclass for configuration used in creating proxies,
@@ -47,13 +47,18 @@ public class ProxyConfig implements Serializable {
 
 	/**
 	 * Set whether to proxy the target class directly, instead of just proxying
+	 * 设置是否直接代理目标类，而不是仅代理指定的接口、默认为false。
 	 * specific interfaces. Default is "false".
 	 * <p>Set this to "true" to force proxying for the TargetSource's exposed
+	 * 将该属性设置为true来强制代理TargetSource暴露的目标类。如果目标类是一个接口，
 	 * target class. If that target class is an interface, a JDK proxy will be
+	 * 那么根据给定的接口创建JDK代理。如果目标类是任何其他的类，那么根据给定的类创建CGLIB代理。
 	 * created for the given interface. If that target class is any other class,
 	 * a CGLIB proxy will be created for the given class.
 	 * <p>Note: Depending on the configuration of the concrete proxy factory,
+	 * 注意：取决于具体的代理工厂的配置，如果没有指定接口，那么会采用
 	 * the proxy-target-class behavior will also be applied if no interfaces
+	 * proxy-target-class行为（自动检测没有接口是活跃的）。
 	 * have been specified (and no interface autodetection is activated).
 	 * @see org.springframework.aop.TargetSource#getTargetClass()
 	 */
@@ -63,6 +68,7 @@ public class ProxyConfig implements Serializable {
 
 	/**
 	 * Return whether to proxy the target class directly as well as any interfaces.
+	 * 返回是否直接代理目标类及任何接口。
 	 */
 	public boolean isProxyTargetClass() {
 		return this.proxyTargetClass;
@@ -149,6 +155,7 @@ public class ProxyConfig implements Serializable {
 
 	/**
 	 * Copy configuration from the other config object.
+	 * 从其他配置对象那复制配置。
 	 * @param other object to copy configuration from
 	 */
 	public void copyFrom(ProxyConfig other) {

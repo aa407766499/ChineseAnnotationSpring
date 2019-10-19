@@ -16,32 +16,13 @@
 
 package org.springframework.aop.aspectj;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.weaver.patterns.NamePattern;
 import org.aspectj.weaver.reflect.ReflectionWorld.ReflectionWorldException;
 import org.aspectj.weaver.reflect.ShadowMatchImpl;
-import org.aspectj.weaver.tools.ContextBasedMatcher;
-import org.aspectj.weaver.tools.FuzzyBoolean;
-import org.aspectj.weaver.tools.JoinPointMatch;
-import org.aspectj.weaver.tools.MatchingContext;
-import org.aspectj.weaver.tools.PointcutDesignatorHandler;
-import org.aspectj.weaver.tools.PointcutExpression;
-import org.aspectj.weaver.tools.PointcutParameter;
-import org.aspectj.weaver.tools.PointcutParser;
-import org.aspectj.weaver.tools.PointcutPrimitive;
-import org.aspectj.weaver.tools.ShadowMatch;
-
+import org.aspectj.weaver.tools.*;
 import org.springframework.aop.ClassFilter;
 import org.springframework.aop.IntroductionAwareMethodMatcher;
 import org.springframework.aop.MethodMatcher;
@@ -62,14 +43,26 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Spring {@link org.springframework.aop.Pointcut} implementation
+ * Spring Pointcut的实现类，使用AspectJ weaver解析切入点表达式。
  * that uses the AspectJ weaver to evaluate a pointcut expression.
  *
  * <p>The pointcut expression value is an AspectJ expression. This can
+ * 该切入点表达式是一个AspectJ表达式。这可以引用其他的切入点以及使用组合和其他操作。
  * reference other pointcuts and use composition and other operations.
  *
  * <p>Naturally, as this is to be processed by Spring AOP's proxy-based model,
+ * 当然，该切入点由Spring AOP 基于代理的模型处理，仅支持方法执行切入点。
  * only method execution pointcuts are supported.
  *
  * @author Rob Harrop
@@ -186,6 +179,7 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 
 	/**
 	 * Check whether this pointcut is ready to match,
+	 * 检查该切入点是否准备好进行匹配，懒加载底层的AspectJ切入点表达式。
 	 * lazily building the underlying AspectJ pointcut expression.
 	 */
 	private PointcutExpression obtainPointcutExpression() {
@@ -215,6 +209,7 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 
 	/**
 	 * Build the underlying AspectJ pointcut expression.
+	 * 创建底层的AspectJ切入点表达式。
 	 */
 	private PointcutExpression buildPointcutExpression(@Nullable ClassLoader classLoader) {
 		PointcutParser parser = initializePointcutParser(classLoader);
@@ -235,6 +230,7 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 
 	/**
 	 * Initialize the underlying AspectJ pointcut parser.
+	 * 初始化底层的AspectJ切入点解析器。
 	 */
 	private PointcutParser initializePointcutParser(@Nullable ClassLoader classLoader) {
 		PointcutParser parser = PointcutParser
@@ -261,6 +257,7 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 
 	/**
 	 * Return the underlying AspectJ pointcut expression.
+	 * 返回底层的AspectJ切入点表达式。
 	 */
 	public PointcutExpression getPointcutExpression() {
 		return obtainPointcutExpression();
@@ -271,6 +268,7 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 		PointcutExpression pointcutExpression = obtainPointcutExpression();
 		try {
 			try {
+				//切入点表达式能否和给定目标类的连接点匹配。
 				return pointcutExpression.couldMatchJoinPointsInType(targetClass);
 			}
 			catch (ReflectionWorldException ex) {

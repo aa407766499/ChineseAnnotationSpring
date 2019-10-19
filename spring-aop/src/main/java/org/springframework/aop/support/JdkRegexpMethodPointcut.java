@@ -42,6 +42,7 @@ public class JdkRegexpMethodPointcut extends AbstractRegexpMethodPointcut {
 
 	/**
 	 * Compiled form of the patterns.
+	 * 模式的编译形式
 	 */
 	private Pattern[] compiledPatterns = new Pattern[0];
 

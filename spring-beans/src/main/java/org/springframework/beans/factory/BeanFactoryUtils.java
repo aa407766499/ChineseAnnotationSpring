@@ -231,7 +231,9 @@ public abstract class BeanFactoryUtils {
 			ListableBeanFactory lbf, Class<?> type, boolean includeNonSingletons, boolean allowEagerInit) {
 
 		Assert.notNull(lbf, "ListableBeanFactory must not be null");
+		//根据类型获取bean名称列表
 		String[] result = lbf.getBeanNamesForType(type, includeNonSingletons, allowEagerInit);
+		//如果有父容器，则父容器中也查找。
 		if (lbf instanceof HierarchicalBeanFactory) {
 			HierarchicalBeanFactory hbf = (HierarchicalBeanFactory) lbf;
 			if (hbf.getParentBeanFactory() instanceof ListableBeanFactory) {
@@ -239,6 +241,7 @@ public abstract class BeanFactoryUtils {
 						(ListableBeanFactory) hbf.getParentBeanFactory(), type, includeNonSingletons, allowEagerInit);
 				List<String> resultList = new ArrayList<>();
 				resultList.addAll(Arrays.asList(result));
+				//将父容器中相同类型的bean名称添加到匹配结果中。
 				for (String beanName : parentResult) {
 					if (!resultList.contains(beanName) && !hbf.containsLocalBean(beanName)) {
 						resultList.add(beanName);

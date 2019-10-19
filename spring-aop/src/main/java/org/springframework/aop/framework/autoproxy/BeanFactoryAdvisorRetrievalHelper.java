@@ -31,7 +31,7 @@ import java.util.List;
 
 /**
  * Helper for retrieving standard Spring Advisors from a BeanFactory,
- * 从bean工厂获取标准Spring切面的辅助器，用于自动代理。
+ * 从bean工厂中获取标准Spring切面的辅助器，用于自动代理。
  * for use with auto-proxying.
  *
  * @author Juergen Hoeller
@@ -74,7 +74,7 @@ public class BeanFactoryAdvisorRetrievalHelper {
 			advisorNames = this.cachedAdvisorBeanNames;
 			if (advisorNames == null) {
 				// Do not initialize FactoryBeans here: We need to leave all regular beans
-				// 在这里不初始化FactoryBean：我们需要留下所有未初始化的常规bean，这样自动
+				// 在这里不初始化FactoryBean：我们需要留下所有未初始化的常规bean，这样
 				// uninitialized to let the auto-proxy creator apply to them!
 				// 自动代理创建器就可以应用它们。
 				advisorNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
@@ -89,6 +89,7 @@ public class BeanFactoryAdvisorRetrievalHelper {
 		List<Advisor> advisors = new LinkedList<>();
 		for (String name : advisorNames) {
 			if (isEligibleBean(name)) {
+				//当前bean正在创建中，则跳过。
 				if (this.beanFactory.isCurrentlyInCreation(name)) {
 					if (logger.isDebugEnabled()) {
 						logger.debug("Skipping currently created advisor '" + name + "'");
@@ -96,6 +97,7 @@ public class BeanFactoryAdvisorRetrievalHelper {
 				}
 				else {
 					try {
+						//从容器中获取Advisor类型的bean。
 						advisors.add(this.beanFactory.getBean(name, Advisor.class));
 					}
 					catch (BeanCreationException ex) {
@@ -123,7 +125,9 @@ public class BeanFactoryAdvisorRetrievalHelper {
 
 	/**
 	 * Determine whether the aspect bean with the given name is eligible.
+	 * 确定给定名称的切面bean是否匹配。
 	 * <p>The default implementation always returns {@code true}.
+	 * 默认实现总是返回true。
 	 * @param beanName the name of the aspect bean
 	 * @return whether the bean is eligible
 	 */

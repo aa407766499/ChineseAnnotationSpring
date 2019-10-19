@@ -21,7 +21,7 @@ import org.springframework.lang.Nullable;
 
 /**
  * Interface to be implemented by pointcuts that use String expressions.
- *
+ * 切入点实现该接口，使用字符串类型的表达式。
  * @author Rob Harrop
  * @since 2.0
  */

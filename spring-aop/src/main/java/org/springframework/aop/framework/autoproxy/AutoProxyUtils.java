@@ -23,6 +23,7 @@ import org.springframework.lang.Nullable;
 
 /**
  * Utilities for auto-proxy aware components.
+ * 自动代理感知组件的功能。主要框架内部使用。
  * Mainly for internal use within the framework.
  *
  * @author Juergen Hoeller
@@ -97,6 +98,7 @@ public abstract class AutoProxyUtils {
 
 	/**
 	 * Expose the given target class for the specified bean, if possible.
+	 * 暴露指定bean的给定目标class。
 	 * @param beanFactory the containing ConfigurableListableBeanFactory
 	 * @param beanName the name of the bean
 	 * @param targetClass the corresponding target class

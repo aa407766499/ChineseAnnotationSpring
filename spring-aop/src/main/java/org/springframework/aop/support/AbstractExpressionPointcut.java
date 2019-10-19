@@ -16,12 +16,13 @@
 
 package org.springframework.aop.support;
 
-import java.io.Serializable;
-
 import org.springframework.lang.Nullable;
+
+import java.io.Serializable;
 
 /**
  * Abstract superclass for expression pointcuts,
+ * 表达式切入点的抽象父类，提供定位和表达式属性。
  * offering location and expression properties.
  *
  * @author Rod Johnson

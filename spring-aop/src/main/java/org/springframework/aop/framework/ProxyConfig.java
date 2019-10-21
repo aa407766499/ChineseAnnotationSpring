@@ -22,6 +22,7 @@ import java.io.Serializable;
 
 /**
  * Convenience superclass for configuration used in creating proxies,
+ * 用于创建代理的配置的便利父类，确保所有代理创建器有一致的属性。
  * to ensure that all proxy creators have consistent properties.
  *
  * @author Rod Johnson
@@ -147,6 +148,7 @@ public class ProxyConfig implements Serializable {
 
 	/**
 	 * Return whether the config is frozen, and no advice changes can be made.
+	 * 返回该配置是否冻结，不能进行对增强的修改。
 	 */
 	public boolean isFrozen() {
 		return this.frozen;

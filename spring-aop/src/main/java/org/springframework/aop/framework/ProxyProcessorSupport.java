@@ -29,6 +29,7 @@ import java.io.Closeable;
 
 /**
  * Base class with common functionality for proxy processors, in particular
+ * 代理处理器公共功能的基础类，特别是类加载器管理以及evaluateProxyInterfaces算法。
  * ClassLoader management and the {@link #evaluateProxyInterfaces} algorithm.
  *
  * @author Juergen Hoeller
@@ -118,6 +119,7 @@ public class ProxyProcessorSupport extends ProxyConfig implements Ordered, BeanC
 		}
 		if (hasReasonableProxyInterface) {
 			// Must allow for introductions; can't just set interfaces to the target's interfaces only.
+			// 必须允许引介；不能仅将接口设置成目标的接口
 			for (Class<?> ifc : targetInterfaces) {
 				proxyFactory.addInterface(ifc);
 			}

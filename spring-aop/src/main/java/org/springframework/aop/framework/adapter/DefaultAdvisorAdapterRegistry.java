@@ -16,19 +16,20 @@
 
 package org.springframework.aop.framework.adapter;
 
+import org.aopalliance.aop.Advice;
+import org.aopalliance.intercept.MethodInterceptor;
+import org.springframework.aop.Advisor;
+import org.springframework.aop.support.DefaultPointcutAdvisor;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.aopalliance.aop.Advice;
-import org.aopalliance.intercept.MethodInterceptor;
-
-import org.springframework.aop.Advisor;
-import org.springframework.aop.support.DefaultPointcutAdvisor;
-
 /**
  * Default implementation of the {@link AdvisorAdapterRegistry} interface.
+ * AdvisorAdapterRegistry接口的默认实现。支持MethodInterceptor，MethodBeforeAdvice，
  * Supports {@link org.aopalliance.intercept.MethodInterceptor},
+ * AfterReturningAdvice，ThrowsAdvice。
  * {@link org.springframework.aop.MethodBeforeAdvice},
  * {@link org.springframework.aop.AfterReturningAdvice},
  * {@link org.springframework.aop.ThrowsAdvice}.
@@ -64,10 +65,12 @@ public class DefaultAdvisorAdapterRegistry implements AdvisorAdapterRegistry, Se
 		Advice advice = (Advice) adviceObject;
 		if (advice instanceof MethodInterceptor) {
 			// So well-known it doesn't even need an adapter.
+			// 因此都知道的，即使它不需要一个适配器。
 			return new DefaultPointcutAdvisor(advice);
 		}
 		for (AdvisorAdapter adapter : this.adapters) {
 			// Check that it is supported.
+			// 检查适配器是否支持给定的增强。
 			if (adapter.supportsAdvice(advice)) {
 				return new DefaultPointcutAdvisor(advice);
 			}

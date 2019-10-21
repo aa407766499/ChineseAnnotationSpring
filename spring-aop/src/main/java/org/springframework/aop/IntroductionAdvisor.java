@@ -44,6 +44,7 @@ public interface IntroductionAdvisor extends Advisor, IntroductionInfo {
 
 	/**
 	 * Can the advised interfaces be implemented by the introduction advice?
+	 * 被增强的接口能被引介增强实现吗？在添加引介切面之前调用。
 	 * Invoked before adding an IntroductionAdvisor.
 	 * @throws IllegalArgumentException if the advised interfaces can't be
 	 * implemented by the introduction advice

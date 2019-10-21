@@ -35,15 +35,21 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Base class for AOP proxy configuration managers.
+ * Aop代理配置管理器的基础类。
  * These are not themselves AOP proxies, but subclasses of this class are
+ * 这些不是它们自身的AOP代理，但是该类的子类一般是工厂，能从该工厂中直接获取AOP代理实例。
  * normally factories from which AOP proxy instances are obtained directly.
  *
  * <p>This class frees subclasses of the housekeeping of Advices
+ * 这个类释放了切面和增强的内务管理的子类，但是实际上不能实现代理创建的方法，
  * and Advisors, but doesn't actually implement proxy creation
+ * 代理创建的方法由子类提供。
  * methods, which are provided by subclasses.
  *
  * <p>This class is serializable; subclasses need not be.
- * This class is used to hold snapshots of proxies.
+ * 该类是可序列化的；子类不再需要实现序列化。该类用于持有代理
+ * This class is used to hold snapshots of proxies.、
+ * 的快照。
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -71,17 +77,21 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 	AdvisorChainFactory advisorChainFactory = new DefaultAdvisorChainFactory();
 
 	/** Cache with Method as key and advisor chain List as value */
+	/*缓存方法作为键，切面链列表作为值*/
 	private transient Map<MethodCacheKey, List<Object>> methodCache;
 
 	/**
 	 * Interfaces to be implemented by the proxy. Held in List to keep the order
+	 * 代理要实现的接口。放入List中来保持注册的顺序，依据指定的接口顺序创建JDK代理。
 	 * of registration, to create JDK proxy with specified order of interfaces.
 	 */
 	private List<Class<?>> interfaces = new ArrayList<>();
 
 	/**
 	 * List of Advisors. If an Advice is added, it will be wrapped
+	 * 切面列表。如果要添加一个增强，在被添加到该列表之前将增强包装成
 	 * in an Advisor before being added to this List.
+	 * 一个切面。
 	 */
 	private List<Advisor> advisors = new LinkedList<>();
 
@@ -191,6 +201,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 
 	/**
 	 * Add a new proxied interface.
+	 * 添加一个新的代理接口。
 	 * @param intf the additional interface to proxy
 	 */
 	public void addInterface(Class<?> intf) {
@@ -307,6 +318,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 
 	/**
 	 * Add all of the given advisors to this proxy configuration.
+	 * 将给定的所有切面添加到该代理配置中。
 	 * @param advisors the advisors to register
 	 */
 	public void addAdvisors(Advisor... advisors) {
@@ -337,6 +349,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 	private void validateIntroductionAdvisor(IntroductionAdvisor advisor) {
 		advisor.validateInterfaces();
 		// If the advisor passed validation, we can make the change.
+		// 如果切面通过验证，我们就能够进行更新。
 		Class<?>[] ifcs = advisor.getInterfaces();
 		for (Class<?> ifc : ifcs) {
 			addInterface(ifc);
@@ -478,6 +491,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 
 	/**
 	 * Invoked when advice has changed.
+	 * 在增强改变时调用。
 	 */
 	protected void adviceChanged() {
 		this.methodCache.clear();

@@ -16,18 +16,19 @@
 
 package org.springframework.aop.support;
 
-import java.io.Serializable;
-
 import org.aopalliance.aop.Advice;
-
 import org.springframework.aop.PointcutAdvisor;
 import org.springframework.core.Ordered;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 
+import java.io.Serializable;
+
 /**
  * Abstract base class for {@link org.springframework.aop.PointcutAdvisor}
+ * PointcutAdvisor实现的抽象基础类。可以继承该类来返回一个指定的切入点/增强或者
  * implementations. Can be subclassed for returning a specific pointcut/advice
+ * 返回一个可自由配置的切入点/增强。
  * or a freely configurable pointcut/advice.
  *
  * @author Rod Johnson

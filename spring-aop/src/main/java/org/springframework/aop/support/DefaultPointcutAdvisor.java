@@ -16,18 +16,19 @@
 
 package org.springframework.aop.support;
 
-import java.io.Serializable;
-
 import org.aopalliance.aop.Advice;
-
 import org.springframework.aop.Pointcut;
 import org.springframework.lang.Nullable;
 
+import java.io.Serializable;
+
 /**
  * Convenient Pointcut-driven Advisor implementation.
- *
+ * 便利的切入点驱动切面实现类。
  * <p>This is the most commonly used Advisor implementation. It can be used
+ * 这是一个最通用的切面实现类。该实现类能和任何切入点和增强类型一起使用，除了引介。
  * with any pointcut and advice type, except for introductions. There is
+ * 一般不需要继承该类，或者实现自定义的切面。
  * normally no need to subclass this class, or to implement custom Advisors.
  *
  * @author Rod Johnson
@@ -51,7 +52,10 @@ public class DefaultPointcutAdvisor extends AbstractGenericPointcutAdvisor imple
 
 	/**
 	 * Create a DefaultPointcutAdvisor that matches all methods.
+	 * 创建一个DefaultPointcutAdvisor，该切面能匹配所有方法。
 	 * <p>{@code Pointcut.TRUE} will be used as Pointcut.
+	 * Pointcut.TRUE用作切入点。
+	 *
 	 * @param advice the Advice to use
 	 */
 	public DefaultPointcutAdvisor(Advice advice) {

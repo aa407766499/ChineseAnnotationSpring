@@ -128,6 +128,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	/**
 	 * Default is global AdvisorAdapterRegistry
+	 * 默认是全局的AdvisorAdapterRegistry
 	 */
 	private AdvisorAdapterRegistry advisorAdapterRegistry = GlobalAdvisorAdapterRegistry.getInstance();
 
@@ -543,6 +544,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	/**
 	 * Determine the advisors for the given bean, including the specific interceptors
+	 * 确定给定bean的切面，包括指定的拦截器还有公共的拦截器，这些拦截器都要适配Advisor接口。
 	 * as well as the common interceptor, all adapted to the Advisor interface.
 	 *
 	 * @param beanName             the name of the bean
@@ -552,6 +554,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 	 */
 	protected Advisor[] buildAdvisors(@Nullable String beanName, @Nullable Object[] specificInterceptors) {
 		// Handle prototypes correctly...
+		// 正确处理原型
 		Advisor[] commonInterceptors = resolveInterceptorNames();
 
 		List<Object> allInterceptors = new ArrayList<>();
@@ -581,7 +584,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	/**
 	 * Resolves the specified interceptor names to Advisor objects.
-	 *
+	 * 解析Advisor对象的指定拦截器名称。
 	 * @see #setInterceptorNames
 	 */
 	private Advisor[] resolveInterceptorNames() {

@@ -18,6 +18,7 @@ package org.aopalliance.aop;
 
 /**
  * Tag interface for Advice. Implementations can be any type
+ * 增强的标记接口。实现类可以是增强的任何类型，比如拦截器。
  * of advice, such as Interceptors.
  *
  * @author Rod Johnson

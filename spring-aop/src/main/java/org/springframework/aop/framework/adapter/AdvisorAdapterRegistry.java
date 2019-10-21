@@ -22,8 +22,9 @@ import org.springframework.aop.Advisor;
 
 /**
  * Interface for registries of Advisor adapters.
- *
+ * 该接口用于注册切面适配器
  * <p><i>This is an SPI interface, not to be implemented by any Spring user.</i>
+ * 这是一个SPI接口，不需要被任何Spring用户实现，
  *
  * @author Rod Johnson
  * @author Rob Harrop
@@ -32,8 +33,11 @@ public interface AdvisorAdapterRegistry {
 
 	/**
 	 * Return an Advisor wrapping the given advice.
+	 * 返回包装给定增强的切面。
 	 * <p>Should by default at least support
+	 * 默认至少要支持MethodInterceptor，MethodBeforeAdvice，
 	 * {@link org.aopalliance.intercept.MethodInterceptor},
+	 * AfterReturningAdvice，ThrowsAdvice。
 	 * {@link org.springframework.aop.MethodBeforeAdvice},
 	 * {@link org.springframework.aop.AfterReturningAdvice},
 	 * {@link org.springframework.aop.ThrowsAdvice}.

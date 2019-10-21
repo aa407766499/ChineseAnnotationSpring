@@ -20,6 +20,7 @@ import org.aopalliance.aop.Advice;
 
 /**
  * Abstract generic {@link org.springframework.aop.PointcutAdvisor}
+ * 抽象一般PointcutAdvisor，允许配置任何的增强。
  * that allows for any {@link Advice} to be configured.
  *
  * @author Juergen Hoeller

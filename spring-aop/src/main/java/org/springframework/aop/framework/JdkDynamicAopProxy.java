@@ -36,21 +36,29 @@ import java.util.List;
 
 /**
  * JDK-based {@link AopProxy} implementation for the Spring AOP framework,
+ * Spring AOP框架的基于JDK的AopProxy实现类，基于JDK Proxy动态代理。
  * based on JDK {@link java.lang.reflect.Proxy dynamic proxies}.
  *
  * <p>Creates a dynamic proxy, implementing the interfaces exposed by
+ * 创建一个动态代理，实现AopProxy暴露的接口。动态代理不能被用于代理
  * the AopProxy. Dynamic proxies <i>cannot</i> be used to proxy methods
+ * 类中定义的方法，只能代理接口的方法。
  * defined in classes, rather than interfaces.
  *
  * <p>Objects of this type should be obtained through proxy factories,
+ * 该类型的对象应该通过代理工厂获得，由AdvisedSupport类配置。该类在Spring
  * configured by an {@link AdvisedSupport} class. This class is internal
+ * AOP框架内部使用，而不能被直接用于客户端代码。
  * to Spring's AOP framework and need not be used directly by client code.
  *
  * <p>Proxies created using this class will be thread-safe if the
+ * 如果底层目标类是线程安全的，那么使用该类创建的代理也是线程安全。
  * underlying (target) class is thread-safe.
  *
  * <p>Proxies are serializable so long as all Advisors (including Advices
+ * 只要所有的切面（包括增强和切入点）以及目标源是可序列化的，那么代理也
  * and Pointcuts) and the TargetSource are serializable.
+ * 可以序列化。
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -79,6 +87,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 	private static final Log logger = LogFactory.getLog(JdkDynamicAopProxy.class);
 
 	/** Config used to configure this proxy */
+	/*配置被用于配置该代理*/
 	private final AdvisedSupport advised;
 
 	/**

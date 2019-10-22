@@ -529,9 +529,12 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	/**
 	 * Return whether the Advisors returned by the subclass are pre-filtered
+	 * 返回子类返回的切面是否已经预过滤去匹配bean的目标class，允许在构建AOP调用
 	 * to match the bean's target class already, allowing the ClassFilter check
+	 * 切面链时跳过ClassFilter检查。
 	 * to be skipped when building advisors chains for AOP invocations.
 	 * <p>Default is {@code false}. Subclasses may override this if they
+	 * 默认是false。子类可以覆盖该方法如果子类总是返回预过滤的切面。
 	 * will always return pre-filtered Advisors.
 	 *
 	 * @return whether the Advisors are pre-filtered
@@ -603,8 +606,10 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	/**
 	 * Subclasses may choose to implement this: for example,
+	 * 子类可以选择实现该方法：比如，修改暴露的接口。
 	 * to change the interfaces exposed.
 	 * <p>The default implementation is empty.
+	 * 默认实现为空。
 	 *
 	 * @param proxyFactory ProxyFactory that is already configured with
 	 *                     TargetSource and interfaces and will be used to create the proxy

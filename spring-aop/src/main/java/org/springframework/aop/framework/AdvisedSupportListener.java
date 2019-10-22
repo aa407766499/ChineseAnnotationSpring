@@ -18,6 +18,7 @@ package org.springframework.aop.framework;
 
 /**
  * Listener to be registered on {@link ProxyCreatorSupport} objects
+ * 该监听器被注册到ProxyCreatorSupport对象。允许在增强改变以及激活时接收回调。
  * Allows for receiving callbacks on activation and change of advice.
  *
  * @author Rod Johnson

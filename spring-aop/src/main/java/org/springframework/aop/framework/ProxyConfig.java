@@ -138,8 +138,11 @@ public class ProxyConfig implements Serializable {
 
 	/**
 	 * Set whether this config should be frozen.
+	 * 设置该配置是否应该被冻结。
 	 * <p>When a config is frozen, no advice changes can be made. This is
+	 * 在一个配置被冻结的时候，不能修改增强。这对优化很有用，在我们不想要调用者在
 	 * useful for optimization, and useful when we don't want callers to
+	 * 转换增强后操作配置时也有用。
 	 * be able to manipulate configuration after casting to Advised.
 	 */
 	public void setFrozen(boolean frozen) {

@@ -16,14 +16,16 @@
 
 package org.springframework.aop.framework;
 
+import org.springframework.util.Assert;
+
 import java.util.LinkedList;
 import java.util.List;
 
-import org.springframework.util.Assert;
-
 /**
  * Base class for proxy factories.
+ * 代理工厂的基础类。
  * Provides convenient access to a configurable AopProxyFactory.
+ * 提供便利访问一个可配置的AOP代理工厂。
  *
  * @author Juergen Hoeller
  * @since 2.0.3
@@ -37,6 +39,7 @@ public class ProxyCreatorSupport extends AdvisedSupport {
 	private List<AdvisedSupportListener> listeners = new LinkedList<>();
 
 	/** Set to true when the first AOP proxy has been created */
+	/*在第一个AOP代理被创建时设置为true*/
 	private boolean active = false;
 
 
@@ -70,6 +73,7 @@ public class ProxyCreatorSupport extends AdvisedSupport {
 
 	/**
 	 * Return the AopProxyFactory that this ProxyConfig uses.
+	 * 返回该代理配置使用的AOP代理工厂
 	 */
 	public AopProxyFactory getAopProxyFactory() {
 		return this.aopProxyFactory;
@@ -96,6 +100,7 @@ public class ProxyCreatorSupport extends AdvisedSupport {
 
 	/**
 	 * Subclasses should call this to get a new AOP proxy. They should <b>not</b>
+	 * 子类可以调用该方法获取一个新的AOP代理。他们不应该用ProxyCreatorSupport创建一个AOP代理。
 	 * create an AOP proxy with {@code this} as an argument.
 	 */
 	protected final synchronized AopProxy createAopProxy() {
@@ -107,6 +112,7 @@ public class ProxyCreatorSupport extends AdvisedSupport {
 
 	/**
 	 * Activate this proxy configuration.
+	 * 激活该代理配置。
 	 * @see AdvisedSupportListener#activated
 	 */
 	private void activate() {

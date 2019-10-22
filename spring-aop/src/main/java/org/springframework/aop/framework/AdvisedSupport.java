@@ -77,6 +77,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 
 	/**
 	 * Whether the Advisors are already filtered for the specific target class
+	 * 根据指定的目标类，切面是否已经预过滤。
 	 */
 	private boolean preFiltered = false;
 

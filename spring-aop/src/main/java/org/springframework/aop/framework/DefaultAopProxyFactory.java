@@ -16,21 +16,26 @@
 
 package org.springframework.aop.framework;
 
+import org.springframework.aop.SpringProxy;
+
 import java.io.Serializable;
 import java.lang.reflect.Proxy;
 
-import org.springframework.aop.SpringProxy;
-
 /**
  * Default {@link AopProxyFactory} implementation, creating either a CGLIB proxy
+ * AopProxyFactory的默认实现，要么创建CGLIB代理要么创建JDK动态代理。
  * or a JDK dynamic proxy.
  *
  * <p>Creates a CGLIB proxy if one the following is true for a given
+ * 如果根据给定的AdvisedSupport实例以下有一个为true，则创建CGLIB代理。
  * {@link AdvisedSupport} instance:
  * <ul>
  * <li>the {@code optimize} flag is set
+ * 设置了optimize标识
  * <li>the {@code proxyTargetClass} flag is set
+ * 设置了proxyTargetClass标识
  * <li>no proxy interfaces have been specified
+ * 没有指定代理接口
  * </ul>
  *
  * <p>In general, specify {@code proxyTargetClass} to enforce a CGLIB proxy,

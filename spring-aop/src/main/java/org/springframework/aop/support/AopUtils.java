@@ -335,6 +335,7 @@ public abstract class AopUtils {
 
 	/**
 	 * Invoke the given target via reflection, as part of an AOP method invocation.
+	 * 通过反射调用给定目标，作为AOP方法调用的一部分。
 	 *
 	 * @param target the target object
 	 * @param method the method to invoke
@@ -348,6 +349,7 @@ public abstract class AopUtils {
 			throws Throwable {
 
 		// Use reflection to invoke the method.
+		// 使用反射调用方法。
 		try {
 			ReflectionUtils.makeAccessible(method);
 			return method.invoke(target, args);

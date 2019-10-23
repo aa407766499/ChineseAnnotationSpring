@@ -20,9 +20,11 @@ import java.lang.reflect.Method;
 
 /**
  * Description of an invocation to a method, given to an interceptor
+ * 一个方法一次调用的描述，在方法调用上添加一个拦截器。
  * upon method-call.
  *
  * <p>A method invocation is a joinpoint and can be intercepted by a
+ * 一次方法调用是一个连接点而且该调用能被方法拦截器拦截。
  * method interceptor.
  *
  * @author Rod Johnson
@@ -32,7 +34,9 @@ public interface MethodInvocation extends Invocation {
 
 	/**
 	 * Get the method being called.
+	 * 获取被调用的方法。
 	 * <p>This method is a frienly implementation of the
+	 * 该方法是Joinpoint的getStaticPart()方法的一个实现（相同结果）。
 	 * {@link Joinpoint#getStaticPart()} method (same result).
 	 * @return the method being called
 	 */

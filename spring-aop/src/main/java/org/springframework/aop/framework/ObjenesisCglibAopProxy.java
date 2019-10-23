@@ -16,19 +16,19 @@
 
 package org.springframework.aop.framework;
 
-import java.lang.reflect.Constructor;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.Factory;
 import org.springframework.objenesis.SpringObjenesis;
 import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Constructor;
+
 /**
  * Objenesis-based extension of {@link CglibAopProxy} to create proxy instances
+ * 基于Objenesis的CglibAopProxy的扩展类，可以在没有调用该类的构造器的情况下创建代理实例
  * without invoking the constructor of the class.
  *
  * @author Oliver Gierke

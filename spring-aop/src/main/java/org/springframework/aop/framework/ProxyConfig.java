@@ -99,8 +99,10 @@ public class ProxyConfig implements Serializable {
 
 	/**
 	 * Set whether proxies created by this configuration should be prevented
+	 * 设置该配置创建的代理是否应该被阻止转换成Advised去查询代理状态。
 	 * from being cast to {@link Advised} to query proxy status.
 	 * <p>Default is "false", meaning that any AOP proxy can be cast to
+	 * 默认是false，这意味着任何AOP代理能被转换成Advised
 	 * {@link Advised}.
 	 */
 	public void setOpaque(boolean opaque) {

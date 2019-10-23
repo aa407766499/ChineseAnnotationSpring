@@ -87,22 +87,25 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 	private static final Log logger = LogFactory.getLog(JdkDynamicAopProxy.class);
 
 	/** Config used to configure this proxy */
-	/*配置被用于配置该代理*/
+	/*该配置被用于配置该代理*/
 	private final AdvisedSupport advised;
 
 	/**
 	 * Is the {@link #equals} method defined on the proxied interfaces?
+	 * 在代理接口中定义了equals方法
 	 */
 	private boolean equalsDefined;
 
 	/**
 	 * Is the {@link #hashCode} method defined on the proxied interfaces?
+	 * 在代理接口中定义了hashCode方法
 	 */
 	private boolean hashCodeDefined;
 
 
 	/**
 	 * Construct a new JdkDynamicAopProxy for the given AOP configuration.
+	 * 根据给定的AOP配置构造一个新的JdkDynamicAopProxy
 	 * @param config the AOP configuration as AdvisedSupport object
 	 * @throws AopConfigException if the config is invalid. We try to throw an informative
 	 * exception in this case, rather than let a mysterious failure happen later.
@@ -138,6 +141,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 
 	/**
 	 * Finds any {@link #equals} or {@link #hashCode} method that may be defined
+	 * 在所提供的的接口集合中查找可能定义的equals或者hashCode方法。
 	 * on the supplied set of interfaces.
 	 * @param proxiedInterfaces the interfaces to introspect
 	 */
@@ -161,7 +165,9 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 
 	/**
 	 * Implementation of {@code InvocationHandler.invoke}.
+	 * InvocationHandler的invoke方法实现。
 	 * <p>Callers will see exactly the exception thrown by the target,
+	 * 调用者将明确的看到目标抛出的异常，除非钩子方法抛出了异常。
 	 * unless a hook method throws an exception.
 	 */
 	@Override
@@ -175,24 +181,28 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 		Object target = null;
 
 		try {
-			//eqauls()方法，具目标对象未实现此方法
+			//代理接口中未定义equals方法
 			if (!this.equalsDefined && AopUtils.isEqualsMethod(method)) {
 				// The target does not implement the equals(Object) method itself.
+				// 目标类不需要自己实现equals(Object)方法。
 				return equals(args[0]);
 			}
-			//hashCode()方法，具目标对象未实现此方法
+			//代理接口中未定义hashCode方法
 			else if (!this.hashCodeDefined && AopUtils.isHashCodeMethod(method)) {
 				// The target does not implement the hashCode() method itself.
+				// 目标类不需要自己实现hashCode()方法。
 				return hashCode();
 			}
 			else if (method.getDeclaringClass() == DecoratingProxy.class) {
 				// There is only getDecoratedClass() declared -> dispatch to proxy config.
+				// 仅声明了getDecoratedClass() ->委派给代理配置。
 				return AopProxyUtils.ultimateTargetClass(this.advised);
 			}
-			//Advised接口或者其父接口中定义的方法,直接反射调用,不应用通知
+			//Advised接口或者其父接口中定义的方法,直接反射调用,不应用增强
 			else if (!this.advised.opaque && method.getDeclaringClass().isInterface() &&
 					method.getDeclaringClass().isAssignableFrom(Advised.class)) {
 				// Service invocations on ProxyConfig with the proxy config...
+				// 使用代理配置在ProxyConfig上调用服务
 				return AopUtils.invokeJoinpointUsingReflection(this.advised, method, args);
 			}
 
@@ -200,6 +210,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 
 			if (this.advised.exposeProxy) {
 				// Make invocation available if necessary.
+				// 如果需要，使得调用能够获取。
 				oldProxy = AopContext.setCurrentProxy(proxy);
 				setProxyContext = true;
 			}
@@ -263,8 +274,11 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 
 	/**
 	 * Equality means interfaces, advisors and TargetSource are equal.
+	 * 相等意味着接口，切面和目标源都相等。
 	 * <p>The compared object may be a JdkDynamicAopProxy instance itself
+	 * 想比较的对象可能是JdkDynamicAopProxy实例或者是一个包装了JdkDynamicAopProxy
 	 * or a dynamic proxy wrapping a JdkDynamicAopProxy instance.
+	 * 实例的动态代理。
 	 */
 	@Override
 	public boolean equals(@Nullable Object other) {
@@ -288,15 +302,18 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 		}
 		else {
 			// Not a valid comparison...
+			// 无效的比较
 			return false;
 		}
 
 		// If we get here, otherProxy is the other AopProxy.
+		// 如果我们走到了这里，otherProxy就是一个其他的AopProxy。
 		return AopProxyUtils.equalsInProxy(this.advised, otherProxy.advised);
 	}
 
 	/**
 	 * Proxy uses the hash code of the TargetSource.
+	 * 代理使用目标源的哈希code。
 	 */
 	@Override
 	public int hashCode() {

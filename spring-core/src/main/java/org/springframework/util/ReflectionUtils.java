@@ -16,20 +16,11 @@
 
 package org.springframework.util;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.UndeclaredThrowableException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.lang.Nullable;
+
+import java.lang.reflect.*;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * Simple utility class for working with the reflection API and handling
@@ -459,8 +450,11 @@ public abstract class ReflectionUtils {
 
 	/**
 	 * Make the given method accessible, explicitly setting it accessible if
+	 * 设置给定方法可访问，如果需要明确设置方法可访问。setAccessible(true)方法
 	 * necessary. The {@code setAccessible(true)} method is only called
+	 * 只在需要的时候才调用，防止和JVM的SecurityManager（如果激活了）有不必要的
 	 * when actually necessary, to avoid unnecessary conflicts with a JVM
+	 * 冲突。
 	 * SecurityManager (if active).
 	 * @param method the method to make accessible
 	 * @see java.lang.reflect.Method#setAccessible

@@ -18,8 +18,9 @@ package org.aopalliance.intercept;
 
 /**
  * This interface represents an invocation in the program.
- *
+ * 该接口代表程序中的一次调用。
  * <p>An invocation is a joinpoint and can be intercepted by an
+ * 一次调用是一个连接点而且该调用能被拦截器拦截
  * interceptor.
  *
  * @author Rod Johnson
@@ -28,6 +29,7 @@ public interface Invocation extends Joinpoint {
 
 	/**
 	 * Get the arguments as an array object.
+	 * 获取参数数组。可以改变该数组中的元素值进而改变参数。
 	 * It is possible to change element values within this
 	 * array to change the arguments.
 	 * @return the argument of the invocation

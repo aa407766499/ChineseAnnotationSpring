@@ -21,8 +21,9 @@ import org.springframework.lang.Nullable;
 
 /**
  * Class containing static methods used to obtain information about the current AOP invocation.
- *
+ * 该类包含的静态方法用于获取关于当前AOP调用的信息。
  * <p>The {@code currentProxy()} method is usable if the AOP framework is configured to
+ * 
  * expose the current proxy (not the default). It returns the AOP proxy in use. Target objects
  * or advice can use this to make advised calls, in the same way as {@code getEJBObject()}
  * can be used in EJBs. They can also use it to find advice configuration.

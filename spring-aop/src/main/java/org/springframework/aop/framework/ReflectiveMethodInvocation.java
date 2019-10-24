@@ -31,22 +31,31 @@ import java.util.Map;
 
 /**
  * Spring's implementation of the AOP Alliance
+ * AOP联盟MethodInvocation接口的Spring实现，
  * {@link org.aopalliance.intercept.MethodInvocation} interface,
+ * 实现扩展的ProxyMethodInvocation接口
  * implementing the extended
  * {@link org.springframework.aop.ProxyMethodInvocation} interface.
  *
  * <p>Invokes the target object using reflection. Subclasses can override the
+ * 使用反射调用目标对象。子类可以覆盖invokeJoinpoint()方法去改变该功能，
  * {@link #invokeJoinpoint()} method to change this behavior, so this is also
+ * 对于更多的指定MethodInvocation实现来说，这样这也是一个有用的基础类。
  * a useful base class for more specialized MethodInvocation implementations.
  *
  * <p>It is possible to clone an invocation, to invoke {@link #proceed()}
+ * 可能克隆一次调用，重复调用proceed()方法（每克隆一次），使用invocableClone()
  * repeatedly (once per clone), using the {@link #invocableClone()} method.
+ * 方法。也可能给调用附加自定义的属性，使用setUserAttribute方法/getUserAttribute方法。
  * It is also possible to attach custom attributes to the invocation,
  * using the {@link #setUserAttribute} / {@link #getUserAttribute} methods.
  *
  * <p><b>NOTE:</b> This class is considered internal and should not be
+ * 注意：该类主要内部使用，不应该直接访问。该类是公共的唯一理由是兼容
  * directly accessed. The sole reason for it being public is compatibility
+ * 已存在的框架整合（比如：Pitchfork）。对于任何的其他意图，使用
  * with existing framework integrations (e.g. Pitchfork). For any other
+ * ProxyMethodInvocation接口作为代替。
  * purposes, use the {@link ProxyMethodInvocation} interface instead.
  *
  * @author Rod Johnson
@@ -80,7 +89,9 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 
 	/**
 	 * List of MethodInterceptor and InterceptorAndDynamicMethodMatcher
+	 * MethodInterceptor和需要动态检查的InterceptorAndDynamicMethodMatcher
 	 * that need dynamic checks.
+	 * 的列表。
 	 */
 	protected final List<?> interceptorsAndDynamicMethodMatchers;
 

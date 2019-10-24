@@ -35,7 +35,9 @@ import java.util.List;
 
 /**
  * A simple but definitive way of working out an advice chain for a Method,
+ * 给定一个Advised对象，为一个方法计算出增强链的简单而明确的方法。总是重新构建
  * given an {@link Advised} object. Always rebuilds each advice chain;
+ * 每一条增强链；子类可以提供缓存。
  * caching can be provided by subclasses.
  *
  * @author Juergen Hoeller
@@ -57,6 +59,7 @@ public class DefaultAdvisorChainFactory implements AdvisorChainFactory, Serializ
 			Advised config, Method method, @Nullable Class<?> targetClass) {
 
 		// This is somewhat tricky... We have to process introductions first,
+		// 这有点棘手..我们必须先处理引介，但是我们需要保留最终列表的顺序。
 		// but we need to preserve order in the ultimate list.
 		List<Object> interceptorList = new ArrayList<>(config.getAdvisors().length);
 		Class<?> actualClass = (targetClass != null ? targetClass : method.getDeclaringClass());
@@ -68,17 +71,20 @@ public class DefaultAdvisorChainFactory implements AdvisorChainFactory, Serializ
 		for (Advisor advisor : config.getAdvisors()) {
 			if (advisor instanceof PointcutAdvisor) {
 				// Add it conditionally.
+				// 有条件地添加切面。
 				PointcutAdvisor pointcutAdvisor = (PointcutAdvisor) advisor;
 				if (config.isPreFiltered() || pointcutAdvisor.getPointcut().getClassFilter().matches(actualClass)) {
 					//这个地方这两个方法的位置可以互换下
-					//将Advisor转化成Interceptor
+					//将Advisor转化成MethodInterceptor
 					MethodInterceptor[] interceptors = registry.getInterceptors(advisor);
 					//检查当前advisor的pointcut是否可以匹配当前方法
 					MethodMatcher mm = pointcutAdvisor.getPointcut().getMethodMatcher();
 					if (MethodMatchers.matches(mm, method, actualClass, hasIntroductions)) {
 						if (mm.isRuntime()) {
 							// Creating a new object instance in the getInterceptors() method
+							// 通常在我们缓存创建的链时，在getInterceptors()方法中创建新的对象实例
 							// isn't a problem as we normally cache created chains.
+							// 不是一个问题。
 							for (MethodInterceptor interceptor : interceptors) {
 								interceptorList.add(new InterceptorAndDynamicMethodMatcher(interceptor, mm));
 							}
@@ -107,6 +113,7 @@ public class DefaultAdvisorChainFactory implements AdvisorChainFactory, Serializ
 
 	/**
 	 * Determine whether the Advisors contain matching introductions.
+	 * 确定切面链是否匹配引介。
 	 */
 	private static boolean hasMatchingIntroductions(Advised config, Class<?> actualClass) {
 		for (int i = 0; i < config.getAdvisors().length; i++) {

@@ -24,10 +24,13 @@ import org.springframework.aop.TargetSource;
 
 /**
  * Interface to be implemented by classes that hold the configuration
+ * 实现该接口的类持有AOP代理工厂的配置。该配置包含拦截器和其他增强，切面以及
  * of a factory of AOP proxies. This configuration includes the
+ * 代理接口。
  * Interceptors and other advice, Advisors, and the proxied interfaces.
  *
  * <p>Any AOP proxy obtained from Spring can be cast to this interface to
+ * 从Spring中获取的任何AOP代理能被转换成该接口来允许操作其AOP增强。
  * allow manipulation of its AOP advice.
  *
  * @author Rod Johnson
@@ -104,6 +107,7 @@ public interface Advised extends TargetClassAware {
 
 	/**
 	 * Return whether this proxy configuration is pre-filtered so that it only
+	 * 返回该代理配置是否已经预过滤，这样该配置就仅包含应用切面（已经匹配了该代理的目标类）
 	 * contains applicable advisors (matching this proxy's target class).
 	 */
 	boolean isPreFiltered();

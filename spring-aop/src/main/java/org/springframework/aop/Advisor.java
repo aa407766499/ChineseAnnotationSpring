@@ -50,6 +50,7 @@ public interface Advisor {
 
 	/**
 	 * Return the advice part of this aspect. An advice may be an
+	 * 返回该切面的增强部分。一个增强可以是拦截器，前置增强，抛出异常增强等。
 	 * interceptor, a before advice, a throws advice, etc.
 	 * @return the advice that should apply if the pointcut matches
 	 * @see org.aopalliance.intercept.MethodInterceptor

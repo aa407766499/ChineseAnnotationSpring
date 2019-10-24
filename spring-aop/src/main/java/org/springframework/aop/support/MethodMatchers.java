@@ -16,20 +16,22 @@
 
 package org.springframework.aop.support;
 
-import java.io.Serializable;
-import java.lang.reflect.Method;
-
 import org.springframework.aop.ClassFilter;
 import org.springframework.aop.IntroductionAwareMethodMatcher;
 import org.springframework.aop.MethodMatcher;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
+import java.io.Serializable;
+import java.lang.reflect.Method;
+
 /**
  * Static utility methods for composing {@link MethodMatcher MethodMatchers}.
- *
+ * 组成MethodMatchers的静态功能方法。
  * <p>A MethodMatcher may be evaluated statically (based on method and target
+ * 一个MethodMatcher可以被静态解析（基于方法和目标类）或者需要进一步的动态解析
  * class) or need further evaluation dynamically (based on arguments at the
+ * （基于方法调用时的参数）
  * time of method invocation).
  *
  * @author Rod Johnson
@@ -78,6 +80,7 @@ public abstract class MethodMatchers {
 
 	/**
 	 * Apply the given MethodMatcher to the given Method, supporting an
+	 * 将给定的MethodMatcher应用到给定的方法，支持IntroductionAwareMethodMatcher。
 	 * {@link org.springframework.aop.IntroductionAwareMethodMatcher}
 	 * (if applicable).
 	 * @param mm the MethodMatcher to apply (may be an IntroductionAwareMethodMatcher)

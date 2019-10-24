@@ -93,14 +93,18 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 
 	/**
 	 * Construct a new ReflectiveMethodInvocation with the given arguments.
+	 * 根据给定参数创建一个新的ReflectiveMethodInvocation
 	 * @param proxy the proxy object that the invocation was made on
 	 * @param target the target object to invoke
 	 * @param method the method to invoke
 	 * @param arguments the arguments to invoke the method with
 	 * @param targetClass the target class, for MethodMatcher invocations
 	 * @param interceptorsAndDynamicMethodMatchers interceptors that should be applied,
+	 * 要应用的拦截器，其中任何的InterceptorAndDynamicMethodMatchers需要运行时解析。
 	 * along with any InterceptorAndDynamicMethodMatchers that need evaluation at runtime.
+	 * 该结构中包含的MethodMatcher必须已被发现，这样尽可能地静态匹配。传入一个数组可以快大约10%，
 	 * MethodMatchers included in this struct must already have been found to have matched
+	 * 但是使代码更加复杂。而且仅能在静态切入点情况下运行。
 	 * as far as was possibly statically. Passing an array might be about 10% faster,
 	 * but would complicate the code. And it would work only for static pointcuts.
 	 */

@@ -16,23 +16,27 @@
 
 package org.springframework.core;
 
+import org.springframework.lang.Nullable;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.ReflectionUtils;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.lang.Nullable;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.ReflectionUtils;
-
 /**
  * Helper for resolving synthetic {@link Method#isBridge bridge Methods} to the
+ * 解析合成桥方法的辅助器，找到被桥的方法。
  * {@link Method} being bridged.
  *
  * <p>Given a synthetic {@link Method#isBridge bridge Method} returns the {@link Method}
+ * 给定一个合成的桥方法返回被桥的方法。一个桥方法可以是被编译器创建在扩展一个参数化类型，
  * being bridged. A bridge method may be created by the compiler when extending a
+ * 该参数化类型的方法有参数化类型的参数。在运行调用期间，可以调用桥方法或者通过反射使用。
  * parameterized type whose methods have parameterized arguments. During runtime
+ * 在尝试定位方法上的注解时，会视情况智能地检查桥方法以及查找被桥的方法。
  * invocation the bridge {@link Method} may be invoked and/or used via reflection.
  * When attempting to locate annotations on {@link Method Methods}, it is wise to check
  * for bridge {@link Method Methods} as appropriate and find the bridged {@link Method}.
@@ -49,8 +53,11 @@ public abstract class BridgeMethodResolver {
 
 	/**
 	 * Find the original method for the supplied {@link Method bridge Method}.
+	 * 查找所提供的桥方法的原方法。
 	 * <p>It is safe to call this method passing in a non-bridge {@link Method} instance.
+	 * 在传入非桥方法时会安全的调用该方法。在这种情况下，所提供的方法实例将直接返回给调用者。
 	 * In such a case, the supplied {@link Method} instance is returned directly to the caller.
+	 * 调用者不需要在调用该方法之前检查桥。
 	 * Callers are <strong>not</strong> required to check for bridging before calling this method.
 	 * @param bridgeMethod the method to introspect
 	 * @return the original method (either the bridged method or the passed-in method

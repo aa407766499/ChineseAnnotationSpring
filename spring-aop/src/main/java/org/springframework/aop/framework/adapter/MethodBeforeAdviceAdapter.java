@@ -16,16 +16,16 @@
 
 package org.springframework.aop.framework.adapter;
 
-import java.io.Serializable;
-
 import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInterceptor;
-
 import org.springframework.aop.Advisor;
 import org.springframework.aop.MethodBeforeAdvice;
 
+import java.io.Serializable;
+
 /**
  * Adapter to enable {@link org.springframework.aop.MethodBeforeAdvice}
+ * 在Spring AOP框架中使用的开启MethodBeforeAdvice的适配器。
  * to be used in the Spring AOP framework.
  *
  * @author Rod Johnson

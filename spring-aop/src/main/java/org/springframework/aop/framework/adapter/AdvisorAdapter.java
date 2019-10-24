@@ -55,8 +55,10 @@ public interface AdvisorAdapter {
 
 	/**
 	 * Return an AOP Alliance MethodInterceptor exposing the behavior of
+	 * 返回AOP联盟方法拦截器暴露给定增强的功能给基于拦截的AOP框架。
 	 * the given advice to an interception-based AOP framework.
 	 * <p>Don't worry about any Pointcut contained in the Advisor;
+	 * 不用关心该切面中包含的任何切入点；AOP框架会小心检查切入点。
 	 * the AOP framework will take care of checking the pointcut.
 	 * @param advisor the Advisor. The supportsAdvice() method must have
 	 * returned true on this object

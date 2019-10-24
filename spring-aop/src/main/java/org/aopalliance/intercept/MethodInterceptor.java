@@ -18,10 +18,13 @@ package org.aopalliance.intercept;
 
 /**
  * Intercepts calls on an interface on its way to the target. These
+ * 在到达目标的过程中拦截接口上的调用。这些嵌套在目标的“顶部”。
  * are nested "on top" of the target.
  *
  * <p>The user should implement the {@link #invoke(MethodInvocation)}
+ * 用户应该实现invoke(MethodInvocation)方法去修改原有的行为。比如：下面的
  * method to modify the original behavior. E.g. the following class
+ * 类实现了追踪拦截器（追踪在拦截方法上的所有调用）。
  * implements a tracing interceptor (traces all the calls on the
  * intercepted method(s)):
  *
@@ -44,7 +47,9 @@ public interface MethodInterceptor extends Interceptor {
 	
 	/**
 	 * Implement this method to perform extra treatments before and
+	 * 实现该方法在调用前和调用后执行额外的处理。当然Polite实现会像在
 	 * after the invocation. Polite implementations would certainly
+	 * 调用Joinpoint的proceed()方法。
 	 * like to invoke {@link Joinpoint#proceed()}.
 	 * @param invocation the method invocation joinpoint
 	 * @return the result of the call to {@link Joinpoint#proceed()};

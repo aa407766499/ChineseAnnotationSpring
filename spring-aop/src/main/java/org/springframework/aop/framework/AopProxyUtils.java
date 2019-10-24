@@ -224,7 +224,9 @@ public abstract class AopProxyUtils {
 
 	/**
 	 * Adapt the given arguments to the target signature in the given method,
+	 * 对给定方法的目标签名适配给定参数，如果需要：特别的，如果给定var类型参数数组
 	 * if necessary: in particular, if a given vararg argument array does not
+	 * 不需要匹配方法中声明的var类型参数的数组类型。
 	 * match the array type of the declared vararg parameter in the method.
 	 * @param method the target method
 	 * @param arguments the given arguments

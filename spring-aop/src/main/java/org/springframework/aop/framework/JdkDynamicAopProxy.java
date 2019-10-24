@@ -216,27 +216,34 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 			}
 
 			// Get as late as possible to minimize the time we "own" the target,
+			// 如果目标类来自池中，那么就尽可能的懒加载来最小化我们获取目标的时间。
 			// in case it comes from a pool.
 			//获得目标对象的类
 			target = targetSource.getTarget();
 			Class<?> targetClass = (target != null ? target.getClass() : null);
 
 			// Get the interception chain for this method.
+			// 获取该方法的拦截链。
 			//获取可以应用到此方法上的Interceptor列表
 			List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
 
 			// Check whether we have any advice. If we don't, we can fallback on direct
+			// 检查我们是否有任何的增强。如果我们没有增强，我们能回调直接反射调用目标，防止创建一个MethodInvocation。
 			// reflective invocation of the target, and avoid creating a MethodInvocation.
 			//如果没有可以应用到此方法的通知(Interceptor)，此直接反射调用 method.invoke(target, args)
 			if (chain.isEmpty()) {
 				// We can skip creating a MethodInvocation: just invoke the target directly
+				// 我们能跳过创建一个MethodInvocation：仅直接调用目标
 				// Note that the final invoker must be an InvokerInterceptor so we know it does
+				// 注意：最后的调用者必须是一个InvokerInterceptor，这样我们知道他不做任何事情，但是
 				// nothing but a reflective operation on the target, and no hot swapping or fancy proxying.
+				// 对目标进行反射操作，没有热加载或者异常复杂的代理。
 				Object[] argsToUse = AopProxyUtils.adaptArgumentsIfNecessary(method, args);
 				retVal = AopUtils.invokeJoinpointUsingReflection(target, method, argsToUse);
 			}
 			else {
 				// We need to create a method invocation...
+				// 我们需要创建一个方法调用...
 				//创建MethodInvocation
 				invocation = new ReflectiveMethodInvocation(proxy, target, method, args, targetClass, chain);
 				// Proceed to the joinpoint through the interceptor chain.

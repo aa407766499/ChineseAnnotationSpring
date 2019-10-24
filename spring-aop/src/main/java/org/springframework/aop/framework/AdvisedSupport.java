@@ -83,6 +83,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 
 	/**
 	 * The AdvisorChainFactory to use
+	 * 要使用的AdvisorChainFactory
 	 */
 	AdvisorChainFactory advisorChainFactory = new DefaultAdvisorChainFactory();
 
@@ -493,6 +494,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 
 	/**
 	 * Determine a list of {@link org.aopalliance.intercept.MethodInterceptor} objects
+	 * 确定给定方法的方法拦截器对象列表，基于该配置。
 	 * for the given method, based on this configuration.
 	 *
 	 * @param method      the proxied method
@@ -604,7 +606,9 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 
 	/**
 	 * Simple wrapper class around a Method. Used as the key when
+	 * 简单包装方法的类。在缓存方法时使用这个key,为了进行高效的equals和
 	 * caching methods, for efficient equals and hashCode comparisons.
+	 * hashCode比较。
 	 */
 	private static final class MethodCacheKey implements Comparable<MethodCacheKey> {
 

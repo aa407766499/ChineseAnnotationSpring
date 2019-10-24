@@ -16,16 +16,16 @@
 
 package org.springframework.aop.framework.adapter;
 
-import java.io.Serializable;
-
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-
 import org.springframework.aop.MethodBeforeAdvice;
 import org.springframework.util.Assert;
 
+import java.io.Serializable;
+
 /**
  * Interceptor to wrap am {@link org.springframework.aop.MethodBeforeAdvice}.
+ * 包装一个MethodBeforeAdvice的拦截器。AOP框架内部使用；应用开发者不需要直接使用该类
  * Used internally by the AOP framework; application developers should not need
  * to use this class directly.
  *

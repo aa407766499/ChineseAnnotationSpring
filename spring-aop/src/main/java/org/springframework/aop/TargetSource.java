@@ -71,6 +71,7 @@ public interface TargetSource extends TargetClassAware {
 
 	/**
 	 * Release the given target object obtained from the
+	 * 释放从getTarget()方法获取的给定目标对象。
 	 * {@link #getTarget()} method, if any.
 	 * @param target object obtained from a call to {@link #getTarget()}
 	 * @throws Exception if the object can't be released

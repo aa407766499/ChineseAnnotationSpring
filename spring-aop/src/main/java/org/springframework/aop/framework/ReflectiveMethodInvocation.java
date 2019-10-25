@@ -97,7 +97,9 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 
 	/**
 	 * Index from 0 of the current interceptor we're invoking.
+	 * 我们从索引0开始调用当前拦截器。直到我们调用-1。然后当
 	 * -1 until we invoke: then the current interceptor.
+	 * 前拦截器。
 	 */
 	private int currentInterceptorIndex = -1;
 
@@ -173,6 +175,7 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 	@Nullable
 	public Object proceed() throws Throwable {
 		//	We start with an index of -1 and increment early.
+		// 我们从索引-1开始，然后增加
 		//如果Interceptor执行完了，则执行joinPoint
 		if (this.currentInterceptorIndex == this.interceptorsAndDynamicMethodMatchers.size() - 1) {
 			return invokeJoinpoint();
@@ -183,6 +186,7 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 		//如果要动态匹配joinPoint
 		if (interceptorOrInterceptionAdvice instanceof InterceptorAndDynamicMethodMatcher) {
 			// Evaluate dynamic method matcher here: static part will already have
+			// 在这里解析动态方法匹配器：静态部分已经被解析并且匹配。
 			// been evaluated and found to match.
 			InterceptorAndDynamicMethodMatcher dm =
 					(InterceptorAndDynamicMethodMatcher) interceptorOrInterceptionAdvice;
@@ -192,14 +196,18 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 			}
 			else {
 				// Dynamic matching failed.
+				// 动态匹配失败。
 				// Skip this interceptor and invoke the next in the chain.
+				// 跳过该拦截器并且调用链中下一个拦截器。
 				//动态匹配失败时,略过当前Intercetpor,调用下一个Interceptor
 				return proceed();
 			}
 		}
 		else {
 			// It's an interceptor, so we just invoke it: The pointcut will have
+			// 不需要动态匹配，因此我们直接调用就行：在该对象被构造之前，切入点
 			// been evaluated statically before this object was constructed.
+			// 已经被静态解析了。
 			//执行当前Intercetpor
 			return ((MethodInterceptor) interceptorOrInterceptionAdvice).invoke(this);
 		}
@@ -207,7 +215,9 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 
 	/**
 	 * Invoke the joinpoint using reflection.
+	 * 使用反射调用连接点。子类可以覆盖该方法
 	 * Subclasses can override this to use custom invocation.
+	 * 使用自定义调用。
 	 * @return the return value of the joinpoint
 	 * @throws Throwable if invoking the joinpoint resulted in an exception
 	 */

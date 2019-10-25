@@ -167,9 +167,11 @@ class CglibAopProxy implements AopProxy, Serializable {
 		}
 
 		try {
+			//获取目标类
 			Class<?> rootClass = this.advised.getTargetClass();
 			Assert.state(rootClass != null, "Target class must be available for creating a CGLIB proxy");
 
+			//代理的父类
 			Class<?> proxySuperClass = rootClass;
 			if (ClassUtils.isCglibProxyClass(rootClass)) {
 				proxySuperClass = rootClass.getSuperclass();
@@ -180,9 +182,11 @@ class CglibAopProxy implements AopProxy, Serializable {
 			}
 
 			// Validate the class, writing log messages as necessary.
+			// 验证类，需要写日志信息
 			validateClassIfNecessary(proxySuperClass, classLoader);
 
 			// Configure CGLIB Enhancer...
+			// 配置CGLIB Enhancer
 			Enhancer enhancer = createEnhancer();
 			if (classLoader != null) {
 				enhancer.setClassLoader(classLoader);
@@ -196,6 +200,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 			enhancer.setNamingPolicy(SpringNamingPolicy.INSTANCE);
 			enhancer.setStrategy(new ClassLoaderAwareUndeclaredThrowableStrategy(classLoader));
 
+			//获取回调
 			Callback[] callbacks = getCallbacks(rootClass);
 			Class<?>[] types = new Class<?>[callbacks.length];
 			for (int x = 0; x < types.length; x++) {
@@ -231,6 +236,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 
 	/**
 	 * Creates the CGLIB {@link Enhancer}. Subclasses may wish to override this to return a custom
+	 * 创建CGLIB Enhancer。子类可以覆盖该方法来返回自定义的Enhancer实现。
 	 * {@link Enhancer} implementation.
 	 */
 	protected Enhancer createEnhancer() {
@@ -239,6 +245,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 
 	/**
 	 * Checks to see whether the supplied {@code Class} has already been validated and
+	 * 检查所提供的类是否已经被验证，如果没有就进行验证。
 	 * validates it if not.
 	 */
 	private void validateClassIfNecessary(Class<?> proxySuperClass, @Nullable ClassLoader proxyClassLoader) {
@@ -255,6 +262,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 
 	/**
 	 * Checks for final methods on the given {@code Class}, as well as package-visible
+	 * 通过ClassLoader检查给定类的final方法和包可见的方法，每找到一个写警告日志。
 	 * methods across ClassLoaders, and writes warnings to the log for each one found.
 	 */
 	private void doValidateClass(Class<?> proxySuperClass, @Nullable ClassLoader proxyClassLoader, Set<Class<?>> ifcs) {
@@ -286,15 +294,19 @@ class CglibAopProxy implements AopProxy, Serializable {
 
 	private Callback[] getCallbacks(Class<?> rootClass) throws Exception {
 		// Parameters used for optimization choices...
+		// 优化选择使用的参数
 		boolean exposeProxy = this.advised.isExposeProxy();
 		boolean isFrozen = this.advised.isFrozen();
 		boolean isStatic = this.advised.getTargetSource().isStatic();
 
 		// Choose an "aop" interceptor (used for AOP calls).
+		// 选择一个AOP拦截器(AOP调用使用)
 		Callback aopInterceptor = new DynamicAdvisedInterceptor(this.advised);
 
 		// Choose a "straight to target" interceptor. (used for calls that are
+		// 选择一个"直达目标"拦截器。（未增强的而且返回this的调用使用）。可以要求
 		// unadvised but can return this). May be required to expose the proxy.
+		// 暴露代理.
 		Callback targetInterceptor;
 		if (exposeProxy) {
 			targetInterceptor = isStatic ?
@@ -308,13 +320,14 @@ class CglibAopProxy implements AopProxy, Serializable {
 		}
 
 		// Choose a "direct to target" dispatcher (used for
+		// 选择一个"直达目标"委派器(不能返回this的静态目标的未增强调用使用)
 		// unadvised calls to static targets that cannot return this).
 		Callback targetDispatcher = isStatic ?
 				new StaticDispatcher(this.advised.getTargetSource().getTarget()) : new SerializableNoOp();
 
 		Callback[] mainCallbacks = new Callback[] {
-				aopInterceptor,  // for normal advice
-				targetInterceptor,  // invoke target without considering advice, if optimized
+				aopInterceptor,  // for normal advice //一般的增强
+				targetInterceptor,  // invoke target without considering advice, if optimized //如果优化，不考虑增强调用目标
 				new SerializableNoOp(),  // no override for methods mapped to this
 				targetDispatcher, this.advisedDispatcher,
 				new EqualsInterceptor(this.advised),
@@ -333,6 +346,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 
 			// TODO: small memory optimization here (can skip creation for methods with no advice)
 			for (int x = 0; x < methods.length; x++) {
+				//获取该方法上的拦截器链
 				List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(methods[x], rootClass);
 				fixedCallbacks[x] = new FixedChainStaticTargetInterceptor(
 						chain, this.advised.getTargetSource().getTarget(), this.advised.getTargetClass());
@@ -411,7 +425,9 @@ class CglibAopProxy implements AopProxy, Serializable {
 
 	/**
 	 * Method interceptor used for static targets with no advice chain. The call
+	 * 没有增强链的静态目标使用的方法拦截器。调用直接传回给目标。在代理需要暴露并且
 	 * is passed directly back to the target. Used when the proxy needs to be
+	 * 不确定该方法返回this时使用。
 	 * exposed and it can't be determined that the method won't return
 	 * {@code this}.
 	 */
@@ -435,6 +451,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 
 	/**
 	 * Method interceptor used for static targets with no advice chain, when the
+	 * 没有增强链的静态目标使用的方法拦截器，在代理要被暴露的时候。
 	 * proxy is to be exposed.
 	 */
 	private static class StaticUnadvisedExposedInterceptor implements MethodInterceptor, Serializable {
@@ -464,7 +481,9 @@ class CglibAopProxy implements AopProxy, Serializable {
 
 	/**
 	 * Interceptor used to invoke a dynamic target without creating a method
+	 * 拦截器被用于调用没有创建一个方法调用或者解析一条增强链的动态目标（我们知道
 	 * invocation or evaluating an advice chain. (We know there was no advice
+	 * 该方法上没有增强）
 	 * for this method.)
 	 */
 	private static class DynamicUnadvisedInterceptor implements MethodInterceptor, Serializable {
@@ -494,6 +513,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 
 	/**
 	 * Interceptor for unadvised dynamic targets when the proxy needs exposing.
+	 * 在代理需要暴露的时候，未增强的动态目标的拦截器。
 	 */
 	private static class DynamicUnadvisedExposedInterceptor implements MethodInterceptor, Serializable {
 
@@ -651,6 +671,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 
 	/**
 	 * General purpose AOP callback. Used when the target is dynamic or when the
+	 * 一般用途的AOP回调。在目标是动态或者代理没有冻结时使用。
 	 * proxy is not frozen.
 	 */
 	private static class DynamicAdvisedInterceptor implements MethodInterceptor, Serializable {

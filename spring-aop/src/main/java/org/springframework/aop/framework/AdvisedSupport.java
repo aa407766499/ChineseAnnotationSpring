@@ -556,6 +556,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 
 	/**
 	 * Build a configuration-only copy of this AdvisedSupport,
+	 * 构建一个仅复制配置的AdvisedSupport，替换TargetSource
 	 * replacing the TargetSource
 	 */
 	AdvisedSupport getConfigurationOnlyCopy() {

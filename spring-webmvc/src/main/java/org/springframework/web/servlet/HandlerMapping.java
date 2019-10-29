@@ -16,34 +16,45 @@
 
 package org.springframework.web.servlet;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.lang.Nullable;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Interface to be implemented by objects that define a mapping between
+ * 实现该接口的对象在请求和处理器对象之间定义了一种映射
  * requests and handler objects.
  *
  * <p>This class can be implemented by application developers, although this is not
+ * 应用开发者可以实现该类，虽然并不需要这么做，框架内包含了BeanNameUrlHandlerMapping和
  * necessary, as {@link org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping}
+ * RequestMappingHandlerMapping。如果在应用上下文中没有注册HandlerMapping，那么前者将作为默认值。
  * and {@link org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping}
  * are included in the framework. The former is the default if no
  * HandlerMapping bean is registered in the application context.
  *
  * <p>HandlerMapping implementations can support mapped interceptors but do not
+ * HandlerMapping实现类可以支持映射拦截器但是并不必须这么做。一个处理器将总是被包装进
  * have to. A handler will always be wrapped in a {@link HandlerExecutionChain}
+ * 一个HandlerExecutionChain实例中，可以选择将一些HandlerInterceptor实例一起包装。
  * instance, optionally accompanied by some {@link HandlerInterceptor} instances.
+ * DispatcherServlet会首先以给定的顺序调用每一个HandlerInterceptor的preHandle方法，
  * The DispatcherServlet will first call each HandlerInterceptor's
+ * 如果所有的preHandle方法都返回true，那么最后会调用handler。
  * {@code preHandle} method in the given order, finally invoking the handler
  * itself if all {@code preHandle} methods have returned {@code true}.
  *
  * <p>The ability to parameterize this mapping is a powerful and unusual
+ * 将映射参数化是该MVC框架的有力而且独特的能力。比如，可能基于session状态，cookie
  * capability of this MVC framework. For example, it is possible to write
+ * 状态或者许多其他变量写一个自定义的映射。其他的MVC框架都没有这么灵活。
  * a custom mapping based on session state, cookie state or many other
  * variables. No other MVC framework seems to be equally flexible.
  *
  * <p>Note: Implementations can implement the {@link org.springframework.core.Ordered}
+ * 注意：实现类可以实现Ordered接口，这样可以指定一个排序顺序，因此DispatcherServlet
  * interface to be able to specify a sorting order and thus a priority for getting
+ * 可以优先应用。没有实现Ordered接口的实例优先级更低。
  * applied by DispatcherServlet. Non-Ordered instances get treated as lowest priority.
  *
  * @author Rod Johnson

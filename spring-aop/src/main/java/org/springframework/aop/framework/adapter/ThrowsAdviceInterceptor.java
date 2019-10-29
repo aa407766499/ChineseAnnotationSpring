@@ -16,19 +16,18 @@
 
 package org.springframework.aop.framework.adapter;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.aop.AfterAdvice;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Interceptor to wrap an after-throwing advice.
@@ -76,12 +75,14 @@ public class ThrowsAdviceInterceptor implements MethodInterceptor, AfterAdvice {
 		this.throwsAdvice = throwsAdvice;
 
 		Method[] methods = throwsAdvice.getClass().getMethods();
+		//抛出异常增强的方法名称必须为afterThrowing，参数要么只有异常，要么方法，参数，目标，异常都有
 		for (Method method : methods) {
 			if (method.getName().equals(AFTER_THROWING) &&
 					(method.getParameterCount() == 1 || method.getParameterCount() == 4) &&
 					Throwable.class.isAssignableFrom(method.getParameterTypes()[method.getParameterCount() - 1])
 				) {
 				// Have an exception handler
+				// 有一个异常处理器
 				this.exceptionHandlerMap.put(method.getParameterTypes()[method.getParameterCount() - 1], method);
 				if (logger.isDebugEnabled()) {
 					logger.debug("Found exception handler method: " + method);

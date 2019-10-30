@@ -16,21 +16,6 @@
 
 package org.springframework.web.servlet.handler;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.InitializingBean;
@@ -45,11 +30,20 @@ import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerMapping;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 /**
  * Abstract base class for {@link HandlerMapping} implementations that define
+ * HandlerMapping实现的抽象基础类，该类定义了请求和处理器方法之间的映射
  * a mapping between a request and a {@link HandlerMethod}.
  *
  * <p>For each registered handler method, a unique mapping is maintained with
+ * 对于每一个注册的处理器方法，定义了映射类型细节的子类维护了一个唯一的映射。
  * subclasses defining the details of the mapping type {@code <T>}.
  *
  * @author Arjen Poutsma
@@ -305,6 +299,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	/**
 	 * Look up a handler method for the given request.
+	 * 根据给定的请求查询处理器。
 	 */
 	@Override
 	protected HandlerMethod getHandlerInternal(HttpServletRequest request) throws Exception {
@@ -406,7 +401,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	 * @throws ServletException in case of errors
 	 */
 	@Nullable
-	protected HandlerMethod handleNoMatch(Set<T> mappings, String lookupPath, HttpServletRequest request) {
+	protected HandlerMethod handleNoMatch(Set<T> mappings, String lookupPath, HttpServletRequest request) throws ServletException {
 
 		return null;
 	}

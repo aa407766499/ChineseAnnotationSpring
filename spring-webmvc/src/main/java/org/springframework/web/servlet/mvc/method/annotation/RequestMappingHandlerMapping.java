@@ -16,12 +16,6 @@
 
 package org.springframework.web.servlet.mvc.method.annotation;
 
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Set;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.lang.Nullable;
@@ -43,9 +37,17 @@ import org.springframework.web.servlet.mvc.condition.RequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Set;
+
 /**
  * Creates {@link RequestMappingInfo} instances from type and method-level
+ * 根据@Controller类中的类级别和方法级别的@RequestMapping注解创建RequestMappingInfo
  * {@link RequestMapping @RequestMapping} annotations in
+ * 实例。
  * {@link Controller @Controller} classes.
  *
  * @author Arjen Poutsma

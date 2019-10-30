@@ -68,10 +68,14 @@ public interface HandlerMapping {
 
 	/**
 	 * Name of the {@link HttpServletRequest} attribute that contains the path
+	 * 包含处理器映射中路径的HttpServletRequest属性名称，如果有一个模式匹配，
 	 * within the handler mapping, in case of a pattern match, or the full
+	 * 或者全部的相关URI（通常在DispatcherServlet的映射中）。
 	 * relevant URI (typically within the DispatcherServlet's mapping) else.
 	 * <p>Note: This attribute is not required to be supported by all
+	 * 注意：该属性不需要被所有的HandlerMapping实现支持。基于URL的HandlerMapping
 	 * HandlerMapping implementations. URL-based HandlerMappings will
+	 * 通常会支持该属性，但是处理器并不需要在所有的场景中都有该请求属性。
 	 * typically support it, but handlers should not necessarily expect
 	 * this request attribute to be present in all scenarios.
 	 */
@@ -79,9 +83,12 @@ public interface HandlerMapping {
 
 	/**
 	 * Name of the {@link HttpServletRequest} attribute that contains the
+	 * 包含处理器映射中最匹配模式的HttpServletRequest属性的名称。
 	 * best matching pattern within the handler mapping.
 	 * <p>Note: This attribute is not required to be supported by all
+	 * 注意：该属性不需要被所有的HandlerMapping实现支持。基于URL的HandlerMapping
 	 * HandlerMapping implementations. URL-based HandlerMappings will
+	 * 通常会支持该属性，但是处理器并不需要在所有的场景中都有该请求属性。
 	 * typically support it, but handlers should not necessarily expect
 	 * this request attribute to be present in all scenarios.
 	 */
@@ -89,17 +96,23 @@ public interface HandlerMapping {
 
 	/**
 	 * Name of the boolean {@link HttpServletRequest} attribute that indicates
+	 * 表示是否检查类级别映射的boolean HttpServletRequest属性的名称
 	 * whether type-level mappings should be inspected.
+	 *
 	 * <p>Note: This attribute is not required to be supported by all
+	 * 注意：该属性不需要被所有的HandlerMapping实现支持。
 	 * HandlerMapping implementations.
 	 */
 	String INTROSPECT_TYPE_LEVEL_MAPPING = HandlerMapping.class.getName() + ".introspectTypeLevelMapping";
 
 	/**
 	 * Name of the {@link HttpServletRequest} attribute that contains the URI
+	 * 包含URI模板映射，将变量名称映射给值的HttpServletRequest属性名称。
 	 * templates map, mapping variable names to values.
 	 * <p>Note: This attribute is not required to be supported by all
+	 * 注意：该属性不需要被所有的HandlerMapping实现支持。基于URL的HandlerMapping
 	 * HandlerMapping implementations. URL-based HandlerMappings will
+	 * 通常会支持该属性，但是处理器并不需要在所有的场景中都有该请求属性。
 	 * typically support it, but handlers should not necessarily expect
 	 * this request attribute to be present in all scenarios.
 	 */
@@ -107,33 +120,47 @@ public interface HandlerMapping {
 
 	/**
 	 * Name of the {@link HttpServletRequest} attribute that contains a map with
+	 * 包含URI变量名称和URI矩阵变量对应的MultiValueMap映射的HttpServletRequest
 	 * URI variable names and a corresponding MultiValueMap of URI matrix
+	 * 属性名称。
 	 * variables for each.
 	 * <p>Note: This attribute is not required to be supported by all
+	 * 注意：该属性不需要被所有的HandlerMapping实现支持并且不一定存在，这取决于
 	 * HandlerMapping implementations and may also not be present depending on
+	 * HandlerMapping是否被配置持有矩阵变量内容。
 	 * whether the HandlerMapping is configured to keep matrix variable content
 	 */
 	String MATRIX_VARIABLES_ATTRIBUTE = HandlerMapping.class.getName() + ".matrixVariables";
 
 	/**
 	 * Name of the {@link HttpServletRequest} attribute that contains the set of
+	 * 包含应用到映射的处理器的生产媒体类型的集合的HttpServletRequest属性名称。
 	 * producible MediaTypes applicable to the mapped handler.
 	 * <p>Note: This attribute is not required to be supported by all
+	 * 注意：该属性不需要被所有的HandlerMapping实现支持。处理器并不需要在所有
 	 * HandlerMapping implementations. Handlers should not necessarily expect
+	 * 的场景中都有该请求属性。
 	 * this request attribute to be present in all scenarios.
 	 */
 	String PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE = HandlerMapping.class.getName() + ".producibleMediaTypes";
 
 	/**
 	 * Return a handler and any interceptors for this request. The choice may be made
+	 * 返回该请求的处理器和任何拦截器。可以通过请求URL，session状态，或者任何实现类选择
 	 * on request URL, session state, or any factor the implementing class chooses.
+	 * 的因素进行该操作。
 	 * <p>The returned HandlerExecutionChain contains a handler Object, rather than
+	 * 返回的HandlerExecutionChain包含一个处理器对象，而不是标记接口，因此处理器
 	 * even a tag interface, so that handlers are not constrained in any way.
+	 * 不受任何约束。比如，可以写一个处理器适配器来允许使用其他框架的处理器对象。
 	 * For example, a HandlerAdapter could be written to allow another framework's
 	 * handler objects to be used.
 	 * <p>Returns {@code null} if no match was found. This is not an error.
+	 * 如果没有匹配的，返回null。这不是一个错误。DispatcherServlet会查询所有注册的
 	 * The DispatcherServlet will query all registered HandlerMapping beans to find
+	 * HandlerMapping bean来查找一个匹配，如果没有查找到一个处理器，那么仅能确定有
 	 * a match, and only decide there is an error if none can find a handler.
+	 * 一个错误。
 	 * @param request current HTTP request
 	 * @return a HandlerExecutionChain instance containing handler object and
 	 * any interceptors, or {@code null} if no mapping found

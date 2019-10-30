@@ -16,14 +16,16 @@
 
 package org.springframework.web.servlet.handler;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.HandlerMapping;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Additional interface that a {@link HandlerMapping} can implement to expose
+ * HandlerMapping能实现的另外的接口，该接口用于暴露请求匹配API，还有其内部的请求匹配配置
  * a request matching API aligned with its internal request matching
+ * 和实现。
  * configuration and implementation.
  *
  * @author Rossen Stoyanchev
@@ -34,6 +36,7 @@ public interface MatchableHandlerMapping extends HandlerMapping {
 
 	/**
 	 * Determine whether the given request matches the request criteria.
+	 * 确定给定的请求是否匹配请求条件。
 	 * @param request the current request
 	 * @param pattern the pattern to match
 	 * @return the result from request matching, or {@code null} if none

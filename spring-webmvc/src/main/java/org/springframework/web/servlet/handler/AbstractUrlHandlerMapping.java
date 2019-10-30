@@ -16,16 +16,6 @@
 
 package org.springframework.web.servlet.handler;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.lang.Nullable;
@@ -33,19 +23,30 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.servlet.HandlerExecutionChain;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
+
 /**
  * Abstract base class for URL-mapped {@link org.springframework.web.servlet.HandlerMapping}
+ * HandlerMapping实现URL映射的抽象基础类。提供将处理器映射到URL的映射结构以及可配置的URL查询。
  * implementations. Provides infrastructure for mapping handlers to URLs and configurable
+ * 后者的更多信息，参考alwaysUseFullPath属性。
  * URL lookup. For information on the latter, see "alwaysUseFullPath" property.
  *
  * <p>Supports direct matches, e.g. a registered "/test" matches "/test", and
+ * 支持直接匹配，比如：一个注册的"/test"匹配"/test"，还有可变的Ant风格模式匹配，比如
  * various Ant-style pattern matches, e.g. a registered "/t*" pattern matches
+ * 注册"/t*" 模式匹配"/test"和"/team"，"/test/*" 匹配"/test"目录下的所有路径，
  * both "/test" and "/team", "/test/*" matches all paths in the "/test" directory,
+ * "/test/**"匹配"/test"目下的所有路径。获取更多细节，参考AntPathMatcher javadoc。
  * "/test/**" matches all paths below "/test". For details, see the
  * {@link org.springframework.util.AntPathMatcher AntPathMatcher} javadoc.
  *
  * <p>Will search all path patterns to find the most exact match for the
+ * 会查询所有的路径模式去找到当前请求路径最精确的匹配。最精确的匹配被定义为
  * current request path. The most exact match is defined as the longest
+ * 匹配当前请求路径的最长的路径模式。
  * path pattern that matches the current request path.
  *
  * @author Juergen Hoeller

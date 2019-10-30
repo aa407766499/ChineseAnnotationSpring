@@ -16,14 +16,6 @@
 
 package org.springframework.web.servlet.handler;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.core.Ordered;
@@ -34,24 +26,31 @@ import org.springframework.util.PathMatcher;
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.context.request.WebRequestInterceptor;
 import org.springframework.web.context.support.WebApplicationObjectSupport;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.CorsProcessor;
-import org.springframework.web.cors.CorsUtils;
-import org.springframework.web.cors.DefaultCorsProcessor;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.*;
 import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.util.UrlPathHelper;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Abstract base class for {@link org.springframework.web.servlet.HandlerMapping}
+ * HandlerMapping实现的抽象基础类。支持排序，默认处理器，处理器拦截器，包括根据
  * implementations. Supports ordering, a default handler, handler interceptors,
+ * 路径模式匹配的处理器拦截器。
  * including handler interceptors mapped by path patterns.
  *
  * <p>Note: This base class does <i>not</i> support exposure of the
+ * 注意该类不支持暴露PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE。该属性由具体的子类
  * {@link #PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE}. Support for this attribute
+ * 支持，通常基于请求URL映射。
  * is up to concrete subclasses, typically based on request URL mappings.
  *
  * @author Juergen Hoeller
@@ -158,6 +157,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 
 	/**
 	 * Return the UrlPathHelper implementation to use for resolution of lookup paths.
+	 * 返回UrlPathHelper实现类，该类用于解析查询路径。
 	 */
 	public UrlPathHelper getUrlPathHelper() {
 		return urlPathHelper;
@@ -340,6 +340,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 
 	/**
 	 * Look up a handler for the given request, falling back to the default
+	 * 根据给定请求查询处理器，如果没有匹配的处理器，回调给默认的处理器
 	 * handler if no specific one is found.
 	 * @param request current HTTP request
 	 * @return the corresponding handler instance, or the default handler
@@ -373,15 +374,22 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 
 	/**
 	 * Look up a handler for the given request, returning {@code null} if no
+	 * 根据给定的请求查询处理器，如果没有匹配的返回null。该方法由getHandler
 	 * specific one is found. This method is called by {@link #getHandler};
+	 * 调用；返回值为null会导致调用默认的处理器，如果设置了默认的处理器。
 	 * a {@code null} return value will lead to the default handler, if one is set.
 	 * <p>On CORS pre-flight requests this method should return a match not for
+	 * 在跨域预请求中，该方法不应该返回预请求的匹配，而是基于URL路径返回需要的实际请求的
 	 * the pre-flight request but for the expected actual request based on the URL
+	 * 匹配，"Access-Control-Request-Method"头的HTTP方法，以及"Access-Control-Request-Headers"
 	 * path, the HTTP methods from the "Access-Control-Request-Method" header, and
+	 * 头的头，因此允许通过getCorsConfigurations方法获取CORS配置。
 	 * the headers from the "Access-Control-Request-Headers" header thus allowing
 	 * the CORS configuration to be obtained via {@link #getCorsConfigurations},
 	 * <p>Note: This method may also return a pre-built {@link HandlerExecutionChain},
+	 * 注意：该方法也可以返回预构建的HandlerExecutionChain，组合了一个处理器对象和
 	 * combining a handler object with dynamically determined interceptors.
+	 * 动态确定的拦截器。静态指定的拦截器会被合并到已存在的链中。
 	 * Statically specified interceptors will get merged into such an existing chain.
 	 * @param request current HTTP request
 	 * @return the corresponding handler instance, or {@code null} if none found

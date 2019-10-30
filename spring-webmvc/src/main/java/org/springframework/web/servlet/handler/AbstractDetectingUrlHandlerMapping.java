@@ -24,6 +24,7 @@ import org.springframework.util.ObjectUtils;
 
 /**
  * Abstract implementation of the {@link org.springframework.web.servlet.HandlerMapping}
+ * HandlerMapping接口的抽象实现类，通过内省应用上下文中所有定义的bean，查找处理器bean的URL映射。
  * interface, detecting URL mappings for handler beans through introspection of all
  * defined beans in the application context.
  *

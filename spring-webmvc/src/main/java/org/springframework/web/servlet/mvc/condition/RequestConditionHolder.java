@@ -16,21 +16,26 @@
 
 package org.springframework.web.servlet.mvc.condition;
 
+import org.springframework.lang.Nullable;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.Collections;
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.lang.Nullable;
 
 /**
  * A holder for a {@link RequestCondition} useful when the type of the request
+ * 在请求条件的类型未知的情况下，RequestCondition使用的持有器。比如：自定义条件。因为
  * condition is not known ahead of time, e.g. custom condition. Since this
+ * 该类也是RequestCondition的一个实现，它将持有的请求条件包装，允许组合请求条件以及
  * class is also an implementation of {@code RequestCondition}, effectively it
+ * 和类型的其他请求条件比较，null安全。
  * decorates the held request condition and allows it to be combined and compared
  * with other request conditions in a type and null safe way.
  *
  * <p>When two {@code RequestConditionHolder} instances are combined or compared
+ * 在组合两个RequestConditionHolder实例或者两者相互比较时，需要持有的条件是相同类型。
  * with each other, it is expected the conditions they hold are of the same type.
+ * 如果不是相同类型，将引发ClassCastException。
  * If they are not, a {@link ClassCastException} is raised.
  *
  * @author Rossen Stoyanchev
@@ -106,7 +111,9 @@ public final class RequestConditionHolder extends AbstractRequestCondition<Reque
 
 	/**
 	 * Get the matching condition for the held request condition wrap it in a
+	 * 获取持有请求条件的匹配条件，将其包装一个新的RequestConditionHolder实例。
 	 * new RequestConditionHolder instance. Or otherwise if this is an empty
+	 * 或者如果是一个空的持有器，返回相同的持有器实例。
 	 * holder, return the same holder instance.
 	 */
 	@Override

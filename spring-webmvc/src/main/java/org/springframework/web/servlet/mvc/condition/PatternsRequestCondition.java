@@ -16,27 +16,19 @@
 
 package org.springframework.web.servlet.mvc.condition;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.lang.Nullable;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.UrlPathHelper;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
+
 /**
  * A logical disjunction (' || ') request condition that matches a request
+ * 逻辑解析或(“||”)请求条件去匹配针对一组URL路径模式的请求
  * against a set of URL path patterns.
- *
  * @author Rossen Stoyanchev
  * @since 3.1
  */
@@ -181,14 +173,21 @@ public final class PatternsRequestCondition extends AbstractRequestCondition<Pat
 
 	/**
 	 * Checks if any of the patterns match the given request and returns an instance
+	 * 检查是否有任何的模式匹配给定的请求，然后返回一个实例，该实例保证包含匹配的模式，
 	 * that is guaranteed to contain matching patterns, sorted via
+	 * 通过PathMatcher的getPatternComparator()方法排序。
 	 * {@link PathMatcher#getPatternComparator(String)}.
 	 * <p>A matching pattern is obtained by making checks in the following order:
+	 * 通过按以下顺序进行检查获取匹配模式。
 	 * <ul>
 	 * <li>Direct match
+	 * 直接匹配
 	 * <li>Pattern match with ".*" appended if the pattern doesn't already contain a "."
+	 * 如果模式不包含"."，那么添加模式匹配".*"
 	 * <li>Pattern match
+	 * 模式匹配
 	 * <li>Pattern match with "/" appended if the pattern doesn't already end in "/"
+	 * 如果模式不包含"/"，那么添加模式匹配"/"
 	 * </ul>
 	 * @param request the current request
 	 * @return the same instance if the condition contains no patterns;

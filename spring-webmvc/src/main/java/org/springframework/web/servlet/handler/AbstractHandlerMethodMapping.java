@@ -176,6 +176,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	/**
 	 * Detects handler methods at initialization.
+	 * 初始化探测处理器方法。
 	 */
 	@Override
 	public void afterPropertiesSet() {
@@ -184,6 +185,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	/**
 	 * Scan beans in the ApplicationContext, detect and register handler methods.
+	 * 扫描ApplicationContext中的bean，检索以及注册处理器方法。
 	 * @see #isHandler(Class)
 	 * @see #getMappingForMethod(Method, Class)
 	 * @see #handlerMethodsInitialized(Map)
@@ -218,6 +220,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	/**
 	 * Look for handler methods in a handler.
+	 * 查找处理器中的处理器方法。
 	 * @param handler the bean name of a handler or a handler instance
 	 */
 	protected void detectHandlerMethods(final Object handler) {
@@ -289,6 +292,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	/**
 	 * Invoked after all handler methods have been detected.
+	 * 在检索了所有的处理器方法之后调用。
 	 * @param handlerMethods a read-only map with handler methods and mappings.
 	 */
 	protected void handlerMethodsInitialized(Map<T, HandlerMethod> handlerMethods) {
@@ -303,10 +307,12 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	 */
 	@Override
 	protected HandlerMethod getHandlerInternal(HttpServletRequest request) throws Exception {
+		//获取需要查找的路径，砍掉请求URI中的上下文路径，servlet映射路径。
 		String lookupPath = getUrlPathHelper().getLookupPathForRequest(request);
 		if (logger.isDebugEnabled()) {
 			logger.debug("Looking up handler method for path " + lookupPath);
 		}
+		//加读锁
 		this.mappingRegistry.acquireReadLock();
 		try {
 			HandlerMethod handlerMethod = lookupHandlerMethod(lookupPath, request);
@@ -327,6 +333,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	/**
 	 * Look up the best-matching handler method for the current request.
+	 * 查找当前请求最匹配的处理器方法。如果查找到多个匹配，选择最匹配的。
 	 * If multiple matches are found, the best match is selected.
 	 * @param lookupPath mapping lookup path within the current servlet mapping
 	 * @param request the current request
@@ -339,22 +346,27 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		List<Match> matches = new ArrayList<>();
 		List<T> directPathMatches = this.mappingRegistry.getMappingsByUrl(lookupPath);
 		if (directPathMatches != null) {
+			//在matches中添加了RequestMappingInfo,HandlerMethod键值对
 			addMatchingMappings(directPathMatches, matches, request);
 		}
 		if (matches.isEmpty()) {
 			// No choice but to go through all mappings...
+			// 没有选择，因此遍历所有映射...
 			addMatchingMappings(this.mappingRegistry.getMappings().keySet(), matches, request);
 		}
 
 		if (!matches.isEmpty()) {
+			//获取比较器
 			Comparator<Match> comparator = new MatchComparator(getMappingComparator(request));
 			Collections.sort(matches, comparator);
 			if (logger.isTraceEnabled()) {
 				logger.trace("Found " + matches.size() + " matching mapping(s) for [" +
 						lookupPath + "] : " + matches);
 			}
+			//最优匹配
 			Match bestMatch = matches.get(0);
 			if (matches.size() > 1) {
+				//检查是否是预请求
 				if (CorsUtils.isPreFlightRequest(request)) {
 					return PREFLIGHT_AMBIGUOUS_MATCH;
 				}
@@ -385,6 +397,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	/**
 	 * Invoked when a matching mapping is found.
+	 * 在查找到一个匹配的映射时调用
 	 * @param mapping the matching mapping
 	 * @param lookupPath mapping lookup path within the current servlet mapping
 	 * @param request the current request
@@ -395,6 +408,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	/**
 	 * Invoked when no matching mapping is not found.
+	 * 在没有查找到匹配时调用。
 	 * @param mappings all registered mappings
 	 * @param lookupPath mapping lookup path within the current servlet mapping
 	 * @param request the current request
@@ -427,6 +441,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	/**
 	 * Whether the given type is a handler with handler methods.
+	 * 确定给定类型是否是处理器方法的处理器。
 	 * @param beanType the type of the bean being checked
 	 * @return "true" if this a handler type, "false" otherwise.
 	 */
@@ -434,6 +449,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	/**
 	 * Provide the mapping for a handler method. A method for which no
+	 * 提供处理器方法的映射。一个不能提供映射的方法不是一个处理器方法。
 	 * mapping can be provided is not a handler method.
 	 * @param method the method to provide a mapping for
 	 * @param handlerType the handler type, possibly a sub-type of the method's
@@ -450,6 +466,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	/**
 	 * Check if a mapping matches the current request and return a (potentially
+	 * 检查一个映射是否匹配当前请求并且返回一个（可能是新的）当前请求条件相关的映射。
 	 * new) mapping with conditions relevant to the current request.
 	 * @param mapping the mapping to get a match for
 	 * @param request the current HTTP servlet request
@@ -460,6 +477,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	/**
 	 * Return a comparator for sorting matching mappings.
+	 * 返回排序匹配映射的比较器。返回的比较器应该排序“更好”与更高的匹配
 	 * The returned comparator should sort 'better' matches higher.
 	 * @param request the current request
 	 * @return the comparator (never {@code null})
@@ -469,9 +487,11 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	/**
 	 * A registry that maintains all mappings to handler methods, exposing methods
+	 * 该注册表维护了所有到处理器方法的映射，该类暴露执行查找和提供并发访问的方法。
 	 * to perform lookups and providing concurrent access.
 	 *
 	 * <p>Package-private for testing purposes.
+	 * 包级私有用于测试目的
 	 */
 	class MappingRegistry {
 
@@ -489,6 +509,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 		/**
 		 * Return all mappings and handler methods. Not thread-safe.
+		 * 返回所有映射和处理器方法。非线程安全
 		 * @see #acquireReadLock()
 		 */
 		public Map<T, HandlerMethod> getMappings() {
@@ -497,6 +518,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 		/**
 		 * Return matches for the given URL path. Not thread-safe.
+		 * 返回给定URL路径的匹配。非线程安全。
 		 * @see #acquireReadLock()
 		 */
 		@Nullable
@@ -521,6 +543,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 		/**
 		 * Acquire the read lock when using getMappings and getMappingsByUrl.
+		 * 在使用getMappings和getMappingsByUrl时获取读锁。
 		 */
 		public void acquireReadLock() {
 			this.readWriteLock.readLock().lock();
@@ -713,7 +736,9 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	/**
 	 * A thin wrapper around a matched HandlerMethod and its mapping, for the purpose of
+	 * 对匹配的HandlerMethod及其映射进行简单的包装，出于比较的目的，使用当前请求的上下文中
 	 * comparing the best match with a comparator in the context of the current request.
+	 * 的比较器进行最优匹配。
 	 */
 	private class Match {
 

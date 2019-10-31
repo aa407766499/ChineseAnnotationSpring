@@ -16,9 +16,6 @@
 
 package org.springframework.web.servlet.handler;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.PathMatcher;
@@ -26,14 +23,22 @@ import org.springframework.web.context.request.WebRequestInterceptor;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * Contains and delegates calls to a {@link HandlerInterceptor} along with
+ * 包含以及委派调用给该处理器拦截器，该处理器拦截器包含（以及可能排除）拦截器要使用的路径模式、
  * include (and optionally exclude) path patterns to which the interceptor should apply.
+ * 如果拦截器应用于给定的请求路径，也提供匹配逻辑用于测试。
  * Also provides matching logic to test if the interceptor applies to a given request path.
  *
  * <p>A MappedInterceptor can be registered directly with any
+ * 一个MappedInterceptor能直接和任何的AbstractHandlerMethodMapping一起注册。
  * {@link org.springframework.web.servlet.handler.AbstractHandlerMethodMapping
+ * 此外，MappedInterceptor类型的bean会被AbstractHandlerMethodMapping（包括父级ApplicationContext）
  * AbstractHandlerMethodMapping}. Furthermore, beans of type MappedInterceptor
+ * 自动检测，这实际上意味着拦截器对于所有的处理器映射是全局的。
  * are automatically detected by {@code AbstractHandlerMethodMapping} (including
  * ancestor ApplicationContext's) which effectively means the interceptor is
  * registered "globally" with all handler mappings.
@@ -131,6 +136,7 @@ public final class MappedInterceptor implements HandlerInterceptor {
 
 	/**
 	 * The actual Interceptor reference.
+	 * 实际的拦截器引用。
 	 */
 	public HandlerInterceptor getInterceptor() {
 		return this.interceptor;
@@ -139,6 +145,7 @@ public final class MappedInterceptor implements HandlerInterceptor {
 
 	/**
 	 * Returns {@code true} if the interceptor applies to the given request path.
+	 * 如果拦截器能应用到给定的路径，返回true。
 	 * @param lookupPath the current request path
 	 * @param pathMatcher a path matcher for path pattern matching
 	 */

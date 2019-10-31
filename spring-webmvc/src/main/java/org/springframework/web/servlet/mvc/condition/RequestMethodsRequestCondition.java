@@ -16,22 +16,19 @@
 
 package org.springframework.web.servlet.mvc.condition;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import javax.servlet.DispatcherType;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.cors.CorsUtils;
 
+import javax.servlet.DispatcherType;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
+
 /**
  * A logical disjunction (' || ') request condition that matches a request
+ * 逻辑解析或(“||”)请求条件去匹配针对一组RequestMethod的请求。
  * against a set of {@link RequestMethod}s.
  *
  * @author Arjen Poutsma
@@ -90,7 +87,9 @@ public final class RequestMethodsRequestCondition extends AbstractRequestConditi
 
 	/**
 	 * Check if any of the HTTP request methods match the given request and
+	 * 检查是否有任何的HTTP请求方法匹配给定的请求，然后返回一个仅包含匹配HTTP请求方法
 	 * return an instance that contains the matching HTTP request method only.
+	 * 的实例。
 	 * @param request the current request
 	 * @return the same instance if the condition is empty (unless the request
 	 * method is HTTP OPTIONS), a new condition with the matched request method,

@@ -16,23 +16,26 @@
 
 package org.springframework.web.servlet.mvc.condition;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.cors.CorsUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 /**
  * A logical conjunction (' && ') request condition that matches a request against
+ * 逻辑解析与('&&')请求条件，匹配针对一组使用RequestMapping的headers()方法定义的语法的头
  * a set of header expressions with syntax defined in {@link RequestMapping#headers()}.
- *
+ * 表达式的请求。
  * <p>Expressions passed to the constructor with header names 'Accept' or
- * 'Content-Type' are ignored. See {@link ConsumesRequestCondition} and
+ * 表达式传入构造器，忽略'Accept'或者'Content-Type'。参考ConsumesRequestCondition
+ * 'Content-Type' are ignored. See {@link ConsumesRequestCondition} and、
+ * 和ProducesRequestCondition。
  * {@link ProducesRequestCondition} for those.
  *
  * @author Arjen Poutsma
@@ -105,6 +108,7 @@ public final class HeadersRequestCondition extends AbstractRequestCondition<Head
 
 	/**
 	 * Returns "this" instance if the request matches all expressions;
+	 * 如果请求匹配所有的表达式，返回this实例。
 	 * or {@code null} otherwise.
 	 */
 	@Override

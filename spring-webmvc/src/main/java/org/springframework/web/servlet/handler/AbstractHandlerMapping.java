@@ -109,6 +109,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 
 	/**
 	 * Return the default handler for this handler mapping,
+	 * 返回该处理器映射的默认处理器，如果没有，返回null。
 	 * or {@code null} if none.
 	 */
 	@Nullable
@@ -357,6 +358,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 			return null;
 		}
 		// Bean name or resolved handler?
+		// bean名称或者已解析的handler？
 		if (handler instanceof String) {
 			String handlerName = (String) handler;
 			handler = obtainApplicationContext().getBean(handlerName);
@@ -400,18 +402,27 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 
 	/**
 	 * Build a {@link HandlerExecutionChain} for the given handler, including
+	 * 创建给定处理器的处理器执行链，包括要应用的拦截器。
 	 * applicable interceptors.
 	 * <p>The default implementation builds a standard {@link HandlerExecutionChain}
+	 * 默认实现使用给定的处理器，处理器映射的公共拦截器，以及匹配当前请求URL的任何
 	 * with the given handler, the handler mapping's common interceptors, and any
+	 * MappedInterceptor构建一个标准的HandlerExecutionChain，拦截器的添加顺序和他们
 	 * {@link MappedInterceptor}s matching to the current request URL. Interceptors
+	 * 被注册的顺序一样。子类可以覆盖该方法去扩展/重新分配拦截器列表。
 	 * are added in the order they were registered. Subclasses may override this
 	 * in order to extend/rearrange the list of interceptors.
 	 * <p><b>NOTE:</b> The passed-in handler object may be a raw handler or a
+	 * 注意：传入的处理器对象可以是原生的处理器或者一个预构建的HandlerExecutionChain。
 	 * pre-built {@link HandlerExecutionChain}. This method should handle those
+	 * 该方法应该明确的处理这两种情况，前者构建一个新的HandlerExecutionChain，后者
 	 * two cases explicitly, either building a new {@link HandlerExecutionChain}
+	 * 扩展已存在的链。
 	 * or extending the existing chain.
 	 * <p>For simply adding an interceptor in a custom subclass, consider calling
+	 * 对于在自定义子类中简单地添加一个拦截器，可以调用super.getHandlerExecutionChain(handler, request)
 	 * {@code super.getHandlerExecutionChain(handler, request)} and invoking
+	 * 以及在返回的链对象上调用HandlerExecutionChain的addInterceptor方法。
 	 * {@link HandlerExecutionChain#addInterceptor} on the returned chain object.
 	 * @param handler the resolved handler instance (never {@code null})
 	 * @param request current HTTP request

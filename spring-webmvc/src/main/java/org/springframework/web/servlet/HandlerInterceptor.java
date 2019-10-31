@@ -16,50 +16,70 @@
 
 package org.springframework.web.servlet;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.lang.Nullable;
 import org.springframework.web.method.HandlerMethod;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * Workflow interface that allows for customized handler execution chains.
+ * 工作流接口，该接口允许自定义处理器执行链。应用能将任意数量的已存在的或者自定义的
  * Applications can register any number of existing or custom interceptors
+ * 拦截器注册到确定的处理器组中，在不需要修改每一个处理器实现的情况下，添加公共的
  * for certain groups of handlers, to add common preprocessing behavior
+ * 预处理行为。
  * without needing to modify each handler implementation.
  *
  * <p>A HandlerInterceptor gets called before the appropriate HandlerAdapter
+ * 在合适的HandlerAdapter触发执行处理器之前调用HandlerInterceptor。该机制能用于
  * triggers the execution of the handler itself. This mechanism can be used
+ * 一长段的预处理切面，比如：权限校验，或者公共的处理器行为比如本地化或者主题改变。
  * for a large field of preprocessing aspects, e.g. for authorization checks,
+ * 其主要目的是提取重复的处理器代码。
  * or common handler behavior like locale or theme changes. Its main purpose
  * is to allow for factoring out repetitive handler code.
  *
  * <p>In an asynchronous processing scenario, the handler may be executed in a
+ * 在异步处理场景中，在主线程存在并且没有调用postHandle以及afterCompletion回调时
  * separate thread while the main thread exits without rendering or invoking the
+ * 处理器可以在分开的线程中执行。在并发处理器执行完成时，为了执行发送模型转发回请求
  * {@code postHandle} and {@code afterCompletion} callbacks. When concurrent
+ * 该协议中的所有方法被再次调用。获取更多细节参考AsyncHandlerInterceptor
  * handler execution completes, the request is dispatched back in order to
  * proceed with rendering the model and all methods of this contract are invoked
  * again. For further options and details see
  * {@code org.springframework.web.servlet.AsyncHandlerInterceptor}
  *
  * <p>Typically an interceptor chain is defined per HandlerMapping bean,
+ * 通常每一个HandlerMapping bean都定义了一条拦截器链，共享其粒度。能够应用处理器
  * sharing its granularity. To be able to apply a certain interceptor chain
+ * 组中的确定的拦截器链，需要通过一个HandlerMapping bean映射需要的处理器。
  * to a group of handlers, one needs to map the desired handlers via one
+ * 拦截器自身被定义为应用上下文中的bean，被映射的bean定义的拦截器属性引用。
  * HandlerMapping bean. The interceptors themselves are defined as beans
  * in the application context, referenced by the mapping bean definition
  * via its "interceptors" property (in XML: a &lt;list&gt; of &lt;ref&gt;).
  *
  * <p>HandlerInterceptor is basically similar to a Servlet Filter, but in
+ * HandlerInterceptor与Servlet Filter基本相似，但是与后者相反，前者仅允许自定义
  * contrast to the latter it just allows custom pre-processing with the option
+ * 预处理，可以阻止执行处理器，而且自定义后置处理。Filter更加强大，比如他们允许修改
  * of prohibiting the execution of the handler itself, and custom post-processing.
+ * 传递的请求对象和响应对象。注意过滤器是在web.xml中配置，HandlerInterceptor在应用上下
  * Filters are more powerful, for example they allow for exchanging the request
+ * 文中配置。
  * and response objects that are handed down the chain. Note that a filter
  * gets configured in web.xml, a HandlerInterceptor in the application context.
  *
  * <p>As a basic guideline, fine-grained handler-related preprocessing tasks are
+ * 作为基本准则，细粒度处理器相关的预处理任务是HandlerInterceptor实现类的候选对象，
  * candidates for HandlerInterceptor implementations, especially factored-out
+ * 特别是提取公共的处理器代码以及权限校验。在其他方法，过滤器非常适合请求内容和
  * common handler code and authorization checks. On the other hand, a Filter
+ * 视图内容处理，比如多文件表单和GZIP压缩。这通常出现在需要将过滤器映射到确定的
  * is well-suited for request content and view content handling, like multipart
+ * 内容类型（比如图片），或者所有请求，
  * forms and GZIP compression. This typically shows when one needs to map the
  * filter to certain content types (e.g. images), or to all requests.
  *

@@ -79,7 +79,9 @@ public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMe
 
 	/**
 	 * Check if the given RequestMappingInfo matches the current request and
+	 * 检查给定RequestMappingInfo是否匹配当前请求并且返回一个（可能是新的）匹配
 	 * return a (potentially new) instance with conditions that match the
+	 * 当前请求条件的实例--比如URL模式的子集。
 	 * current request -- for example with a subset of URL patterns.
 	 * @return an info in case of a match; or {@code null} otherwise.
 	 */
@@ -90,6 +92,7 @@ public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMe
 
 	/**
 	 * Provide a Comparator to sort RequestMappingInfos matched to a request.
+	 * 提供一个比较器对匹配请求的RequestMappingInfos进行排序。
 	 */
 	@Override
 	protected Comparator<RequestMappingInfo> getMappingComparator(final HttpServletRequest request) {

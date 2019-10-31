@@ -28,18 +28,25 @@ import org.springframework.util.Assert;
 
 /**
  * Convenient superclass for application objects that want to be aware of
+ * 想要感知应用上下文的应用对象的便利父类，比如：自定义查找协作的bean或者
  * the application context, e.g. for custom lookup of collaborating beans
+ * 对上下文特定的资源进行访问。该类保存了应用上下文引用而且提供了一个初始化
  * or for context-specific resource access. It saves the application
+ * 回调方法。此外，该类提供了许多便利的信息查找方法。
  * context reference and provides an initialization callback method.
  * Furthermore, it offers numerous convenience methods for message lookup.
  *
  * <p>There is no requirement to subclass this class: It just makes things
+ * 不要子类化该类：如果你需要访问上下文，该类使得访问更容易，比如：访问文件资源
  * a little easier if you need access to the context, e.g. for access to
+ * 或者消息资源。注意：许多应用对象根本不需要感知应用上下文，在他们通过bean
  * file resources or to the message source. Note that many application
+ * 应用获取协作bean时。
  * objects do not need to be aware of the application context at all,
  * as they can receive collaborating beans via bean references.
  *
  * <p>Many framework classes are derived from this class, particularly
+ * 许多框架类从该类中获得，特别是web支持。
  * within the web support.
  *
  * @author Rod Johnson
@@ -52,6 +59,7 @@ public abstract class ApplicationObjectSupport implements ApplicationContextAwar
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	/** ApplicationContext this object runs in */
+	/*该对象允许的上下文*/
 	@Nullable
 	private ApplicationContext applicationContext;
 
@@ -138,6 +146,7 @@ public abstract class ApplicationObjectSupport implements ApplicationContextAwar
 
 	/**
 	 * Return the ApplicationContext that this object is associated with.
+	 * 返回该对象关联的ApplicationContext
 	 * @throws IllegalStateException if not running in an ApplicationContext
 	 */
 	@Nullable
@@ -151,6 +160,7 @@ public abstract class ApplicationObjectSupport implements ApplicationContextAwar
 
 	/**
 	 * Obtain the ApplicationContext for actual use.
+	 * 获取实际使用的ApplicationContext。
 	 * @return the ApplicationContext (never {@code null})
 	 * @throws IllegalStateException in case of no ApplicationContext set
 	 * @since 5.0

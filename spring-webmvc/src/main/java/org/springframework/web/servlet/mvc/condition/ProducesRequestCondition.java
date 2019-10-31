@@ -16,15 +16,6 @@
 
 package org.springframework.web.servlet.mvc.condition;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.web.HttpMediaTypeException;
@@ -35,11 +26,18 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.servlet.mvc.condition.HeadersRequestCondition.HeaderExpression;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
+
 /**
  * A logical disjunction (' || ') request condition to match a request's 'Accept' header
+ * 逻辑解析或('||')请求条件，将请求的Accept头与媒体类型表达式的列表进行匹配。
  * to a list of media type expressions. Two kinds of media type expressions are
+ * 支持两种媒体类型表达式，由RequestMapping的produces()方法和RequestMapping
  * supported, which are described in {@link RequestMapping#produces()} and
+ * 的headers()方法进行描述，头名称要是Accept。忽略要使用的语法，也忽略
  * {@link RequestMapping#headers()} where the header name is 'Accept'.
+ * 相同的语义。
  * Regardless of which syntax is used, the semantics are the same.
  *
  * @author Arjen Poutsma
@@ -176,8 +174,11 @@ public final class ProducesRequestCondition extends AbstractRequestCondition<Pro
 
 	/**
 	 * Checks if any of the contained media type expressions match the given
+	 * 检查是否有任何包含的媒体类型表达式匹配给定的请求的'Content-Type'头，然后
 	 * request 'Content-Type' header and returns an instance that is guaranteed
+	 * 返回一个实例，该实例保证仅包含匹配表达式、通过MediaType的isCompatibleWith(MediaType)
 	 * to contain matching expressions only. The match is performed via
+	 * 方法进行匹配。
 	 * {@link MediaType#isCompatibleWith(MediaType)}.
 	 * @param request the current request
 	 * @return the same instance if there are no expressions;

@@ -16,20 +16,22 @@
 
 package org.springframework.web.servlet.mvc.condition;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.WebUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 /**
  * A logical conjunction (' && ') request condition that matches a request against
+ * 逻辑解析与('&&')请求条件，匹配针对一组使用RequestMapping的params()方法定义的语法的参数
  * a set parameter expressions with syntax defined in {@link RequestMapping#params()}.
+ * 表达式的请求。
  *
  * @author Arjen Poutsma
  * @author Rossen Stoyanchev
@@ -93,6 +95,7 @@ public final class ParamsRequestCondition extends AbstractRequestCondition<Param
 
 	/**
 	 * Returns "this" instance if the request matches all param expressions;
+	 * 如果请求匹配所有的参数表达式，返回this实例。
 	 * or {@code null} otherwise.
 	 */
 	@Override

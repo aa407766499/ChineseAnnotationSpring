@@ -16,12 +16,8 @@
 
 package org.springframework.web.method;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.core.BridgeMethodResolver;
 import org.springframework.core.GenericTypeResolver;
@@ -34,15 +30,23 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+
 /**
  * Encapsulates information about a handler method consisting of a
+ * 包装关于处理器方法的信息，该处理器方法由getMethod()方法和getBean()方法组成。
  * {@linkplain #getMethod() method} and a {@linkplain #getBean() bean}.
+ * 提供对方法参数，方法返回值，方法注解的便利访问等。
  * Provides convenient access to method parameters, the method return value,
  * method annotations, etc.
  *
  * <p>The class may be created with a bean instance or with a bean name
+ * 该类可以通过bean实例创建或者bean名称创建（比如懒加载的bean，原型bean）。使用
  * (e.g. lazy-init bean, prototype bean). Use {@link #createWithResolvedBean()}
+ * createWithResolvedBean()方法获取一个通过关联的BeanFactory解析的bean实例的
  * to obtain a {@code HandlerMethod} instance with a bean instance resolved
+ * HandlerMethod实例。
  * through the associated {@link BeanFactory}.
  *
  * @author Arjen Poutsma
@@ -150,6 +154,7 @@ public class HandlerMethod {
 
 	/**
 	 * Re-create HandlerMethod with the resolved handler.
+	 * 使用解析的handler重新创建HandlerMethod。
 	 */
 	private HandlerMethod(HandlerMethod handlerMethod, Object handler) {
 		Assert.notNull(handlerMethod, "HandlerMethod is required");
@@ -303,7 +308,9 @@ public class HandlerMethod {
 
 	/**
 	 * If the provided instance contains a bean name rather than an object instance,
+	 * 如果提供的实例包含一个bean名称而不是一个对象实例，那么在HandlerMethod被创建和返回前
 	 * the bean name is resolved before a {@link HandlerMethod} is created and returned.
+	 * 解析bean名称。
 	 */
 	public HandlerMethod createWithResolvedBean() {
 		Object handler = this.bean;

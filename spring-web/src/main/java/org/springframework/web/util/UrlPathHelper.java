@@ -173,6 +173,7 @@ public class UrlPathHelper {
 			return getPathWithinApplication(request);
 		}
 		// Else, use path within current servlet mapping if applicable
+		// 其他情况，如果可以，使用当前servlet映射中的路径
 		String rest = getPathWithinServletMapping(request);
 		if (!"".equals(rest)) {
 			return rest;
@@ -184,10 +185,14 @@ public class UrlPathHelper {
 
 	/**
 	 * Return the path within the servlet mapping for the given request,
+	 * 返回给定请求的servlet映射中的路径，比如请求的URL的部分超过了调用servlet的部分，
 	 * i.e. the part of the request's URL beyond the part that called the servlet,
+	 * 或者若果整个URL都是用来识别servlet的，则为""。
 	 * or "" if the whole URL has been used to identify the servlet.
 	 * <p>Detects include request URL if called within a RequestDispatcher include.
+	 * 如果在RequestDispatcher包含中调用，则检测包含的请求URL。
 	 * <p>E.g.: servlet mapping = "/*"; request URI = "/test/a" -> "/test/a".
+	 * 就是要把请求路径中用于映射servlet的一部分砍掉，剩下的就是requestURI
 	 * <p>E.g.: servlet mapping = "/"; request URI = "/test/a" -> "/test/a".
 	 * <p>E.g.: servlet mapping = "/test/*"; request URI = "/test/a" -> "/a".
 	 * <p>E.g.: servlet mapping = "/test"; request URI = "/test" -> "".
@@ -202,6 +207,7 @@ public class UrlPathHelper {
 		String path;
 
 		// If the app container sanitized the servletPath, check against the sanitized version
+		// 如果app容器净化了servletPath，检查净化的版本。
 		if (servletPath.contains(sanitizedPathWithinApp)) {
 			path = getRemainingPath(sanitizedPathWithinApp, servletPath, false);
 		}
@@ -211,27 +217,36 @@ public class UrlPathHelper {
 
 		if (path != null) {
 			// Normal case: URI contains servlet path.
+			// 正常情况:URI包含servlet路径。
 			return path;
 		}
 		else {
 			// Special case: URI is different from servlet path.
+			// 特殊情况：URI和servlet路径不同。
 			String pathInfo = request.getPathInfo();
 			if (pathInfo != null) {
 				// Use path info if available. Indicates index page within a servlet mapping?
+				// 如果可以，使用路径信息。表示servlet映射中的索引页面？
 				// e.g. with index page: URI="/", servletPath="/index.html"
+				// 比如：索引页面:URI="/"，servlet路径="/index.html"
 				return pathInfo;
 			}
 			if (!this.urlDecode) {
 				// No path info... (not mapped by prefix, nor by extension, nor "/*")
+				// 没有路径信息...（没有匹配前缀，没有扩展，没有"/*"）
 				// For the default servlet mapping (i.e. "/"), urlDecode=false can
+				// 对于默认的servlet映射（比如："/"），urlDecode为false会引发问题因为
 				// cause issues since getServletPath() returns a decoded path.
+				//getServletPath() 会返回解码的路径。如果解码了pathWithinApp字段，那么匹配
 				// If decoding pathWithinApp yields a match just use pathWithinApp.
+				// 时仅使用pathWithinApp。
 				path = getRemainingPath(decodeInternal(request, pathWithinApp), servletPath, false);
 				if (path != null) {
 					return pathWithinApp;
 				}
 			}
 			// Otherwise, use the full servlet path.
+			// 否则，使用完整的servlet路径。
 			return servletPath;
 		}
 	}
@@ -246,9 +261,11 @@ public class UrlPathHelper {
 	public String getPathWithinApplication(HttpServletRequest request) {
 		String contextPath = getContextPath(request);
 		String requestUri = getRequestUri(request);
+		//砍掉requestUri开头中contextPath部分，剩下的才是需要的映射路径
 		String path = getRemainingPath(requestUri, contextPath, true);
 		if (path != null) {
 			// Normal case: URI contains context path.
+			// 正常情况：URI包含上下文路径
 			return (StringUtils.hasText(path) ? path : "/");
 		}
 		else {
@@ -258,8 +275,11 @@ public class UrlPathHelper {
 
 	/**
 	 * Match the given "mapping" to the start of the "requestUri" and if there
+	 * 将给定的"mapping"和"requestUri"的开头进行匹配，如果有一个匹配返回额外的部分。
 	 * is a match return the extra part. This method is needed because the
+	 * 需要该方法是因为通过HttpServletRequest返回的上下文路径和servlet路径都不像
 	 * context path and the servlet path returned by the HttpServletRequest are
+	 * requestUri，两者都被剥去了分号的内容。
 	 * stripped of semicolon content unlike the requestUri.
 	 */
 	@Nullable
@@ -298,6 +318,7 @@ public class UrlPathHelper {
 
 	/**
 	 * Sanitize the given path with the following rules:
+	 * 用以下规则修改路径，将所有的"//"替换为"/"
 	 * <ul>
 	 *     <li>replace all "//" by "/"</li>
 	 * </ul>
@@ -364,6 +385,7 @@ public class UrlPathHelper {
 
 	/**
 	 * Return the servlet path for the given request, regarding an include request
+	 * 获取给定请求的servlet路径。
 	 * URL if called within a RequestDispatcher include.
 	 * <p>As the value returned by {@code request.getServletPath()} is already
 	 * decoded by the servlet container, this method will not attempt to decode it.

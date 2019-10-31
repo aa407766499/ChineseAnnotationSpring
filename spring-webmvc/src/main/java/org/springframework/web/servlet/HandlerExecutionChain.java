@@ -16,21 +16,22 @@
 
 package org.springframework.web.servlet;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Handler execution chain, consisting of handler object and any handler interceptors.
+ * 处理器执行链，由处理器对象和任何的处理器拦截器组成。HandlerMapping的getHandler方法
  * Returned by HandlerMapping's {@link HandlerMapping#getHandler} method.
+ * 返回该对象。
  *
  * @author Juergen Hoeller
  * @since 20.06.2003
@@ -53,6 +54,7 @@ public class HandlerExecutionChain {
 
 	/**
 	 * Create a new HandlerExecutionChain.
+	 * 创建一个新的HandlerExecutionChain。
 	 * @param handler the handler object to execute
 	 */
 	public HandlerExecutionChain(Object handler) {
@@ -82,6 +84,7 @@ public class HandlerExecutionChain {
 
 	/**
 	 * Return the handler object to execute.
+	 * 返回要执行的处理器对象
 	 */
 	public Object getHandler() {
 		return this.handler;
@@ -102,6 +105,7 @@ public class HandlerExecutionChain {
 			this.interceptorList = new ArrayList<>();
 			if (this.interceptors != null) {
 				// An interceptor array specified through the constructor
+				// 通过构造器指定的拦截器数组
 				CollectionUtils.mergeArrayIntoCollection(this.interceptors, this.interceptorList);
 			}
 		}

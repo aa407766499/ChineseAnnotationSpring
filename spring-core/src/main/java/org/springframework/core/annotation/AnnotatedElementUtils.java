@@ -16,23 +16,16 @@
 
 package org.springframework.core.annotation;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.core.BridgeMethodResolver;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * General utility methods for finding annotations, meta-annotations, and
@@ -591,11 +584,15 @@ public class AnnotatedElementUtils {
 
 	/**
 	 * Determine if an annotation of the specified {@code annotationType}
+	 * 确定指定注解类型的注解是否在所提供的AnnotatedElement上能够获取或者
 	 * is <em>available</em> on the supplied {@link AnnotatedElement} or
+	 * 在指定元素上注解层级中能获得（比如被@Controller注解，要找@Component注解）。
 	 * within the annotation hierarchy <em>above</em> the specified element.
 	 * <p>If this method returns {@code true}, then {@link #findMergedAnnotationAttributes}
+	 * 如果该方法返回true，那么findMergedAnnotationAttributes会返回非null值。
 	 * will return a non-null value.
 	 * <p>This method follows <em>find semantics</em> as described in the
+	 * 该方法的查找语义描述参考AnnotatedElementUtils类级别的javadoc。
 	 * {@linkplain AnnotatedElementUtils class-level javadoc}.
 	 * @param element the annotated element
 	 * @param annotationType the annotation type to find
@@ -608,10 +605,11 @@ public class AnnotatedElementUtils {
 		Assert.notNull(annotationType, "'annotationType' must not be null");
 
 		// Shortcut: directly present on the element, with no processing needed?
+		// 快照：直接存在于元素上，不需要进一步处理？
 		if (element.isAnnotationPresent(annotationType)) {
 			return true;
 		}
-
+		// 去注解上的注解查找
 		return Boolean.TRUE.equals(searchWithFindSemantics(element, annotationType, null, alwaysTrueAnnotationProcessor));
 	}
 

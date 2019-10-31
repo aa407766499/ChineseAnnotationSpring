@@ -16,27 +16,21 @@
 
 package org.springframework.web.servlet.mvc.method;
 
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.http.HttpMethod;
 import org.springframework.lang.Nullable;
 import org.springframework.util.PathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.condition.ConsumesRequestCondition;
-import org.springframework.web.servlet.mvc.condition.HeadersRequestCondition;
-import org.springframework.web.servlet.mvc.condition.ParamsRequestCondition;
-import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
-import org.springframework.web.servlet.mvc.condition.ProducesRequestCondition;
-import org.springframework.web.servlet.mvc.condition.RequestCondition;
-import org.springframework.web.servlet.mvc.condition.RequestConditionHolder;
-import org.springframework.web.servlet.mvc.condition.RequestMethodsRequestCondition;
+import org.springframework.web.servlet.mvc.condition.*;
 import org.springframework.web.util.UrlPathHelper;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * A {@link RequestCondition} that consists of the following other conditions:
+ * 一个请求条件由以下的其他条件组成。
  * <ol>
  * <li>{@link PatternsRequestCondition}
  * <li>{@link RequestMethodsRequestCondition}
@@ -207,8 +201,11 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 
 	/**
 	 * Checks if all conditions in this request mapping info match the provided request and returns
+	 * 检查该请求映射信息中所有的条件是否匹配所给的请求，然后可能返回一个新的请求映射信息，该请求映射信息
 	 * a potentially new request mapping info with conditions tailored to the current request.
+	 * 由当前请求定制。
 	 * <p>For example the returned instance may contain the subset of URL patterns that match to
+	 * 比如：返回包含匹配当前请求的URL模式子集的实例，进行排序，将最匹配的模式放在最上面。
 	 * the current request, sorted with best matching patterns on top.
 	 * @return a new instance in case all conditions match; or {@code null} otherwise
 	 */
@@ -241,8 +238,11 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 
 	/**
 	 * Compares "this" info (i.e. the current instance) with another info in the context of a request.
-	 * <p>Note: It is assumed both instances have been obtained via
+	 * 将this信息（比如当前实例）与其他的信息在请求的上下文中进行比较。
+	 * <p>Note: It is assumed both instances have been obtained via|
+	 * 注意：假设两个实例都是通过getMatchingCondition(HttpServletRequest)获取，这样可以确保他们的
 	 * {@link #getMatchingCondition(HttpServletRequest)} to ensure they have conditions with
+	 * 条件和当前请求的内容相关。
 	 * content relevant to current request.
 	 */
 	@Override

@@ -16,21 +16,10 @@
 
 package org.springframework.util;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
 import org.springframework.lang.Nullable;
+
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Miscellaneous collection utility methods.
@@ -82,6 +71,7 @@ public abstract class CollectionUtils {
 
 	/**
 	 * Merge the given array into the given Collection.
+	 * 将给定数组合并到给定集合。
 	 * @param array the array to merge (may be {@code null})
 	 * @param collection the target Collection to merge the array into
 	 */

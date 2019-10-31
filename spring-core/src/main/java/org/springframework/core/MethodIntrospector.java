@@ -68,6 +68,7 @@ public abstract class MethodIntrospector {
 			final Class<?> targetClass = (specificHandlerType != null ? specificHandlerType : currentHandlerType);
 
 			ReflectionUtils.doWithMethods(currentHandlerType, method -> {
+				//获取最具体的方法
 				Method specificMethod = ClassUtils.getMostSpecificMethod(method, targetClass);
 				T result = metadataLookup.inspect(specificMethod);
 				if (result != null) {
@@ -139,6 +140,7 @@ public abstract class MethodIntrospector {
 
 	/**
 	 * A callback interface for metadata lookup on a given method.
+	 * 给定方法上元数据查找的回调接口。
 	 * @param <T> the type of metadata returned
 	 */
 	@FunctionalInterface
@@ -146,6 +148,7 @@ public abstract class MethodIntrospector {
 
 		/**
 		 * Perform a lookup on the given method and return associated metadata, if any.
+		 * 在给定方法上执行查找，返回相关的元数据，如果有的话
 		 * @param method the method to inspect
 		 * @return non-null metadata to be associated with a method if there is a match,
 		 * or {@code null} for no match

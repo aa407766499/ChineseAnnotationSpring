@@ -691,13 +691,17 @@ public class AnnotatedElementUtils {
 
 	/**
 	 * Find the first annotation of the specified {@code annotationType} within
+	 * 在所提供元素的注解层级中查找指定注解类型的第一个注解，将该注解的属性和注解层级中
 	 * the annotation hierarchy <em>above</em> the supplied {@code element},
+	 * 底层的注解属性进行合并，把合成的结果传回指定注解类型的一个注解。
 	 * merge that annotation's attributes with <em>matching</em> attributes from
 	 * annotations in lower levels of the annotation hierarchy, and synthesize
 	 * the result back into an annotation of the specified {@code annotationType}.
 	 * <p>{@link AliasFor @AliasFor} semantics are fully supported, both
+	 * 完全支持@AliasFor语法，包括单个注解中的以及注解层级中的。
 	 * within a single annotation and within the annotation hierarchy.
 	 * <p>This method follows <em>find semantics</em> as described in the
+	 * 该方法遵循AnnotatedElementUtils 类级别javadoc描述的查找语义。
 	 * {@linkplain AnnotatedElementUtils class-level javadoc}.
 	 * @param element the annotated element
 	 * @param annotationType the annotation type to find

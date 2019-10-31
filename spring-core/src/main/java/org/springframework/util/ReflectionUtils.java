@@ -51,6 +51,7 @@ public abstract class ReflectionUtils {
 
 	/**
 	 * Cache for {@link Class#getDeclaredMethods()} plus equivalent default methods
+	 * Class的getDeclaredMethods()方法加上Java 8中基于接口的默认方法的缓存，允许快速迭代。
 	 * from Java 8 based interfaces, allowing for fast iteration.
 	 */
 	private static final Map<Class<?>, Method[]> declaredMethodsCache = new ConcurrentReferenceHashMap<>(256);
@@ -158,7 +159,9 @@ public abstract class ReflectionUtils {
 
 	/**
 	 * Attempt to find a {@link Method} on the supplied class with the supplied name
+	 * 根据所提供的名称和参数类型尝试在所提供的的类上查找一个方法。查找所有的父类
 	 * and parameter types. Searches all superclasses up to {@code Object}.
+	 * 一直到Object。如果没有找到，返回null
 	 * <p>Returns {@code null} if no {@link Method} can be found.
 	 * @param clazz the class to introspect
 	 * @param name the name of the method
@@ -539,8 +542,10 @@ public abstract class ReflectionUtils {
 
 	/**
 	 * Perform the given callback operation on all matching methods of the given
+	 * 对给定类及其父类的所有匹配方法执行给定的回调（或者给定接口以及父接口）。
 	 * class and superclasses (or given interface and super-interfaces).
 	 * <p>The same named method occurring on subclass and superclass will appear
+	 * 在子类和父类中出现的相同名称的方法会出现两次，除非通过指定的MethodFilter排除。
 	 * twice, unless excluded by the specified {@link MethodFilter}.
 	 * @param clazz the class to introspect
 	 * @param mc the callback to invoke for each method
@@ -549,6 +554,7 @@ public abstract class ReflectionUtils {
 	 */
 	public static void doWithMethods(Class<?> clazz, MethodCallback mc, @Nullable MethodFilter mf) {
 		// Keep backing up the inheritance hierarchy.
+		// 继续备份继承层次结构
 		Method[] methods = getDeclaredMethods(clazz);
 		for (Method method : methods) {
 			if (mf != null && !mf.matches(method)) {
@@ -621,8 +627,11 @@ public abstract class ReflectionUtils {
 
 	/**
 	 * This variant retrieves {@link Class#getDeclaredMethods()} from a local cache
+	 *为了防止JVM的SecurityManager的检查以及防御性数组拷贝，从本地缓存获取变量
 	 * in order to avoid the JVM's SecurityManager check and defensive array copying.
+	 * Class的getDeclaredMethods()方法。另外，也包括Java8的默认方法，这些方法由接口
 	 * In addition, it also includes Java 8 default methods from locally implemented
+	 * 本地实现，因为实际上默认方法应该和声明的方法一样对待。
 	 * interfaces, since those are effectively to be treated just like declared methods.
 	 * @param clazz the class to introspect
 	 * @return the cached array of methods
@@ -631,10 +640,12 @@ public abstract class ReflectionUtils {
 	 */
 	private static Method[] getDeclaredMethods(Class<?> clazz) {
 		Assert.notNull(clazz, "Class must not be null");
+		//先从缓存中取，没有就进行查找。
 		Method[] result = declaredMethodsCache.get(clazz);
 		if (result == null) {
 			try {
 				Method[] declaredMethods = clazz.getDeclaredMethods();
+				//查找接口中的非抽象方法
 				List<Method> defaultMethods = findConcreteMethodsOnInterfaces(clazz);
 				if (defaultMethods != null) {
 					result = new Method[declaredMethods.length + defaultMethods.size()];
@@ -648,6 +659,7 @@ public abstract class ReflectionUtils {
 				else {
 					result = declaredMethods;
 				}
+				//放入缓存
 				declaredMethodsCache.put(clazz, (result.length == 0 ? NO_METHODS : result));
 			}
 			catch (Throwable ex) {
@@ -790,12 +802,14 @@ public abstract class ReflectionUtils {
 
 	/**
 	 * Action to take on each method.
+	 * 对每一个方法执行的动作
 	 */
 	@FunctionalInterface
 	public interface MethodCallback {
 
 		/**
 		 * Perform an operation using the given method.
+		 * 执行使用给定方法执行的操作。
 		 * @param method the method to operate on
 		 */
 		void doWith(Method method) throws IllegalArgumentException, IllegalAccessException;
@@ -804,12 +818,14 @@ public abstract class ReflectionUtils {
 
 	/**
 	 * Callback optionally used to filter methods to be operated on by a method callback.
+	 * 通过一个方法回调，对被操作的方法进行过滤。
 	 */
 	@FunctionalInterface
 	public interface MethodFilter {
 
 		/**
 		 * Determine whether the given method matches.
+		 * 确定给定方法是否匹配。
 		 * @param method the method to check
 		 */
 		boolean matches(Method method);
@@ -860,7 +876,9 @@ public abstract class ReflectionUtils {
 
 	/**
 	 * Pre-built MethodFilter that matches all non-bridge methods
+	 * 预构建的MethodFilter，该MethodFilter匹配所有的非桥方法，
 	 * which are not declared on {@code java.lang.Object}.
+	 * 这些方法不是在Object中声明的。
 	 */
 	public static final MethodFilter USER_DECLARED_METHODS =
 			(method -> (!method.isBridge() && method.getDeclaringClass() != Object.class));

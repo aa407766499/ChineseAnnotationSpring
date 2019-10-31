@@ -183,6 +183,7 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 
 	/**
 	 * Uses method and type-level @{@link RequestMapping} annotations to create
+	 * 使用方法和类级别的@RequestMapping注解创建RequestMappingInfo。
 	 * the RequestMappingInfo.
 	 * @return the created RequestMappingInfo, or {@code null} if the method
 	 * does not have a {@code @RequestMapping} annotation.
@@ -204,7 +205,9 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 
 	/**
 	 * Delegates to {@link #createRequestMappingInfo(RequestMapping, RequestCondition)},
+	 * 委派给createRequestMappingInfo(RequestMapping, RequestCondition)方法，提供合适的
 	 * supplying the appropriate custom {@link RequestCondition} depending on whether
+	 * 自定义RequestCondition，该RequestCondition取决于所提供的的注解元素是一个类或者方法。
 	 * the supplied {@code annotatedElement} is a class or method.
 	 * @see #getCustomTypeCondition(Class)
 	 * @see #getCustomMethodCondition(Method)

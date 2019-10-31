@@ -729,18 +729,28 @@ public abstract class ClassUtils {
 	}
 
 	/**
+	 * 获取最具体的方法
+	 *
 	 * Given a method, which may come from an interface, and a target class used
+	 * 给定一个方法，该方法可能来自于接口，以及当前反射调用的目标类，如果有的话，查找相应
 	 * in the current reflective invocation, find the corresponding target method
+	 * 的目标方法。比如：方法可能是IFoo.bar()，目标类可能是DefaultFoo。在这种情况下，
 	 * if there is one. E.g. the method may be {@code IFoo.bar()} and the
+	 * 方法可以使DefaultFoo.bar()。这使得可以查找该方法上的属性。
 	 * target class may be {@code DefaultFoo}. In this case, the method may be
 	 * {@code DefaultFoo.bar()}. This enables attributes on that method to be found.
 	 * <p><b>NOTE:</b> In contrast to {@link org.springframework.aop.support.AopUtils#getMostSpecificMethod},
+	 * 注意：与AopUtils的getMostSpecificMethod方法相反，该方法不会自动解析Java 5桥方法。
 	 * this method does <i>not</i> resolve Java 5 bridge methods automatically.
+	 * 调用BridgeMethodResolver的findBridgedMethod，如果需要桥方法解析（比如：获取
 	 * Call {@link org.springframework.core.BridgeMethodResolver#findBridgedMethod}
+	 * 原始方法定义的元数据）。
 	 * if bridge method resolution is desirable (e.g. for obtaining metadata from
 	 * the original method definition).
 	 * <p><b>NOTE:</b> Since Spring 3.1.1, if Java security settings disallow reflective
+	 * 注意：从Spring 3.1.1开始，如果Java安全设置不允许反射访问（比如：调用Class的getDeclaredMethods等），
 	 * access (e.g. calls to {@code Class#getDeclaredMethods} etc, this implementation
+	 * 该实现会回调返回原始提供的方法。
 	 * will fall back to returning the originally provided method.
 	 * @param method the method to be invoked, which may come from an interface
 	 * @param targetClass the target class for the current invocation.
@@ -795,6 +805,7 @@ public abstract class ClassUtils {
 
 	/**
 	 * Determine whether the given method is overridable in the given target class.
+	 * 检查在给定目标类中的给定方法是否可以被重写。
 	 * @param method the method to check
 	 * @param targetClass the target class to check against
 	 */

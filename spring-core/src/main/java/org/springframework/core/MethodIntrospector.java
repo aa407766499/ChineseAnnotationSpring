@@ -16,24 +16,23 @@
 
 package org.springframework.core;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.*;
+
 /**
  * Defines the algorithm for searching for metadata-associated methods exhaustively
+ * 定义了一个算法，该算法全力地查找包括接口和父类中的元数据相关的方法，处理泛型方法时，接口和
  * including interfaces and parent classes while also dealing with parameterized methods
+ * 基于类的代理也会遇到相同的场景。
  * as well as common scenarios encountered with interface and class-based proxies.
  *
  * <p>Typically, but not necessarily, used for finding annotated handler methods.
+ * 通常，但不是必须的，用于查找被注解的处理器方法。
  *
  * @author Juergen Hoeller
  * @author Rossen Stoyanchev
@@ -43,7 +42,9 @@ public abstract class MethodIntrospector {
 
 	/**
 	 * Select methods on the given target type based on the lookup of associated metadata.
+	 * 基于相关的元数据查找，在给定的目标类型上查找方法。调用者通过MetadataLookup参数定义了感兴趣
 	 * <p>Callers define methods of interest through the {@link MetadataLookup} parameter,
+	 * 的方法，允许将相关元数据收集到结果map中。
 	 * allowing to collect the associated metadata into the result map.
 	 * @param targetType the target type to search methods on
 	 * @param metadataLookup a {@link MetadataLookup} callback to inspect methods of interest,

@@ -16,33 +16,38 @@
 
 package org.springframework.web.bind.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.core.annotation.AliasFor;
+
+import java.lang.annotation.*;
 
 /**
  * Annotation for mapping web requests onto specific handler classes and/or
+ * 在指定的处理器类上或者处理器方法上的映射web请求的注解。
  * handler methods.
  *
  * <p>Handler methods annotated with this annotation can have very flexible
+ * 该注解注解的处理器方法有非常灵活的签名。支持方法参数的细节以及依赖于指定
  * signatures. The exact details of the supported method arguments and return
+ * Controller模型支持的返回值。Spring Web MVC和Spring WebFlux支持该注解，两者有
  * values depend on the specific
+ * 些许不同。获取更多细节参考参考Spring Framework。
  * {@link org.springframework.stereotype.Controller @Controller} model supported.
  * Both Spring Web MVC and Spring WebFlux support this annotation with some
  * differences. More details are available in the Spring Framework reference.
  *
  * <p><b>NOTE:</b> {@code @RequestMapping} will only be processed if an
+ * 注意：如果配置了一对合适的HandlerMapping-HandlerAdapter，才能处理@RequestMapping。
  * an appropriate {@code HandlerMapping}-{@code HandlerAdapter} pair
+ * 如果你自定义了HandlerMappings或者HandlerAdapters，那么你需要添加
  * is configured. If you are defining custom {@code HandlerMappings} or
+ * RequestMappingHandlerMapping或者RequestMappingHandlerAdapter到你的配置中。
  * {@code HandlerAdapters}, then you need to add {@code RequestMappingHandlerMapping}
  * and {@code RequestMappingHandlerAdapter} to your configuration.</code>.
  *
  * <p><b>NOTE:</b> When using controller interfaces (e.g. for AOP proxying),
+ * 注意：在使用controller接口（比如AOP代理）时，确保一致的放入你的所有映射注解-
  * make sure to consistently put <i>all</i> your mapping annotations - such as
+ * 这样controller接口上的@RequestMapping以及@SessionAttribute而不是在实现类上。
  * {@code @RequestMapping} and {@code @SessionAttributes} - on
  * the controller <i>interface</i> rather than on the implementation class.
  *

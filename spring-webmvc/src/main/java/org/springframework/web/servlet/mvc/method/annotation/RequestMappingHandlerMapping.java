@@ -214,6 +214,7 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	 */
 	@Nullable
 	private RequestMappingInfo createRequestMappingInfo(AnnotatedElement element) {
+		//从方法上查找RequestMapping
 		RequestMapping requestMapping = AnnotatedElementUtils.findMergedAnnotation(element, RequestMapping.class);
 		RequestCondition<?> condition = (element instanceof Class ?
 				getCustomTypeCondition((Class<?>) element) : getCustomMethodCondition((Method) element));
@@ -222,11 +223,16 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 
 	/**
 	 * Provide a custom type-level request condition.
+	 * 提供自定义类级别的请求条件。
 	 * The custom {@link RequestCondition} can be of any type so long as the
+	 * 自定义RequestCondition可以是任意类型只要该方法的所有调用返回相同的条件类型
 	 * same condition type is returned from all calls to this method in order
+	 * ，为了确保自定义请求条件可以组合以及别叫。
 	 * to ensure custom request conditions can be combined and compared.
 	 * <p>Consider extending {@link AbstractRequestCondition} for custom
+	 * 可以扩展AbstractRequestCondition自定义条件类型，使用CompositeRequestCondition
 	 * condition types and using {@link CompositeRequestCondition} to provide
+	 * 提供多个自定义请求条件。
 	 * multiple custom conditions.
 	 * @param handlerType the handler type for which to create the condition
 	 * @return the condition, or {@code null}
@@ -238,6 +244,7 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 
 	/**
 	 * Provide a custom method-level request condition.
+	 * 提供自定义方法级别的请求条件。
 	 * The custom {@link RequestCondition} can be of any type so long as the
 	 * same condition type is returned from all calls to this method in order
 	 * to ensure custom request conditions can be combined and compared.
@@ -254,8 +261,11 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 
 	/**
 	 * Create a {@link RequestMappingInfo} from the supplied
+	 * 根据@RequestMapping注解创建一个RequestMappingInfo，@RequestMapping
 	 * {@link RequestMapping @RequestMapping} annotation, which is either
+	 * 注解要么是直接声明的注解，要么是元数据注解，要么是注解层级中合并注解属性
 	 * a directly declared annotation, a meta-annotation, or the synthesized
+	 * 的合成结果。
 	 * result of merging annotation attributes within an annotation hierarchy.
 	 */
 	protected RequestMappingInfo createRequestMappingInfo(
@@ -277,6 +287,7 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 
 	/**
 	 * Resolve placeholder values in the given array of patterns.
+	 * 解析给定模式数组中的占位符值。
 	 * @return a new array with updated patterns
 	 */
 	protected String[] resolveEmbeddedValuesInPatterns(String[] patterns) {

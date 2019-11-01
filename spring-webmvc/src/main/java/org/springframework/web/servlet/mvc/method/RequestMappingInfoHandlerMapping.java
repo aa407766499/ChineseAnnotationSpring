@@ -71,6 +71,7 @@ public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMe
 
 	/**
 	 * Get the URL path patterns associated with this {@link RequestMappingInfo}.
+	 * 获取与该RequestMappingInfo相关的URL路径模式
 	 */
 	@Override
 	protected Set<String> getMappingPathPatterns(RequestMappingInfo info) {

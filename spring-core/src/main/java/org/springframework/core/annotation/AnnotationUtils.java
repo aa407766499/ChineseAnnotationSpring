@@ -16,34 +16,16 @@
 
 package org.springframework.core.annotation;
 
-import java.lang.annotation.Annotation;
-import java.lang.annotation.Repeatable;
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Array;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Proxy;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.core.BridgeMethodResolver;
 import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
-import org.springframework.util.ConcurrentReferenceHashMap;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.ReflectionUtils;
-import org.springframework.util.StringUtils;
+import org.springframework.util.*;
+
+import java.lang.annotation.Annotation;
+import java.lang.annotation.Repeatable;
+import java.lang.reflect.*;
+import java.util.*;
 
 /**
  * General utility methods for working with annotations, handling meta-annotations,
@@ -1422,7 +1404,9 @@ public abstract class AnnotationUtils {
 
 	/**
 	 * <em>Synthesize</em> an annotation from the supplied {@code annotation}
+	 * 从所提供的注解那合成一个注解，通过将其包装成一个动态代理，该代理显然地
 	 * by wrapping it in a dynamic proxy that transparently enforces
+	 * 执行注解属性的属性别名语义，该注解属性被@AliasFor注解。
 	 * <em>attribute alias</em> semantics for annotation attributes that are
 	 * annotated with {@link AliasFor @AliasFor}.
 	 * @param annotation the annotation to synthesize
@@ -1455,11 +1439,13 @@ public abstract class AnnotationUtils {
 			return annotation;
 		}
 
+		//构造器参数可以理解为（RequestMapping实例,方法元数据）
 		DefaultAnnotationAttributeExtractor attributeExtractor =
 				new DefaultAnnotationAttributeExtractor(annotation, annotatedElement);
 		InvocationHandler handler = new SynthesizedAnnotationInvocationHandler(attributeExtractor);
 
 		// Can always expose Spring's SynthesizedAnnotation marker since we explicitly check for a
+		// 总是暴露Spring的SynthesizedAnnotation标记因为我们在之前明确检查了合成注解。
 		// synthesizable annotation before (which needs to declare @AliasFor from the same package)
 		Class<?>[] exposedInterfaces = new Class<?>[] {annotationType, SynthesizedAnnotation.class};
 		return (A) Proxy.newProxyInstance(annotation.getClass().getClassLoader(), exposedInterfaces, handler);
@@ -1644,11 +1630,15 @@ public abstract class AnnotationUtils {
 
 	/**
 	 * Determine if annotations of the supplied {@code annotationType} are
+	 * 确定所提供的注解类型的注解是否是合成的（比如：需要被包装在一个动态代理中
 	 * <em>synthesizable</em> (i.e., in need of being wrapped in a dynamic
+	 * ，该动态代理提供标准JDK注解之上的功能）。
 	 * proxy that provides functionality above that of a standard JDK
 	 * annotation).
 	 * <p>Specifically, an annotation is <em>synthesizable</em> if it declares
+	 * 特别地，如果注解声明的任何属性通过@AliasFor配置成别名对或者注解使用的
 	 * any attributes that are configured as <em>aliased pairs</em> via
+	 * 任何内嵌注解声明了这样的别名对，那么该注解就是合成的。
 	 * {@link AliasFor @AliasFor} or if any nested annotations used by the
 	 * annotation declare such <em>aliased pairs</em>.
 	 * @since 4.2
@@ -1692,6 +1682,7 @@ public abstract class AnnotationUtils {
 
 	/**
 	 * Get the names of the aliased attributes configured via
+	 * 获取通过所提供的注解属性的@AliasFor注解配置的别名属性的名称
 	 * {@link AliasFor @AliasFor} for the supplied annotation {@code attribute}.
 	 * @param attribute the attribute to find aliases for
 	 * @return the names of the aliased attributes (never {@code null}, though
@@ -1738,8 +1729,10 @@ public abstract class AnnotationUtils {
 
 	/**
 	 * Get all methods declared in the supplied {@code annotationType} that
+	 * 获取所提供的注解类型中声明的所有方法，该注解类型符合Java的注解属性要求。
 	 * match Java's requirements for annotation <em>attributes</em>.
 	 * <p>All methods in the returned list will be
+	 * 返回列表中的所有方法都会通过ReflectionUtils的makeAccessible(Method)设置可访问。
 	 * {@linkplain ReflectionUtils#makeAccessible(Method) made accessible}.
 	 * @param annotationType the type in which to search for attribute methods
 	 * (never {@code null})
@@ -1786,6 +1779,7 @@ public abstract class AnnotationUtils {
 
 	/**
 	 * Determine if the supplied {@code method} is an annotation attribute method.
+	 * 确定所提供的方法是否是一个注解属性方法。
 	 * @param method the method to check
 	 * @return {@code true} if the method is an attribute method
 	 * @since 4.2
@@ -1990,7 +1984,9 @@ public abstract class AnnotationUtils {
 
 	/**
 	 * {@code AliasDescriptor} encapsulates the declaration of {@code @AliasFor}
+	 * AliasDescriptor包装了给定注解属性上的@AliasFor的声明而且支持验证aliases的
 	 * on a given annotation attribute and includes support for validating
+	 * 配置（明确的以及隐藏的）
 	 * the configuration of aliases (both explicit and implicit).
 	 * @since 4.2.1
 	 * @see #from
@@ -2015,6 +2011,7 @@ public abstract class AnnotationUtils {
 
 		/**
 		 * Create an {@code AliasDescriptor} <em>from</em> the declaration
+		 * 根据所提供的注解属性上的@AliasFor创建一个AliasDescriptor。
 		 * of {@code @AliasFor} on the supplied annotation attribute and
 		 * validate the configuration of {@code @AliasFor}.
 		 * @param attribute the annotation attribute that is annotated with
@@ -2182,11 +2179,13 @@ public abstract class AnnotationUtils {
 
 		public List<String> getAttributeAliasNames() {
 			// Explicit alias pair?
+			// 是否有别名对
 			if (this.isAliasPair) {
 				return Collections.singletonList(this.aliasedAttributeName);
 			}
 
 			// Else: search for implicit aliases
+			// 查找隐藏的别名
 			List<String> aliases = new ArrayList<>();
 			for (AliasDescriptor otherDescriptor : getOtherDescriptors()) {
 				if (this.isAliasFor(otherDescriptor)) {

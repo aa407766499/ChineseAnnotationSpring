@@ -16,16 +16,17 @@
 
 package org.springframework.core.annotation;
 
+import org.springframework.core.MethodParameter;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 
-import org.springframework.core.MethodParameter;
-
 /**
  * A {@link MethodParameter} variant which synthesizes annotations that
+ * MethodParameter变体，该类合成注解，该注解通过@AliasFor声明属性别名。
  * declare attribute aliases via {@link AliasFor @AliasFor}.
  *
  * @author Juergen Hoeller
@@ -38,6 +39,7 @@ public class SynthesizingMethodParameter extends MethodParameter {
 
 	/**
 	 * Create a new {@code SynthesizingMethodParameter} for the given method,
+	 * 根据给定方法创建一个新的SynthesizingMethodParameter，内嵌级别1
 	 * with nesting level 1.
 	 * @param method the Method to specify a parameter for
 	 * @param parameterIndex the index of the parameter: -1 for the method

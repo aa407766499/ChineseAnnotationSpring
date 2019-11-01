@@ -115,7 +115,9 @@ public abstract class AopUtils {
 
 	/**
 	 * Select an invocable method on the target type: either the given method itself
+	 * 在目标类型上查找调用方法：如果实际上是在目标类型上，返回方法自身，否则在目标类型的
 	 * if actually exposed on the target type, or otherwise a corresponding method
+	 * 接口中或者目标类型上查找
 	 * on one of the target type's interfaces or on the target type itself.
 	 *
 	 * @param method     the method to check

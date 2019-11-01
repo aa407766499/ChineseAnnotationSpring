@@ -701,7 +701,7 @@ public class AnnotatedElementUtils {
 	 * 完全支持@AliasFor语法，包括单个注解中的以及注解层级中的。
 	 * within a single annotation and within the annotation hierarchy.
 	 * <p>This method follows <em>find semantics</em> as described in the
-	 * 该方法遵循AnnotatedElementUtils 类级别javadoc描述的查找语义。
+	 * 该方法遵循AnnotatedElementUtils 类级别javadoc描述的查询语义。
 	 * {@linkplain AnnotatedElementUtils class-level javadoc}.
 	 * @param element the annotated element
 	 * @param annotationType the annotation type to find
@@ -716,8 +716,10 @@ public class AnnotatedElementUtils {
 		Assert.notNull(annotationType, "'annotationType' must not be null");
 
 		// Shortcut: directly present on the element, with no merging needed?
+		// 快照：直接存在于元素上，不需要合并？
 		if (!(element instanceof Class)) {
 			// Do not use this shortcut against a Class: Inherited annotations
+			// 针对类不使用该快照：继承的注解将比本地声明的组合注解更可取。
 			// would get preferred over locally declared composed annotations.
 			A annotation = element.getAnnotation(annotationType);
 			if (annotation != null) {
@@ -726,6 +728,7 @@ public class AnnotatedElementUtils {
 		}
 
 		// Exhaustive retrieval of merged annotation attributes...
+		// 合并注解属性的详尽检索
 		AnnotationAttributes attributes = findMergedAnnotationAttributes(element, annotationType, false, false);
 		return (attributes != null ? AnnotationUtils.synthesizeAnnotation(attributes, annotationType, element) : null);
 	}

@@ -176,6 +176,7 @@ public class HandlerMethod {
 		MethodParameter[] result = new MethodParameter[count];
 		for (int i = 0; i < count; i++) {
 			HandlerMethodParameter parameter = new HandlerMethodParameter(i);
+			//解析参数类型并设置参数类型
 			GenericTypeResolver.resolveParameterType(parameter, this.beanType);
 			result[i] = parameter;
 		}
@@ -357,6 +358,7 @@ public class HandlerMethod {
 
 	/**
 	 * A MethodParameter with HandlerMethod-specific behavior.
+	 * 处理器方法指定行为的方法参数。
 	 */
 	protected class HandlerMethodParameter extends SynthesizingMethodParameter {
 

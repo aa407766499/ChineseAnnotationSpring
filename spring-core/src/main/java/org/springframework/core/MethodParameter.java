@@ -105,7 +105,9 @@ public class MethodParameter {
 	 * return type; 0 for the first method parameter; 1 for the second method
 	 * parameter, etc.
 	 * @param nestingLevel the nesting level of the target type
+	 *                     目标类型的内嵌级别（通常为1，比如：如果是列表中的列表
 	 * (typically 1; e.g. in case of a List of Lists, 1 would indicate the
+	 *                     ，1表示内嵌的列表，而2表示内嵌列表中的元素）
 	 * nested List, whereas 2 would indicate the element of the nested List)
 	 */
 	public MethodParameter(Method method, int parameterIndex, int nestingLevel) {

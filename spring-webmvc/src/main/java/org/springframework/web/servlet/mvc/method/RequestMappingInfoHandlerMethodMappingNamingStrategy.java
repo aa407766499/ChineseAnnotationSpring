@@ -41,6 +41,7 @@ public class RequestMappingInfoHandlerMethodMappingNamingStrategy
 
 	@Override
 	public String getName(HandlerMethod handlerMethod, RequestMappingInfo mapping) {
+		//mapping有名称返回mapping名称
 		if (mapping.getName() != null) {
 			return mapping.getName();
 		}
@@ -51,6 +52,7 @@ public class RequestMappingInfoHandlerMethodMappingNamingStrategy
 				sb.append(simpleTypeName.charAt(i));
 			}
 		}
+		//mapping没名称返回处理器方法所在bean的简单类名的全大写#方法名称。
 		sb.append(SEPARATOR).append(handlerMethod.getMethod().getName());
 		return sb.toString();
 	}

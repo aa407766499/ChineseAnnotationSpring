@@ -74,6 +74,7 @@ public abstract class MethodIntrospector {
 				if (result != null) {
 					Method bridgedMethod = BridgeMethodResolver.findBridgedMethod(specificMethod);
 					if (bridgedMethod == specificMethod || metadataLookup.inspect(bridgedMethod) == null) {
+						//key为Method，值为RequestMappingInfo
 						methodMap.put(specificMethod, result);
 					}
 				}
@@ -101,6 +102,7 @@ public abstract class MethodIntrospector {
 	 * if actually exposed on the target type, or otherwise a corresponding method
 	 * on one of the target type's interfaces or on the target type itself.
 	 * <p>Matches on user-declared interfaces will be preferred since they are likely
+	 * 匹配用户声明的接口更可取因为他们最可能包含相关的元数据，该元数据和目标类的方法对应。
 	 * to contain relevant metadata that corresponds to the method on the target class.
 	 * @param method the method to check
 	 * @param targetType the target type to search methods on
@@ -110,6 +112,7 @@ public abstract class MethodIntrospector {
 	 * target type (typically due to a proxy mismatch)
 	 */
 	public static Method selectInvocableMethod(Method method, Class<?> targetType) {
+		//在用户定义的类中查找
 		if (method.getDeclaringClass().isAssignableFrom(targetType)) {
 			return method;
 		}
@@ -118,6 +121,7 @@ public abstract class MethodIntrospector {
 			Class<?>[] parameterTypes = method.getParameterTypes();
 			for (Class<?> ifc : targetType.getInterfaces()) {
 				try {
+					//在接口中查找
 					return ifc.getMethod(methodName, parameterTypes);
 				}
 				catch (NoSuchMethodException ex) {
@@ -125,6 +129,7 @@ public abstract class MethodIntrospector {
 				}
 			}
 			// A final desperate attempt on the proxy class itself...
+			// 最后在代理类上查找
 			return targetType.getMethod(methodName, parameterTypes);
 		}
 		catch (NoSuchMethodException ex) {

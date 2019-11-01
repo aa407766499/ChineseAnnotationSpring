@@ -16,16 +16,20 @@
 
 package org.springframework.web.servlet.mvc.condition;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.lang.Nullable;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Contract for request mapping conditions.
+ * 请求映射条件的协议。
  *
  * <p>Request conditions can be combined via {@link #combine(Object)}, matched to
+ * 请求条件可以通过combine(Object)方法组合，通过getMatchingCondition(HttpServletRequest)
  * a request via {@link #getMatchingCondition(HttpServletRequest)}, and compared
+ * 方法匹配请求，通过compareTo(Object, HttpServletRequest)方法和其他请求条件进行比较
  * to each other via {@link #compareTo(Object, HttpServletRequest)} to determine
+ * 确定给定请求的最优匹配。
  * which is a closer match for a given request.
  *
  * @author Rossen Stoyanchev

@@ -16,18 +16,18 @@
 
 package org.springframework.web.servlet.support;
 
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.util.WebUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.List;
+
 /**
  * Store and retrieve {@link FlashMap} instances to and from the HTTP session.
- *
+ * 将FlashMap实例存储到HTTP session，以及从HTTP session中获取FlashMap实例
  * @author Rossen Stoyanchev
  * @author Juergen Hoeller
  * @since 3.1.1

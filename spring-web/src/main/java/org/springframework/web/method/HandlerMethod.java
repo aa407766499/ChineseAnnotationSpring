@@ -313,6 +313,7 @@ public class HandlerMethod {
 	 * the bean name is resolved before a {@link HandlerMethod} is created and returned.
 	 * 解析bean名称。
 	 */
+	/*初始化时HandlerMethod中的this.bean是bean名称，现在将其解析为bean实例*/
 	public HandlerMethod createWithResolvedBean() {
 		Object handler = this.bean;
 		if (this.bean instanceof String) {

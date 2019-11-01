@@ -347,7 +347,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	/**
 	 * Look up the best-matching handler method for the current request.
-	 * 查找当前请求最匹配的处理器方法。如果查找到多个匹配，选择最匹配的。
+	 * 查找当前请求最匹配的处理器方法。如果查找到多个匹配，选择最优匹配。
 	 * If multiple matches are found, the best match is selected.
 	 * @param lookupPath mapping lookup path within the current servlet mapping
 	 * @param request the current request

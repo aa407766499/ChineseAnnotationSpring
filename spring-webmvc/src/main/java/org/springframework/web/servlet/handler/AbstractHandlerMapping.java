@@ -235,6 +235,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 
 	/**
 	 * Initializes the interceptors.
+	 * 初始化拦截器。
 	 * @see #extendInterceptors(java.util.List)
 	 * @see #initInterceptors()
 	 */
@@ -247,10 +248,13 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 
 	/**
 	 * Extension hook that subclasses can override to register additional interceptors,
+	 * 扩展钩子，子类可以重写该方法注册另外的拦截器，给定要配置的拦截器。
 	 * given the configured interceptors (see {@link #setInterceptors}).
 	 * <p>Will be invoked before {@link #initInterceptors()} adapts the specified
+	 * 在initInterceptors()方法将制定拦截器适配成HandlerInterceptor实例之前调用该方法。
 	 * interceptors into {@link HandlerInterceptor} instances.
 	 * <p>The default implementation is empty.
+	 * 默认实现为空。
 	 * @param interceptors the configured interceptor List (never {@code null}), allowing
 	 * to add further interceptors before as well as after the existing interceptors
 	 */
@@ -259,8 +263,11 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 
 	/**
 	 * Detect beans of type {@link MappedInterceptor} and add them to the list of mapped interceptors.
+	 * 检索类型为MappedInterceptor的bean，将他们添加到mapped拦截器列表中。
 	 * <p>This is called in addition to any {@link MappedInterceptor}s that may have been provided
+	 *除了通过setInterceptors方法提供的任何MappedInterceptor之外，调用该方法，默认添加当前上下文及
 	 * via {@link #setInterceptors}, by default adding all beans of type {@link MappedInterceptor}
+	 * 父级容器中类型为MappedInterceptor的bean。子类可以重写以及改善该逻辑。
 	 * from the current context and its ancestors. Subclasses can override and refine this policy.
 	 * @param mappedInterceptors an empty list to add {@link MappedInterceptor} instances to
 	 */
@@ -272,6 +279,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 
 	/**
 	 * Initialize the specified interceptors, checking for {@link MappedInterceptor}s and
+	 * 初始化指定拦截器，检查MappedInterceptor以及如果需要，适配HandlerInterceptor和WebRequestInterceptor。
 	 * adapting {@link HandlerInterceptor}s and {@link WebRequestInterceptor}s if necessary.
 	 * @see #setInterceptors
 	 * @see #adaptInterceptor
@@ -290,9 +298,13 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 
 	/**
 	 * Adapt the given interceptor object to the {@link HandlerInterceptor} interface.
+	 * 将给定拦截器对象适配成HandlerInterceptor接口。
 	 * <p>By default, the supported interceptor types are {@link HandlerInterceptor}
+	 * 默认支持的拦截器类型有HandlerInterceptor以及WebRequestInterceptor。每一个
 	 * and {@link WebRequestInterceptor}. Each given {@link WebRequestInterceptor}
+	 * 给定的WebRequestInterceptor被包装成WebRequestHandlerInterceptorAdapter。
 	 * will be wrapped in a {@link WebRequestHandlerInterceptorAdapter}.
+	 * 子类可以重写该方法。
 	 * Can be overridden in subclasses.
 	 * @param interceptor the specified interceptor object
 	 * @return the interceptor wrapped as HandlerInterceptor

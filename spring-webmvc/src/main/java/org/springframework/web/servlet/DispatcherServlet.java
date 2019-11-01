@@ -232,6 +232,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * Request attribute to hold the current web application context.
+	 * 持有当前web应用上下文的请求属性。
 	 * Otherwise only the global web app context is obtainable by tags etc.
 	 * @see org.springframework.web.servlet.support.RequestContextUtils#findWebApplicationContext
 	 */
@@ -293,6 +294,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * Common prefix that DispatcherServlet's default strategy attributes start with.
+	 * DispatcherServlet的默认策略属性开头的公共前缀。
 	 */
 	private static final String DEFAULT_STRATEGIES_PREFIX = "org.springframework.web.servlet";
 
@@ -948,6 +950,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * Exposes the DispatcherServlet-specific request attributes and delegates to {@link #doDispatch}
+	 * 暴露DispatcherServlet指定的请求属性，然后委派给doDispatch()方法
 	 * for the actual dispatching.
 	 */
 	@Override
@@ -959,8 +962,10 @@ public class DispatcherServlet extends FrameworkServlet {
 		}
 
 		// Keep a snapshot of the request attributes in case of an include,
+		// 如果包含，保存请求属性的快照，在包含之后，恢复原始属性
 		// to be able to restore the original attributes after the include.
 		Map<String, Object> attributesSnapshot = null;
+		//是否是包含请求
 		if (WebUtils.isIncludeRequest(request)) {
 			attributesSnapshot = new HashMap<>();
 			Enumeration<?> attrNames = request.getAttributeNames();
@@ -973,6 +978,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		}
 
 		// Make framework objects available to handlers and view objects.
+		// 使得框架对象能获取处理器和视图对象。
 		request.setAttribute(WEB_APPLICATION_CONTEXT_ATTRIBUTE, getWebApplicationContext());
 		request.setAttribute(LOCALE_RESOLVER_ATTRIBUTE, this.localeResolver);
 		request.setAttribute(THEME_RESOLVER_ATTRIBUTE, this.themeResolver);
@@ -1002,10 +1008,14 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * Process the actual dispatching to the handler.
+	 * 处理实际转发给处理器
 	 * <p>The handler will be obtained by applying the servlet's HandlerMappings in order.
+	 * 按顺序应用该servlet的HandlerMappings获取处理器。查找该servlet安装的HandlerAdapters获取
 	 * The HandlerAdapter will be obtained by querying the servlet's installed HandlerAdapters
+	 * HandlerAdapter，查找第一个支持处理器类的。
 	 * to find the first that supports the handler class.
 	 * <p>All HTTP methods are handled by this method. It's up to HandlerAdapters or handlers
+	 * 该方法处理所有的HTTP方法。HandlerAdapters或者处理器自己决定能不能支持该HTTP方法。
 	 * themselves to decide which methods are acceptable.
 	 * @param request current HTTP request
 	 * @param response current HTTP response
@@ -1029,6 +1039,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				multipartRequestParsed = (processedRequest != request);
 
 				// Determine handler for the current request.
+				// 确定当前请求的处理器
 				// 2.取得处理当前请求的controller,这里也称为hanlder,处理器,
 				// 	 第一个步骤的意义就在这里体现了.这里并不是直接返回controller,
 				//	 而是返回的HandlerExecutionChain请求处理器链对象,
@@ -1041,6 +1052,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				}
 
 				// Determine handler adapter for the current request.
+				// 确定当前请求的处理器适配器
 				//3. 获取处理request的处理器适配器handler adapter
 				HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
 
@@ -1186,7 +1198,9 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * Convert the request into a multipart request, and make multipart resolver available.
+	 * 将请求转换成文件上传请求，获取多文件解析器。
 	 * <p>If no multipart resolver is set, simply use the existing request.
+	 * 如果没有设置多文件解析器，简单实用已存在的请求
 	 * @param request current HTTP request
 	 * @return the processed request (multipart wrapper if necessary)
 	 * @see MultipartResolver#resolveMultipart
@@ -1251,7 +1265,9 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * Return the HandlerExecutionChain for this request.
+	 * 返回该请求的HandlerExecutionChain
 	 * <p>Tries all handler mappings in order.
+	 * 按顺序尝试所有的处理器映射
 	 * @param request current HTTP request
 	 * @return the HandlerExecutionChain, or {@code null} if no handler could be found
 	 */
@@ -1274,6 +1290,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * No handler found -> set appropriate HTTP response status.
+	 * 没有匹配的处理器->设置合适的HTTP响应状态。
 	 * @param request current HTTP request
 	 * @param response current HTTP response
 	 * @throws Exception if preparing the response failed
@@ -1462,6 +1479,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * Restore the request attributes after an include.
+	 * 恢复包含后的请求属性
 	 * @param request current HTTP request
 	 * @param attributesSnapshot the snapshot of the request attributes before the include
 	 */

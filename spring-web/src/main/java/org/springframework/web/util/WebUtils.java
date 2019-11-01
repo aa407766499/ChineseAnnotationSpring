@@ -16,32 +16,19 @@
 
 package org.springframework.web.util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.TreeMap;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletRequestWrapper;
-import javax.servlet.ServletResponse;
-import javax.servlet.ServletResponseWrapper;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.server.ServletServerHttpRequest;
+import org.springframework.lang.Nullable;
+import org.springframework.util.*;
+
+import javax.servlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.springframework.http.HttpRequest;
-import org.springframework.http.server.ServletServerHttpRequest;
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
 
 /**
  * Miscellaneous utilities for web applications.
@@ -406,9 +393,12 @@ public abstract class WebUtils {
 
 	/**
 	 * Determine whether the given request is an include request,
+	 * 确定给定请求是否是一个包含请求，换句话说，不是来自外部顶级HTTP请求。
 	 * that is, not a top-level HTTP request coming in from the outside.
 	 * <p>Checks the presence of the "javax.servlet.include.request_uri"
+	 * 检查请求属性"javax.servlet.include.request_uri"是否存在。可以检查
 	 * request attribute. Could check any request attribute that is only
+	 * 任何请求属性，该请求属性只存在于包含请求中。
 	 * present in an include request.
 	 * @param request current servlet request
 	 * @return whether the given request is an include request

@@ -16,15 +16,16 @@
 
 package org.springframework.web.servlet;
 
+import org.springframework.lang.Nullable;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.lang.Nullable;
-
 /**
  * MVC framework SPI, allowing parameterization of the core MVC workflow.
- *
+ * MVC框架SPI，允许参数化核心MVC工作流。
  * <p>Interface that must be implemented for each handler type to handle a request.
+ * 处理请求的每一个处理器类型都要实现该接口。
  * This interface is used to allow the {@link DispatcherServlet} to be indefinitely
  * extensible. The {@code DispatcherServlet} accesses all installed handlers through
  * this interface, meaning that it does not contain code specific to any handler type.

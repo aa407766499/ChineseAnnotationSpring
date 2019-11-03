@@ -25,11 +25,15 @@ import org.springframework.lang.Nullable;
 
 /**
  * Allows customizing the response after the execution of an {@code @ResponseBody}
+ * 允许在ResponseBody或者ResponseEntity控制器方法执行之后但是在HttpMessageConverter
  * or a {@code ResponseEntity} controller method but before the body is written
+ * 写响应体之前自定义响应。
  * with an {@code HttpMessageConverter}.
  *
  * <p>Implementations may be registered directly with
+ * 该协议的实现可以直接通过RequestMappingHandlerAdapter和ExceptionHandlerExceptionResolver
  * {@code RequestMappingHandlerAdapter} and {@code ExceptionHandlerExceptionResolver}
+ * 注册或者被ControllerAdvice注解，这样就可以被自动检索。
  * or more likely annotated with {@code @ControllerAdvice} in which case they
  * will be auto-detected by both.
  *

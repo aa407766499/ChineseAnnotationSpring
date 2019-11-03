@@ -16,25 +16,27 @@
 
 package org.springframework.web.context.request;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.WebUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Servlet-based implementation of the {@link RequestAttributes} interface.
- *
+ * 基于Servlet的RequestAttributes接口实现。
  * <p>Accesses objects from servlet request and HTTP session scope,
+ * 访问servlet请求对象和HTTP session范围，session和global session没有
  * with no distinction between "session" and "global session".
+ * 区别
  *
  * @author Juergen Hoeller
  * @since 2.0

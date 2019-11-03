@@ -16,14 +16,16 @@
 
 package org.springframework.web.context.request;
 
+import org.springframework.util.Assert;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.springframework.util.Assert;
-
 /**
  * Abstract support class for RequestAttributes implementations,
+ * RequestAttributes实现的抽象支持类，提供请求指定销毁回调的请求完成机制
  * offering a request completion mechanism for request-specific destruction
+ * 以及更新访问的session属性
  * callbacks and for updating accessed session attributes.
  *
  * @author Juergen Hoeller

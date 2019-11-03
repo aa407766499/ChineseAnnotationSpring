@@ -20,10 +20,13 @@ import org.springframework.lang.Nullable;
 
 /**
  * Abstraction for accessing attribute objects associated with a request.
+ * 访问请求相关属性对象的抽象。支持访问请求范围内的属性和session范围内的属性，
  * Supports access to request-scoped attributes as well as to session-scoped
+ * 也可选择global session的概念。
  * attributes, with the optional notion of a "global session".
  *
  * <p>Can be implemented for any kind of request/session mechanism,
+ * 能被任何种类的request/session机制实现，特别是servlet请求
  * in particular for servlet requests.
  *
  * @author Juergen Hoeller

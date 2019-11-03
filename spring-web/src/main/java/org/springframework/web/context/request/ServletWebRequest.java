@@ -16,22 +16,6 @@
 
 package org.springframework.web.context.request;
 
-import java.security.Principal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
@@ -40,8 +24,19 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.WebUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * {@link WebRequest} adapter for an {@link javax.servlet.http.HttpServletRequest}.
+ * HttpServletRequest的WebRequest适配器
  *
  * @author Juergen Hoeller
  * @author Brian Clozel
@@ -93,6 +88,7 @@ public class ServletWebRequest extends ServletRequestAttributes implements Nativ
 
 	/**
 	 * Create a new ServletWebRequest instance for the given request/response pair.
+	 * 根据给定的request/response对创建一个新的ServletWebRequest实例
 	 * @param request current HTTP request
 	 * @param response current HTTP response (for automatic last-modified handling)
 	 */

@@ -16,22 +16,26 @@
 
 package org.springframework.web.servlet.mvc.method.annotation;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.lang.Nullable;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
+
 /**
  * Allows customizing the request before its body is read and converted into an
+ * 在请求体可读并且被转换成一个对象之前允许自定义请求，也允许在被传入控制器方法
  * Object and also allows for processing of the resulting Object before it is
+ * 作为RequestBody注解的或者HttpEntity 方法参数之前处理结果对象。
  * passed into a controller method as an {@code @RequestBody} or an
  * {@code HttpEntity} method argument.
  *
  * <p>Implementations of this contract may be registered directly with the
+ * 该协议的实现可以直接通过RequestMappingHandlerAdapter注册或者被ControllerAdvice
  * {@code RequestMappingHandlerAdapter} or more likely annotated with
+ * 注解，这样就可以被自动检索。
  * {@code @ControllerAdvice} in which case they are auto-detected.
  *
  * @author Rossen Stoyanchev

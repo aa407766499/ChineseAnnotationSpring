@@ -97,15 +97,22 @@ public interface HandlerInterceptor {
 
 	/**
 	 * Intercept the execution of a handler. Called after HandlerMapping determined
+	 * 处理器执行的拦截。HandlerMapping确定一个合适的处理器对象之后，但是在
 	 * an appropriate handler object, but before HandlerAdapter invokes the handler.
+	 * HandlerAdapter调用处理器对象之前调用。
 	 * <p>DispatcherServlet processes a handler in an execution chain, consisting
+	 * DispatcherServlet处理一个执行链中的处理器，该链由任意数量的拦截器和末尾的处理器
 	 * of any number of interceptors, with the handler itself at the end.
+	 * 组成。调用该方法，每一个拦截器能决定阻止执行链，通常发送一个HTTP错误或者
 	 * With this method, each interceptor can decide to abort the execution chain,
+	 * 写一个自定义响应。
 	 * typically sending a HTTP error or writing a custom response.
 	 * <p><strong>Note:</strong> special considerations apply for asynchronous
+	 * 注意：对于异步请求处理的特别考虑，获取更多细节参考AsyncHandlerInterceptor。
 	 * request processing. For more details see
 	 * {@link org.springframework.web.servlet.AsyncHandlerInterceptor}.
 	 * <p>The default implementation returns {@code true}.
+	 * 默认实现返回true。
 	 * @param request current HTTP request
 	 * @param response current HTTP response
 	 * @param handler chosen handler to execute, for type and/or instance evaluation
@@ -122,11 +129,16 @@ public interface HandlerInterceptor {
 
 	/**
 	 * Intercept the execution of a handler. Called after HandlerAdapter actually
+	 * 拦截处理器执行。在HandlerAdapter实际调用处理器之后，DispatcherServlet发送
 	 * invoked the handler, but before the DispatcherServlet renders the view.
+	 * 视图之前调用。通过给定的ModelAndView可以暴露另外的模型对象给视图。
 	 * Can expose additional model objects to the view via the given ModelAndView.
 	 * <p>DispatcherServlet processes a handler in an execution chain, consisting
+	 * DispatcherServlet处理一个执行链中的处理器，该链由任意数量的拦截器和末尾的
 	 * of any number of interceptors, with the handler itself at the end.
+	 * 处理器组成。使用该方法，每一个拦截器能后置处理一个执行，以执行链
 	 * With this method, each interceptor can post-process an execution,
+	 * 相反的顺序调用。
 	 * getting applied in inverse order of the execution chain.
 	 * <p><strong>Note:</strong> special considerations apply for asynchronous
 	 * request processing. For more details see
@@ -146,12 +158,17 @@ public interface HandlerInterceptor {
 
 	/**
 	 * Callback after completion of request processing, that is, after rendering
+	 * 请求处理完成之后的回调，换句话说，在发送视图之后。将在处理器执行的任何结果
 	 * the view. Will be called on any outcome of handler execution, thus allows
+	 * 上调用，因此允许释放属性资源。
 	 * for proper resource cleanup.
 	 * <p>Note: Will only be called if this interceptor's {@code preHandle}
+	 * 注意：只有在该拦截器preHandle方法成功完成并且返回 true时才调用该方法。
 	 * method has successfully completed and returned {@code true}!
 	 * <p>As with the {@code postHandle} method, the method will be invoked on each
+	 * 和postHandle方法一样，以相反的顺序调用链中拦截器的该方法，因此第一个拦截器最后
 	 * interceptor in the chain in reverse order, so the first interceptor will be
+	 * 被调用。
 	 * the last to be invoked.
 	 * <p><strong>Note:</strong> special considerations apply for asynchronous
 	 * request processing. For more details see

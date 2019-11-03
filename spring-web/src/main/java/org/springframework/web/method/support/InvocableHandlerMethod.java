@@ -16,10 +16,6 @@
 
 package org.springframework.web.method.support;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
@@ -32,12 +28,19 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.HandlerMethod;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+
 /**
  * Provides a method for invoking the handler method for a given request after resolving its
+ * 在通过注册的HandlerMethodArgumentResolver解析该方法的参数值之后，提供一个方法调用给定请求的处理器方法。
  * method argument values through registered {@link HandlerMethodArgumentResolver}s.
  *
  * <p>Argument resolution often requires a {@link WebDataBinder} for data binding or for type
+ * 参数解析通常需要一个WebDataBinder进行数据绑定或者类型转换。使用setDataBinderFactory(WebDataBinderFactory)方法
  * conversion. Use the {@link #setDataBinderFactory(WebDataBinderFactory)} property to supply
+ * 提供一个绑定器工厂去传入参数解析器
  * a binder factory to pass to argument resolvers.
  *
  * <p>Use {@link #setHandlerMethodArgumentResolvers} to customize the list of argument resolvers.

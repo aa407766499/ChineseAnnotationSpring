@@ -16,29 +16,9 @@
 
 package org.springframework.validation;
 
-import java.beans.PropertyEditor;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.springframework.beans.ConfigurablePropertyAccessor;
-import org.springframework.beans.MutablePropertyValues;
-import org.springframework.beans.PropertyAccessException;
-import org.springframework.beans.PropertyAccessorUtils;
-import org.springframework.beans.PropertyBatchUpdateException;
-import org.springframework.beans.PropertyEditorRegistry;
-import org.springframework.beans.PropertyValue;
-import org.springframework.beans.PropertyValues;
-import org.springframework.beans.SimpleTypeConverter;
-import org.springframework.beans.TypeConverter;
-import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.*;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.format.Formatter;
@@ -49,46 +29,68 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.PatternMatchUtils;
 import org.springframework.util.StringUtils;
 
+import java.beans.PropertyEditor;
+import java.lang.reflect.Field;
+import java.util.*;
+
 /**
  * Binder that allows for setting property values onto a target object,
+ * 绑定器允许将属性值设置到目标对象上，包括支持验证和绑定结果分析。
  * including support for validation and binding result analysis.
+ * 通过指定允许字段，需要字段，自定义编辑器来自定义绑定过程。
  * The binding process can be customized through specifying allowed fields,
  * required fields, custom editors, etc.
  *
  * <p>Note that there are potential security implications in failing to set an array
+ * 注意：如果不能设置允许的字段数组，则存在潜在的安全隐患。比如：如果是HTTP表单POST数据，
  * of allowed fields. In the case of HTTP form POST data for example, malicious clients
+ * 恶意的客户端会尝试提供表单中不存在的字段或者属性的值破坏应用。在某些情况下这会导致
  * can attempt to subvert an application by supplying values for fields or properties
+ * 非法的数据被设置到命令对象或者他们的内嵌对象上。因为这个原因，非常建议指定DataBinder
  * that do not exist on the form. In some cases this could lead to illegal data being
+ * 的allowedFields属性。
  * set on command objects <i>or their nested objects</i>. For this reason, it is
  * <b>highly recommended to specify the {@link #setAllowedFields allowedFields} property</b>
  * on the DataBinder.
  *
  * <p>The binding results can be examined via the {@link BindingResult} interface,
+ * 绑定的结果可以通过BindingResult接口检查，扩展的Errors接口：参考getBindingResult()方法。
  * extending the {@link Errors} interface: see the {@link #getBindingResult()} method.
+ * 缺失的字段和属性访问异常会被转换成FieldError，收集到Errors实例中，使用以下的错误代码：
  * Missing fields and property access exceptions will be converted to {@link FieldError FieldErrors},
  * collected in the Errors instance, using the following error codes:
  *
  * <ul>
  * <li>Missing field error: "required"
+ * 缺失字段错误："required"
  * <li>Type mismatch error: "typeMismatch"
+ * 类型不匹配错误："typeMismatch"
  * <li>Method invocation error: "methodInvocation"
+ * 方法调用错误："methodInvocation"
  * </ul>
  *
  * <p>By default, binding errors get resolved through the {@link BindingErrorProcessor}
+ * 默认，通过BindingErrorProcessor策略解析绑定错误，处理缺失字段和属性访问异常：参看
  * strategy, processing for missing fields and property access exceptions: see the
+ * setBindingErrorProcessor方法。如果需要你可以覆盖默认策略，比如生成不同的错误代码。
  * {@link #setBindingErrorProcessor} method. You can override the default strategy
  * if needed, for example to generate different error codes.
  *
  * <p>Custom validation errors can be added afterwards. You will typically want to resolve
+ * 然后可以添加自定义验证错误。通常你想要将这样的错误代码解析成适当的用户可见的错误信息;
  * such error codes into proper user-visible error messages; this can be achieved through
+ * 使用MessageSource解析每一个错误，通过MessageSource的getMessage()方法可以解析ObjectError
  * resolving each error via a {@link org.springframework.context.MessageSource}, which is
+ * /FieldError。消息代码列表通过MessageCodesResolver策略自定义：参考setMessageCodesResolver方法。
  * able to resolve an {@link ObjectError}/{@link FieldError} through its
+ * DefaultMessageCodesResolver在默认解析规则上的细节。
  * {@link org.springframework.context.MessageSource#getMessage(org.springframework.context.MessageSourceResolvable, java.util.Locale)}
  * method. The list of message codes can be customized through the {@link MessageCodesResolver}
  * strategy: see the {@link #setMessageCodesResolver} method. {@link DefaultMessageCodesResolver}'s
  * javadoc states details on the default resolution rules.
  *
  * <p>This generic data binder can be used in any kind of environment.
+ * 数据绑定器可以在任何环境下使用。
  *
  * @author Rod Johnson
  * @author Juergen Hoeller

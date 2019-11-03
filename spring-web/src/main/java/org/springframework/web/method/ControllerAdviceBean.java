@@ -16,14 +16,6 @@
 
 package org.springframework.web.method;
 
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.context.ApplicationContext;
@@ -37,12 +29,18 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
+import java.lang.annotation.Annotation;
+import java.util.*;
+
 /**
  * Encapsulates information about an {@linkplain ControllerAdvice @ControllerAdvice}
+ * 包装了spring管理的@ControllerAdvice注解bean的信息，不要求它已经实例化。
  * Spring-managed bean without necessarily requiring it to be instantiated.
  *
  * <p>The {@link #findAnnotatedBeans(ApplicationContext)} method can be used to
+ * findAnnotatedBeans(ApplicationContext)方法用于查找这种bean。然而，可以从任何对象
  * discover such beans. However, a {@code ControllerAdviceBean} may be created
+ * 创建ControllerAdviceBean，包括没有被@ControllerAdvice注解的。
  * from any object, including ones without an {@code @ControllerAdvice}.
  *
  * @author Rossen Stoyanchev
@@ -102,6 +100,7 @@ public class ControllerAdviceBean implements Ordered {
 		else {
 			Assert.notNull(bean, "Bean must not be null");
 			beanType = bean.getClass();
+			//从bean中获取排序值,也就是order属性的值
 			this.order = initOrderFromBean(bean);
 		}
 
@@ -144,6 +143,7 @@ public class ControllerAdviceBean implements Ordered {
 
 	/**
 	 * Return a bean instance if necessary resolving the bean name through the BeanFactory.
+	 * 如果需要通过BeanFactory将bean名称解析，返回bean实例。
 	 */
 	public Object resolveBean() {
 		return (this.bean instanceof String ? obtainBeanFactory().getBean((String) this.bean) : this.bean);
@@ -156,6 +156,7 @@ public class ControllerAdviceBean implements Ordered {
 
 	/**
 	 * Check whether the given bean type should be assisted by this
+	 * 检查给定bean类型是否应由此@ControllerAdvice实例增强
 	 * {@code @ControllerAdvice} instance.
 	 * @param beanType the type of the bean to check
 	 * @see org.springframework.web.bind.annotation.ControllerAdvice
@@ -215,7 +216,9 @@ public class ControllerAdviceBean implements Ordered {
 
 	/**
 	 * Find the names of beans annotated with
+	 * 在给定ApplicationContext中查找被ControllerAdvice注解的bean的名称。
 	 * {@linkplain ControllerAdvice @ControllerAdvice} in the given
+	 * 以及将他们包装成ControllerAdviceBean实例。
 	 * ApplicationContext and wrap them as {@code ControllerAdviceBean} instances.
 	 */
 	public static List<ControllerAdviceBean> findAnnotatedBeans(ApplicationContext applicationContext) {

@@ -16,23 +16,24 @@
 
 package org.springframework.web.method.support;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.core.MethodParameter;
+import org.springframework.lang.Nullable;
+import org.springframework.web.bind.support.WebDataBinderFactory;
+import org.springframework.web.context.request.NativeWebRequest;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.core.MethodParameter;
-import org.springframework.lang.Nullable;
-import org.springframework.web.bind.support.WebDataBinderFactory;
-import org.springframework.web.context.request.NativeWebRequest;
-
 /**
  * Resolves method parameters by delegating to a list of registered {@link HandlerMethodArgumentResolver}s.
+ * 通过委派给注册的HandlerMethodArgumentResolver列表解析方法参数。以前解析的方法参数会被缓存下来，可用于
  * Previously resolved method parameters are cached for faster lookups.
+ * 快速查找。
  *
  * @author Rossen Stoyanchev
  * @author Juergen Hoeller

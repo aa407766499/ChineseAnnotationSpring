@@ -16,9 +16,6 @@
 
 package org.springframework.web.servlet.mvc.method;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.core.Ordered;
 import org.springframework.lang.Nullable;
 import org.springframework.web.method.HandlerMethod;
@@ -26,8 +23,12 @@ import org.springframework.web.servlet.HandlerAdapter;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.WebContentGenerator;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * Abstract base class for {@link HandlerAdapter} implementations that support
+ * HandlerAdapter实现的抽象基础类，支持HandlerMethod类型的处理器。
  * handlers of type {@link HandlerMethod}.
  *
  * @author Arjen Poutsma
@@ -61,6 +62,7 @@ public abstract class AbstractHandlerMethodAdapter extends WebContentGenerator i
 
 	/**
 	 * This implementation expects the handler to be an {@link HandlerMethod}.
+	 * 该实现需要处理器是一个HandlerMethod
 	 * @param handler the handler instance to check
 	 * @return whether or not this adapter can adapt the given handler
 	 */
@@ -71,6 +73,7 @@ public abstract class AbstractHandlerMethodAdapter extends WebContentGenerator i
 
 	/**
 	 * Given a handler method, return whether or not this adapter can support it.
+	 * 给定一个处理器方法，返回该适配器是否支持该处理器方法。
 	 * @param handlerMethod the handler method to check
 	 * @return whether or not this adapter can adapt the given method
 	 */
@@ -89,6 +92,7 @@ public abstract class AbstractHandlerMethodAdapter extends WebContentGenerator i
 
 	/**
 	 * Use the given handler method to handle the request.
+	 * 使用给定的处理器方法处理请求
 	 * @param request current HTTP request
 	 * @param response current HTTP response
 	 * @param handlerMethod handler method to use. This object must have previously been passed to the
@@ -103,6 +107,7 @@ public abstract class AbstractHandlerMethodAdapter extends WebContentGenerator i
 
 	/**
 	 * This implementation expects the handler to be an {@link HandlerMethod}.
+	 * 该实现需要处理器是一个HandlerMethod。
 	 */
 	@Override
 	public final long getLastModified(HttpServletRequest request, Object handler) {

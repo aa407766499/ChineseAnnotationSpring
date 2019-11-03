@@ -16,17 +16,6 @@
 
 package org.springframework.web.servlet.support;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -37,21 +26,35 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.context.support.WebApplicationObjectSupport;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+
 /**
  * Convenient superclass for any kind of web content generator,
+ * 任何web内容生成器的便利父类，比如AbstractController以及WebContentInterceptor。
  * like {@link org.springframework.web.servlet.mvc.AbstractController}
+ * 也能使用有自己的HandlerAdapter的自定义处理器。
  * and {@link org.springframework.web.servlet.mvc.WebContentInterceptor}.
  * Can also be used for custom handlers that have their own
  * {@link org.springframework.web.servlet.HandlerAdapter}.
  *
  * <p>Supports HTTP cache control options. The usage of corresponding HTTP
+ * 支持HTTP缓存控制选项。可以通过setCacheSeconds以及setCacheControl属性控制对应
  * headers can be controlled via the {@link #setCacheSeconds "cacheSeconds"}
+ * HTTP请求头的使用。
  * and {@link #setCacheControl "cacheControl"} properties.
  *
  * <p><b>NOTE:</b> As of Spring 4.2, this generator's default behavior changed when
+ * 注意：对于Spring4.2，该生成器的默认行为在仅使用setCacheSeconds时才会改变，发送HTTP响应头
  * using only {@link #setCacheSeconds}, sending HTTP response headers that are in line
+ * 和当前流浪器和代理实现一致（比如不再有HTTP1.0响应头）。使用过时的setUseExpiresHeader，
  * with current browsers and proxies implementations (i.e. no HTTP 1.0 headers anymore)
+ * setUseCacheControlHeader，setUseCacheControlNoStore或者setAlwaysMustRevalidate方法
  * Reverting to the previous behavior can be easily done by using one of the newly
+ * 可以很容易的回到以前的行为。
  * deprecated methods {@link #setUseExpiresHeader}, {@link #setUseCacheControlHeader},
  * {@link #setUseCacheControlNoStore} or {@link #setAlwaysMustRevalidate}.
  *
@@ -369,18 +372,21 @@ public abstract class WebContentGenerator extends WebApplicationObjectSupport {
 
 	/**
 	 * Check the given request for supported methods and a required session, if any.
+	 * 检查给定请求支持方法以及需要的session
 	 * @param request current HTTP request
 	 * @throws ServletException if the request cannot be handled because a check failed
 	 * @since 4.2
 	 */
 	protected final void checkRequest(HttpServletRequest request) throws ServletException {
 		// Check whether we should support the request method.
+		//检查我们是否支持请求方法。
 		String method = request.getMethod();
 		if (this.supportedMethods != null && !this.supportedMethods.contains(method)) {
 			throw new HttpRequestMethodNotSupportedException(method, this.supportedMethods);
 		}
 
 		// Check whether a session is required.
+		// 检查是否需要session，需要session，但是找不到session
 		if (this.requireSession && request.getSession(false) == null) {
 			throw new HttpSessionRequiredException("Pre-existing session required but none found");
 		}

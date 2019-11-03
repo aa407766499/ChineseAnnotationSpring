@@ -16,11 +16,6 @@
 
 package org.springframework.web.bind;
 
-import java.lang.reflect.Array;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.PropertyValue;
 import org.springframework.core.CollectionFactory;
@@ -28,16 +23,27 @@ import org.springframework.lang.Nullable;
 import org.springframework.validation.DataBinder;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Special {@link DataBinder} for data binding from web request parameters
+ * 特殊的DataBinder用于将web请求参数绑定到JavaBean对象上。设计用于web环境，但是
  * to JavaBean objects. Designed for web environments, but not dependent on
+ * 不依赖于ServletAPI；作为更多的特殊DataBinder变体的基础类，比如ServletRequestDataBinder。
  * the Servlet API; serves as base class for more specific DataBinder variants,
  * such as {@link org.springframework.web.bind.ServletRequestDataBinder}.
  *
  * <p>Includes support for field markers which address a common problem with
+ * 包含字段标记器的支持，字段标记处理HTML多选框和下拉框的共同问题：检测到一个字段是
  * HTML checkboxes and select options: detecting that a field was part of
+ * 表单的一部分，但是不生成请求参数因为它是空的。字段标记器允许检测其状态以及相应地
  * the form, but did not generate a request parameter because it was empty.
+ * 重置对应bean属性。对于其他不存在的参数，默认值可以为字段指定一个值，然后为空字段
  * A field marker allows to detect that state and reset the corresponding
+ * 指定一个值。
  * bean property accordingly. Default values, for parameters that are otherwise
  * not present, can specify a value for the field other then empty.
  *

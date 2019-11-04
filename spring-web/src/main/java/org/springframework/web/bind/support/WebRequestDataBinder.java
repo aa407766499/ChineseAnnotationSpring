@@ -16,11 +16,6 @@
 
 package org.springframework.web.bind.support;
 
-import java.util.List;
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
-
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.lang.Nullable;
 import org.springframework.util.LinkedMultiValueMap;
@@ -33,17 +28,28 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Special {@link org.springframework.validation.DataBinder} to perform data binding
+ * 特殊的DataBinder执行将web请求参数绑定到JavaBeans，包括对文件上传的支持。
  * from web request parameters to JavaBeans, including support for multipart files.
  *
  * <p>See the DataBinder/WebDataBinder superclasses for customization options,
+ * 参考DataBinder/WebDataBinder父类进行自定义选择，包含指定允许/需要的字段，以及注册
  * which include specifying allowed/required fields, and registering custom
+ * 自定义的属性编辑器。
  * property editors.
  *
  * <p>Can also used for manual data binding in custom web controllers or interceptors
+ * 能用于在自定义web控制器或者拦截器中手工数据绑定，这些控制器或者拦截器构建于WebRequest
  * that build on Spring's {@link org.springframework.web.context.request.WebRequest}
+ * 抽象之上，比如：在WebRequestInterceptor中。对于每一个绑定处理简单实例化一个WebRequestDataBinder，
  * abstraction: e.g. in a {@link org.springframework.web.context.request.WebRequestInterceptor}
+ * 然后将当前WebRequest作为参数调用bind。
  * implementation. Simply instantiate a WebRequestDataBinder for each binding
  * process, and invoke {@code bind} with the current WebRequest as argument:
  *

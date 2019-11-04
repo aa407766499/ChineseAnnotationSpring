@@ -16,21 +16,25 @@
 
 package org.springframework.web.multipart;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.lang.Nullable;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Provides additional methods for dealing with multipart content within a
+ * 提供另外的方法处理servlet请求中的上传内容，允许访问已上传的文件。实现类也需要
  * servlet request, allowing to access uploaded files.
+ * 覆盖标准的ServletRequest参数访问的方法，使得上传参数可获得。
  * Implementations also need to override the standard
  * {@link javax.servlet.ServletRequest} methods for parameter access, making
  * multipart parameters available.
  *
  * <p>A concrete implementation is
+ * 具体实现有DefaultMultipartHttpServletRequest
  * {@link org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest}.
+ * 临时的，AbstractMultipartHttpServletRequest可以子类扩展
  * As an intermediate step,
  * {@link org.springframework.web.multipart.support.AbstractMultipartHttpServletRequest}
  * can be subclassed.

@@ -102,6 +102,7 @@ public class HandlerMethodArgumentResolverComposite implements HandlerMethodArgu
 
 	/**
 	 * Whether the given {@linkplain MethodParameter method parameter} is supported by any registered
+	 * 是否有注册的HandlerMethodArgumentResolver支持给定的方法参数。
 	 * {@link HandlerMethodArgumentResolver}.
 	 */
 	@Override
@@ -122,11 +123,13 @@ public class HandlerMethodArgumentResolverComposite implements HandlerMethodArgu
 		if (resolver == null) {
 			throw new IllegalArgumentException("Unknown parameter type [" + parameter.getParameterType().getName() + "]");
 		}
+		//真正解析参数值
 		return resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 	}
 
 	/**
 	 * Find a registered {@link HandlerMethodArgumentResolver} that supports the given method parameter.
+	 * 查找一个支持给定方法参数的注册的HandlerMethodArgumentResolver。
 	 */
 	@Nullable
 	private HandlerMethodArgumentResolver getArgumentResolver(MethodParameter parameter) {

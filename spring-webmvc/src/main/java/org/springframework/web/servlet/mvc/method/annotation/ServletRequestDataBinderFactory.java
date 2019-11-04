@@ -16,8 +16,6 @@
 
 package org.springframework.web.servlet.mvc.method.annotation;
 
-import java.util.List;
-
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.support.WebBindingInitializer;
@@ -25,8 +23,11 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.annotation.InitBinderDataBinderFactory;
 import org.springframework.web.method.support.InvocableHandlerMethod;
 
+import java.util.List;
+
 /**
  * Creates a {@code ServletRequestDataBinder}.
+ * 创建一个ServletRequestDataBinder
  *
  * @author Rossen Stoyanchev
  * @since 3.1

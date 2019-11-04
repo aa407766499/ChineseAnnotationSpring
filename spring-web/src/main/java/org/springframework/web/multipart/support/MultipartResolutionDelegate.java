@@ -16,12 +16,6 @@
 
 package org.springframework.web.multipart.support;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.lang.Nullable;
@@ -29,8 +23,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.util.WebUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * A common delegate for {@code HandlerMethodArgumentResolver} implementations
+ * HandlerMethodArgumentResolver实现类的公共委派，需要解析MultipartFile和Part参数
  * which need to resolve {@link MultipartFile} and {@link Part} arguments.
  *
  * @author Juergen Hoeller
@@ -77,6 +78,7 @@ public abstract class MultipartResolutionDelegate {
 
 		if (MultipartFile.class == parameter.getNestedParameterType()) {
 			if (multipartRequest == null && isMultipart) {
+				//解析请求,创建StandardMultipartFile。最终调用了parseRequest(request)方法。
 				multipartRequest = new StandardMultipartHttpServletRequest(request);
 			}
 			return (multipartRequest != null ? multipartRequest.getFile(name) : null);

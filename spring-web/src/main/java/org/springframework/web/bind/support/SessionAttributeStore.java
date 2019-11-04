@@ -21,6 +21,7 @@ import org.springframework.web.context.request.WebRequest;
 
 /**
  * Strategy interface for storing model attributes in a backend session.
+ * 存储到后端session中的模型属性的策略接口。
  *
  * @author Juergen Hoeller
  * @since 2.5
@@ -40,7 +41,9 @@ public interface SessionAttributeStore {
 
 	/**
 	 * Retrieve the specified attribute from the backend session.
+	 * 从后端session中获取指定属性。
 	 * <p>This will typically be called with the expectation that the
+	 * 通常需要属性已经存在才调用该方法，如果该方法返回null，抛出异常。
 	 * attribute is already present, with an exception to be thrown
 	 * if this method returns {@code null}.
 	 * @param request the current request

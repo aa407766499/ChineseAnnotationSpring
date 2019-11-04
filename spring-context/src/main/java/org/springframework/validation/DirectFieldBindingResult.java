@@ -23,7 +23,9 @@ import org.springframework.util.Assert;
 
 /**
  * Special implementation of the Errors and BindingResult interfaces,
+ * Errors和BindingResult接口的特殊实现，支持注册和解析值对象的绑定错误。
  * supporting registration and evaluation of binding errors on value objects.
+ * 执行直接字段访问代替JavaBean getters访问。
  * Performs direct field access instead of going through JavaBean getters.
  *
  * <p>Since Spring 4.1 this implementation is able to traverse nested fields.

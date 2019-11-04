@@ -317,6 +317,7 @@ public class MethodParameter {
 		if (nestedParam != null) {
 			return nestedParam;
 		}
+		//深拷贝
 		nestedParam = clone();
 		nestedParam.nestingLevel = this.nestingLevel + 1;
 		this.nestedMethodParameter = nestedParam;
@@ -352,7 +353,9 @@ public class MethodParameter {
 
 	/**
 	 * Return a variant of this {@code MethodParameter} which points to
+	 * 返回一个MethodParameter，该MethodParameter有相同的参数但是内嵌级别
 	 * the same parameter but one nesting level deeper in case of a
+	 * 更高如果是Optional声明。
 	 * {@link java.util.Optional} declaration.
 	 * @since 4.3
 	 * @see #isOptional()
@@ -383,6 +386,7 @@ public class MethodParameter {
 
 	/**
 	 * Return the type of the method/constructor parameter.
+	 * 返回方法/构造器的参数类型。
 	 * @return the parameter type (never {@code null})
 	 */
 	public Class<?> getParameterType() {
@@ -506,6 +510,7 @@ public class MethodParameter {
 
 	/**
 	 * Return the annotations associated with the specific method/constructor parameter.
+	 * 返回指定方法/构造器参数相关的注解。
 	 */
 	public Annotation[] getParameterAnnotations() {
 		Annotation[] paramAnns = this.parameterAnnotations;
@@ -533,6 +538,7 @@ public class MethodParameter {
 
 	/**
 	 * Return the parameter annotation of the given type, if available.
+	 * 返回给定类型的参数注解，如果可获取。
 	 * @param annotationType the annotation type to look for
 	 * @return the annotation object, or {@code null} if not found
 	 */
@@ -608,8 +614,10 @@ public class MethodParameter {
 
 	/**
 	 * A template method to post-process a given annotation array before
+	 * 在注解数组返回给调用者之前，模板方法后置处理给定的注解数组
 	 * returning it to the caller.
 	 * <p>The default implementation simply returns the given annotation array as-is.
+	 * 默认实现简单返回给定的注解数组本身。
 	 * @param annotations the annotation array about to be returned
 	 * @return the post-processed annotation array (or simply the original one)
 	 * @since 4.2

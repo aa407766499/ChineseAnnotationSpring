@@ -16,19 +16,21 @@
 
 package org.springframework.ui;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.springframework.core.Conventions;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * Implementation of {@link java.util.Map} for use when building model data for use
+ * Map的实现类，构建UI工具使用的模型数据。支持链式调用以及生成模型属性名称。
  * with UI tools. Supports chained calls and generation of model attribute names.
  *
  * <p>This class serves as generic model holder for Servlet MVC but is not tied to it.
+ * 该类用于Servlet MVC的一般模型持有器，但是没绑定它。检出接口变量的Model接口。
  * Check out the {@link Model} interface for an interface variant.
  *
  * @author Rob Harrop
@@ -121,6 +123,7 @@ public class ModelMap extends LinkedHashMap<String, Object> {
 
 	/**
 	 * Copy all attributes in the supplied {@code Map} into this {@code Map},
+	 * 将所提供的map中的所有属性复制到该ma品中，相同名称的已存在对象优先（比如：不替换）
 	 * with existing objects of the same name taking precedence (i.e. not getting
 	 * replaced).
 	 */

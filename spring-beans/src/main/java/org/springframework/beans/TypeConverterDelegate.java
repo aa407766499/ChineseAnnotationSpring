@@ -16,19 +16,8 @@
 
 package org.springframework.beans;
 
-import java.beans.PropertyEditor;
-import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.core.CollectionFactory;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.convert.ConversionFailedException;
@@ -40,11 +29,24 @@ import org.springframework.util.NumberUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.beans.PropertyEditor;
+import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Optional;
+
 /**
  * Internal helper class for converting property values to target types.
+ * 将属性值转换成目标类型的内部辅助类。
  *
  * <p>Works on a given {@link PropertyEditorRegistrySupport} instance.
+ * 给定的PropertyEditorRegistrySupport实例使用。BeanWrapperImpl以及SimpleTypeConverter
  * Used as a delegate by {@link BeanWrapperImpl} and {@link SimpleTypeConverter}.
+ * 使用的委派。
  *
  * @author Juergen Hoeller
  * @author Rob Harrop

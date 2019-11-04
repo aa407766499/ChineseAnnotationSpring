@@ -20,9 +20,12 @@ import org.springframework.lang.Nullable;
 
 /**
  * Strategy interface for building message codes from validation error codes.
+ * 根据验证错误代码构建消息代码的策略接口。DataBinder用其来构建ObjectErrors和FieldErrors
  * Used by DataBinder to build the codes list for ObjectErrors and FieldErrors.
+ * 的代码列表。
  *
  * <p>The resulting message codes correspond to the codes of a
+ * 结果消息代码对应于MessageSourceResolvable的代码（由ObjectError和FieldError实现。）
  * MessageSourceResolvable (as implemented by ObjectError and FieldError).
  *
  * @author Juergen Hoeller

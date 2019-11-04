@@ -804,6 +804,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 
 	/**
 	 * Return the {@link SessionAttributesHandler} instance for the given handler type
+	 * 根据给定的处理器类型返回SessionAttributesHandler（）不能为null。
 	 * (never {@code null}).
 	 */
 	private SessionAttributesHandler getSessionAttributesHandler(HandlerMethod handlerMethod) {
@@ -836,7 +837,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 		//包装请求
 		ServletWebRequest webRequest = new ServletWebRequest(request, response);
 		try {
-			//获取数据绑定工厂
+			//获取数据绑定器工厂
 			WebDataBinderFactory binderFactory = getDataBinderFactory(handlerMethod);
 			ModelFactory modelFactory = getModelFactory(handlerMethod, binderFactory);
 
@@ -888,6 +889,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 
 	/**
 	 * Create a {@link ServletInvocableHandlerMethod} from the given {@link HandlerMethod} definition.
+	 * 根据HandlerMethod定义创建一个ServletInvocableHandlerMethod
 	 * @param handlerMethod the {@link HandlerMethod} definition
 	 * @return the corresponding {@link ServletInvocableHandlerMethod} (or custom subclass thereof)
 	 * @since 4.2
@@ -906,6 +908,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 		}
 		List<InvocableHandlerMethod> attrMethods = new ArrayList<>();
 		// Global methods first
+		// 首先全局方法
 		this.modelAttributeAdviceCache.forEach((clazz, methodSet) -> {
 			if (clazz.isApplicableToBeanType(handlerType)) {
 				Object bean = clazz.resolveBean();
@@ -914,6 +917,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 				}
 			}
 		});
+		// 然后自定义方法
 		for (Method method : methods) {
 			Object bean = handlerMethod.getBean();
 			attrMethods.add(createModelAttributeMethod(binderFactory, bean, method));
@@ -952,6 +956,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 				}
 			}
 		});
+		// 然后自定义的方法
 		for (Method method : methods) {
 			Object bean = handlerMethod.getBean();
 			initBinderMethods.add(createInitBinderMethod(bean, method));
@@ -971,8 +976,11 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 
 	/**
 	 * Template method to create a new InitBinderDataBinderFactory instance.
+	 * 创建一个新的InitBinderDataBinderFactory实例的模板方法。
 	 * <p>The default implementation creates a ServletRequestDataBinderFactory.
+	 * 默认实现创建一个ServletRequestDataBinderFactory，该方法可以被重写来自定义
 	 * This can be overridden for custom ServletRequestDataBinder subclasses.
+	 * ServletRequestDataBinder子类。
 	 * @param binderMethods {@code @InitBinder} methods
 	 * @return the InitBinderDataBinderFactory instance to use
 	 * @throws Exception in case of invalid state or arguments

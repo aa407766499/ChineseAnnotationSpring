@@ -21,6 +21,7 @@ import org.springframework.web.context.request.WebRequest;
 
 /**
  * Callback interface for initializing a {@link WebDataBinder} for performing
+ * 初始化在指定web请求上下文中执行数据绑定的WebDataBinder的回调接口。
  * data binding in the context of a specific web request.
  *
  * @author Juergen Hoeller
@@ -31,6 +32,7 @@ public interface WebBindingInitializer {
 
 	/**
 	 * Initialize the given DataBinder.
+	 * 初始化给定的DataBinder。
 	 * @param binder the DataBinder to initialize
 	 * @since 5.0
 	 */

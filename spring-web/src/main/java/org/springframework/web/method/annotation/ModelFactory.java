@@ -16,17 +16,8 @@
 
 package org.springframework.web.method.annotation;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.Conventions;
 import org.springframework.core.GenericTypeResolver;
@@ -46,14 +37,20 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.method.support.InvocableHandlerMethod;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import java.lang.reflect.Method;
+import java.util.*;
+
 /**
  * Assist with initialization of the {@link Model} before controller method
+ * 在控制器方法调用之前辅助Model的初始化并且在调用之后更新Model。
  * invocation and with updates to it after the invocation.
  *
  * <p>On initialization the model is populated with attributes temporarily stored
+ * 模型初始化时使用session中临时存储的属性填充并且通过@ModelAttribute注解方法调用。
  * in the session and through the invocation of {@code @ModelAttribute} methods.
  *
  * <p>On update model attributes are synchronized with the session and also
+ * 在session中更新模型属性需要同步，如果缺失，添加BindingResult属性。
  * {@link BindingResult} attributes are added if missing.
  *
  * @author Rossen Stoyanchev
@@ -91,11 +88,16 @@ public final class ModelFactory {
 
 	/**
 	 * Populate the model in the following order:
+	 * 按一下顺序填充模型：
 	 * <ol>
 	 * <li>Retrieve "known" session attributes listed as {@code @SessionAttributes}.
+	 * 获取@SessionAttributes列举的已知的session属性。
 	 * <li>Invoke {@code @ModelAttribute} methods
+	 * 调用@ModelAttribute方法。
 	 * <li>Find {@code @ModelAttribute} method arguments also listed as
+	 * 查找@SessionAttributes列举的@ModelAttribute方法参数，确保他们在模型中存在
 	 * {@code @SessionAttributes} and ensure they're present in the model raising
+	 * 如果需要抛出异常。
 	 * an exception if necessary.
 	 * </ol>
 	 * @param request the current request
@@ -123,6 +125,7 @@ public final class ModelFactory {
 
 	/**
 	 * Invoke model attribute methods to populate the model.
+	 * 调用模型属性方法填充模型。如果不是已经存在于model中，仅添加属性。
 	 * Attributes are added only if not already present in the model.
 	 */
 	private void invokeModelAttributeMethods(NativeWebRequest request, ModelAndViewContainer container)
@@ -133,6 +136,7 @@ public final class ModelFactory {
 			ModelAttribute ann = modelMethod.getMethodAnnotation(ModelAttribute.class);
 			Assert.state(ann != null, "No ModelAttribute annotation");
 			if (container.containsAttribute(ann.name())) {
+				//要不要绑定,false表示不进行绑定
 				if (!ann.binding()) {
 					container.setBindingDisabled(ann.name());
 				}

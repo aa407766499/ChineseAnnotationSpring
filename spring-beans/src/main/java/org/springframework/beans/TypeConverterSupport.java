@@ -16,16 +16,17 @@
 
 package org.springframework.beans;
 
-import java.lang.reflect.Field;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.core.convert.ConversionException;
 import org.springframework.core.convert.ConverterNotFoundException;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
+import java.lang.reflect.Field;
+
 /**
  * Base implementation of the {@link TypeConverter} interface, using a package-private delegate.
+ * TypeConverter接口的基础类，使用一个包级私有委派。主要作为BeanWrapperImpl的基础类。
  * Mainly serves as base class for {@link BeanWrapperImpl}.
  *
  * @author Juergen Hoeller

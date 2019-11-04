@@ -16,14 +16,6 @@
 
 package org.springframework.web.method.annotation;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
@@ -32,14 +24,22 @@ import org.springframework.web.bind.support.SessionAttributeStore;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Manages controller-specific session attributes declared via
+ * 管理通过@SessionAttributes声明的控制器指定的session属性。实际存储
  * {@link SessionAttributes @SessionAttributes}. Actual storage is
+ * 委派给SessionAttributeStore实例。
  * delegated to a {@link SessionAttributeStore} instance.
  *
  * <p>When a controller annotated with {@code @SessionAttributes} adds
+ * 在一个控制器使用@SessionAttributes注解将属性添加其模型中时，会通过@SessionAttributes
  * attributes to its model, those attributes are checked against names and
+ * 指定的名称和类型检查那些属性。匹配的模型属性保存在HTTP session中，一直保留直到
  * types specified via {@code @SessionAttributes}. Matching model attributes
+ * 控制器调用SessionStatus的setComplete()。
  * are saved in the HTTP session and remain there until the controller calls
  * {@link SessionStatus#setComplete()}.
  *
@@ -123,7 +123,9 @@ public class SessionAttributesHandler {
 
 	/**
 	 * Retrieve "known" attributes from the session, i.e. attributes listed
+	 * 获取session中"已知"的属性，比如：@SessionAttributes中名称列举的属性或者
 	 * by name in {@code @SessionAttributes} or attributes previously stored
+	 * 匹配类型的模型中以前存储的属性。
 	 * in the model that matched by type.
 	 * @param request the current request
 	 * @return a map with handler session attributes, possibly empty

@@ -349,6 +349,7 @@ public abstract class WebUtils {
 
 	/**
 	 * Return an appropriate request object of the specified type, if available,
+	 * 返回指定类型匹配的请求对象，需要的话，解包给定请求。
 	 * unwrapping the given request as far as necessary.
 	 * @param request the servlet request to introspect
 	 * @param requiredType the desired type of request object

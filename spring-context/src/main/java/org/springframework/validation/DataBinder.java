@@ -200,10 +200,14 @@ public class DataBinder implements PropertyEditorRegistry, TypeConverter {
 
 	/**
 	 * Set whether this binder should attempt to "auto-grow" a nested path that contains a null value.
+	 * 设置该绑定器是否应该尝试去"自动增长"一个包含null值的内嵌路径。
 	 * <p>If "true", a null path location will be populated with a default object value and traversed
+	 * 如果为"true",null路径会被填充一个默认对象值并且用遍历代替异常。在访问索引越界时，该标识也开启集合元素
 	 * instead of resulting in an exception. This flag also enables auto-growth of collection elements
+	 * 的自动增长。
 	 * when accessing an out-of-bounds index.
 	 * <p>Default is "true" on a standard DataBinder. Note that since Spring 4.1 this feature is supported
+	 * 标准的DataBinder默认是true。注意因为Spring 4.1，该特性支持bean属性访问（DataBinder的默认模式）以及字段访问。
 	 * for bean property access (DataBinder's default mode) and field access.
 	 * @see #initBeanPropertyAccess()
 	 * @see org.springframework.beans.BeanWrapper#setAutoGrowNestedPaths
@@ -243,7 +247,9 @@ public class DataBinder implements PropertyEditorRegistry, TypeConverter {
 
 	/**
 	 * Initialize standard JavaBean property access for this DataBinder.
+	 * 初始化该DataBinder的标准JavaBean 属性访问。
 	 * <p>This is the default; an explicit call just leads to eager initialization.
+	 * 默认；明确调用仅进行饿汉式初始化。
 	 * @see #initDirectFieldAccess()
 	 * @see #createBeanPropertyBindingResult()
 	 */
@@ -255,6 +261,7 @@ public class DataBinder implements PropertyEditorRegistry, TypeConverter {
 
 	/**
 	 * Create the {@link AbstractPropertyBindingResult} instance using standard
+	 * 使用标准的JavaBean 属性访问创建AbstractPropertyBindingResult实例、
 	 * JavaBean property access.
 	 * @since 4.2.1
 	 */
@@ -274,7 +281,9 @@ public class DataBinder implements PropertyEditorRegistry, TypeConverter {
 
 	/**
 	 * Initialize direct field access for this DataBinder,
+	 * 初始化该DataBinder的直接字段访问，也可以使用默认bean
 	 * as alternative to the default bean property access.
+	 * 属性访问。
 	 * @see #initBeanPropertyAccess()
 	 * @see #createDirectFieldBindingResult()
 	 */
@@ -286,6 +295,7 @@ public class DataBinder implements PropertyEditorRegistry, TypeConverter {
 
 	/**
 	 * Create the {@link AbstractPropertyBindingResult} instance using direct
+	 * 使用直接字段访问创建一个AbstractPropertyBindingResult实例
 	 * field access.
 	 * @since 4.2.1
 	 */
@@ -305,6 +315,7 @@ public class DataBinder implements PropertyEditorRegistry, TypeConverter {
 
 	/**
 	 * Return the internal BindingResult held by this DataBinder,
+	 * 返回该DataBinder持有的内部BindingResult，作为一个AbstractPropertyBindingResult。
 	 * as an AbstractPropertyBindingResult.
 	 */
 	protected AbstractPropertyBindingResult getInternalBindingResult() {
@@ -323,6 +334,7 @@ public class DataBinder implements PropertyEditorRegistry, TypeConverter {
 
 	/**
 	 * Return this binder's underlying SimpleTypeConverter.
+	 * 返回该binder底层的SimpleTypeConverter。
 	 */
 	protected SimpleTypeConverter getSimpleTypeConverter() {
 		if (this.typeConverter == null) {
@@ -348,6 +360,7 @@ public class DataBinder implements PropertyEditorRegistry, TypeConverter {
 
 	/**
 	 * Return the underlying TypeConverter of this binder's BindingResult.
+	 * 返回该binder的BindingResult的底层TypeConverter。
 	 */
 	protected TypeConverter getTypeConverter() {
 		if (getTarget() != null) {
@@ -507,8 +520,10 @@ public class DataBinder implements PropertyEditorRegistry, TypeConverter {
 
 	/**
 	 * Set the strategy to use for processing binding errors, that is,
+	 * 设置策略，用于处理绑定错误，换句话说，需要字段错误和PropertyAccessException。
 	 * required field errors and {@code PropertyAccessException}s.
 	 * <p>Default is a DefaultBindingErrorProcessor.
+	 * 默认是DefaultBindingErrorProcessor。
 	 * @see DefaultBindingErrorProcessor
 	 */
 	public void setBindingErrorProcessor(BindingErrorProcessor bindingErrorProcessor) {
@@ -525,6 +540,7 @@ public class DataBinder implements PropertyEditorRegistry, TypeConverter {
 
 	/**
 	 * Set the Validator to apply after each binding step.
+	 * 每一个绑定步骤之后要使用的Validator
 	 * @see #addValidators(Validator...)
 	 * @see #replaceValidators(Validator...)
 	 */

@@ -276,8 +276,10 @@ public class HandlerMethod {
 
 	/**
 	 * Return a single annotation on the underlying method traversing its super methods
+	 * 返回底层方法上的单个注解如果在给定方法上没有找到注解则遍历父方法。
 	 * if no annotation can be found on the given method itself.
 	 * <p>Also supports <em>merged</em> composed annotations with attribute
+	 * 在Spring 4.2.2版本中也支持合并组合注解进行属性覆盖。
 	 * overrides as of Spring Framework 4.2.2.
 	 * @param annotationType the type of annotation to introspect the method for
 	 * @return the annotation, or {@code null} if none found

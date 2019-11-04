@@ -16,13 +16,13 @@
 
 package org.springframework.validation;
 
-import java.io.Serializable;
-
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.ConfigurablePropertyAccessor;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+
+import java.io.Serializable;
 
 /**
  * Default implementation of the {@link Errors} and {@link BindingResult}
@@ -30,8 +30,11 @@ import org.springframework.util.Assert;
  * JavaBean objects.
  *
  * <p>Performs standard JavaBean property access, also supporting nested
+ * 执行标准的JavaBean 属性访问，也支持内嵌属性。通常，应用代码和Errors接口或者
  * properties. Normally, application code will work with the
+ * BindingResult接口一起工作。一个DataBinder通过getBindingResult()方
  * {@code Errors} interface or the {@code BindingResult} interface.
+ * 法返回BindingResult
  * A {@link DataBinder} returns its {@code BindingResult} via
  * {@link DataBinder#getBindingResult()}.
  *

@@ -43,13 +43,18 @@ import java.util.concurrent.Callable;
 
 /**
  * Extends {@link InvocableHandlerMethod} with the ability to handle return
+ * 扩展InvocableHandlerMethod，能够通过注册的HandlerMethodReturnValueHandler
  * values through a registered {@link HandlerMethodReturnValueHandler} and
+ * 处理返回值，也支持基于方法级别的@ResponseStatus注解设置响应状态。
  * also supports setting the response status based on a method-level
  * {@code @ResponseStatus} annotation.
  *
  * <p>A {@code null} return value (including void) may be interpreted as the
+ * 返回值为null（包括void）可以被解释成结合@ResponseStatus注解的请求处理结束，
  * end of request processing in combination with a {@code @ResponseStatus}
+ * 无修改检查条件（参考ServletWebRequest的checkNotModified方法），或者提供访问
  * annotation, a not-modified check condition
+ * 响应流的方法参数。
  * (see {@link ServletWebRequest#checkNotModified(long)}), or
  * a method argument that provides access to the response stream.
  *

@@ -16,21 +16,26 @@
 
 package org.springframework.validation;
 
-import java.beans.PropertyEditor;
-import java.util.Map;
-
 import org.springframework.beans.PropertyEditorRegistry;
 import org.springframework.lang.Nullable;
 
+import java.beans.PropertyEditor;
+import java.util.Map;
+
 /**
  * General interface that represents binding results. Extends the
+ * 表示绑定结果的一般接口。扩展Errors接口来拥有错误注册的能力，
  * {@link Errors interface} for error registration capabilities,
+ * 允许应用Validator，添加绑定指定分析和模型构建。
  * allowing for a {@link Validator} to be applied, and adds
  * binding-specific analysis and model building.
  *
  * <p>Serves as result holder for a {@link DataBinder}, obtained via
+ * 作为DataBinder的结果持有器，通过DataBinder的getBindingResult()方法
  * the {@link DataBinder#getBindingResult()} method. BindingResult
+ * 获取。BindingResult实现类也可以直接使用，比如在BindingResult上调用
  * implementations can also be used directly, for example to invoke
+ * Validator（作为单元测试的一部分）。
  * a {@link Validator} on it (e.g. as part of a unit test).
  *
  * @author Juergen Hoeller

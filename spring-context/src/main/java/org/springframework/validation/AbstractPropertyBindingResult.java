@@ -16,8 +16,6 @@
 
 package org.springframework.validation;
 
-import java.beans.PropertyEditor;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.ConfigurablePropertyAccessor;
 import org.springframework.beans.PropertyAccessorUtils;
@@ -28,9 +26,13 @@ import org.springframework.core.convert.support.ConvertingPropertyEditorAdapter;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
+import java.beans.PropertyEditor;
+
 /**
  * Abstract base class for {@link BindingResult} implementations that work with
+ * BindingResult实现的抽象基础类，和Spring的PropertyAccessor机制一起工作。通过
  * Spring's {@link org.springframework.beans.PropertyAccessor} mechanism.
+ * 委派给对应的PropertyAccessor方法预实现字段访问。
  * Pre-implements field access through delegation to the corresponding
  * PropertyAccessor methods.
  *
@@ -180,10 +182,14 @@ public abstract class AbstractPropertyBindingResult extends AbstractBindingResul
 
 	/**
 	 * Provide the PropertyAccessor to work with, according to the
+	 * 提供要使用的PropertyAccessor，根据访问的具体策略。
 	 * concrete strategy of access.
 	 * <p>Note that a PropertyAccessor used by a BindingResult should
+	 * 注意：BindingResult使用的PropertyAccessor应该总是有其extractOldValueForEditor
 	 * always have its "extractOldValueForEditor" flag set to "true"
+	 * 标识，默认设置为true，因为通常这对于模型对象可能没有副作用，该模型对象
 	 * by default, since this is typically possible without side effects
+	 * 服务于数据绑定目标。
 	 * for model objects that serve as data binding target.
 	 * @see ConfigurablePropertyAccessor#setExtractOldValueForEditor
 	 */

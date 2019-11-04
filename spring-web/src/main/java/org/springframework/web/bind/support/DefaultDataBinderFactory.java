@@ -22,6 +22,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 /**
  * Create a {@link WebRequestDataBinder} instance and initialize it with a
+ * 创建一个WebRequestDataBinder实例并且用WebBindingInitializer初始化WebRequestDataBinder。
  * {@link WebBindingInitializer}.
  *
  * @author Rossen Stoyanchev
@@ -45,7 +46,9 @@ public class DefaultDataBinderFactory implements WebDataBinderFactory {
 
 	/**
 	 * Create a new {@link WebDataBinder} for the given target object and
+	 * 根据给定目标对象创建一个新的WebDataBinder并且通过一个WebBindingInitializer
 	 * initialize it through a {@link WebBindingInitializer}.
+	 * 初始化。
 	 * @throws Exception in case of invalid state or arguments
 	 */
 	@Override
@@ -63,6 +66,7 @@ public class DefaultDataBinderFactory implements WebDataBinderFactory {
 
 	/**
 	 * Extension point to create the WebDataBinder instance.
+	 * 扩展点，创建WebDataBinder实例。默认是WebRequestDataBinder。
 	 * By default this is {@code WebRequestDataBinder}.
 	 * @param target the binding target or {@code null} for type conversion only
 	 * @param objectName the binding target object name
@@ -77,7 +81,9 @@ public class DefaultDataBinderFactory implements WebDataBinderFactory {
 
 	/**
 	 * Extension point to further initialize the created data binder instance
+	 * 扩展点，在WebBindingInitializer的全局初始化之后，进一步的初始化已创建的
 	 * (e.g. with {@code @InitBinder} methods) after "global" initialization
+	 * dataBinder实例。（比如：InitBinder注解方法）
 	 * via {@link WebBindingInitializer}.
 	 * @param dataBinder the data binder instance to customize
 	 * @param webRequest the current request

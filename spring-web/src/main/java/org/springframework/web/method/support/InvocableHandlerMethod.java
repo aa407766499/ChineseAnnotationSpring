@@ -115,9 +115,13 @@ public class InvocableHandlerMethod extends HandlerMethod {
 
 	/**
 	 * Invoke the method after resolving its argument values in the context of the given request.
+	 * 在给定请求的上下文中解析参数值之后调用方法。
 	 * <p>Argument values are commonly resolved through {@link HandlerMethodArgumentResolver}s.
+	 * 通常通过HandlerMethodArgumentResolver解析参数值。providedArgs参数可以提供直接使用的参数值，
 	 * The {@code providedArgs} parameter however may supply argument values to be used directly,
+	 * 比如：没有参数解析。提供参数值的例子包括一个WebDataBinder，SessionStatus，或者一个抛出的异常实例。
 	 * i.e. without argument resolution. Examples of provided argument values include a
+	 * 在参数解析器之前检查提供的参数值。
 	 * {@link WebDataBinder}, a {@link SessionStatus}, or a thrown exception instance.
 	 * Provided argument values are checked before argument resolvers.
 	 * @param request the current request
@@ -146,6 +150,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 
 	/**
 	 * Get the method argument values for the current request.
+	 * 根据当前请求获取方法参数值。
 	 */
 	private Object[] getMethodArgumentValues(NativeWebRequest request, @Nullable ModelAndViewContainer mavContainer,
 			Object... providedArgs) throws Exception {
@@ -161,6 +166,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 			}
 			if (this.argumentResolvers.supportsParameter(parameter)) {
 				try {
+					//解析参数值
 					args[i] = this.argumentResolvers.resolveArgument(
 							parameter, mavContainer, request, this.dataBinderFactory);
 					continue;
@@ -188,6 +194,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 
 	/**
 	 * Attempt to resolve a method parameter from the list of provided argument values.
+	 * 根据所提供的参数值列表尝试解析一个方法参数。
 	 */
 	@Nullable
 	private Object resolveProvidedArgument(MethodParameter parameter, @Nullable Object... providedArgs) {

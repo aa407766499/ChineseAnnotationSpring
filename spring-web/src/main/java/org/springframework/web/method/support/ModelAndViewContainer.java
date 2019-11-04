@@ -16,10 +16,6 @@
 
 package org.springframework.web.method.support;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.ui.Model;
@@ -28,18 +24,28 @@ import org.springframework.validation.support.BindingAwareModelMap;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.bind.support.SimpleSessionStatus;
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Records model and view related decisions made by
+ * 记录在控制器方法调用的方向上HandlerMethodArgumentResolver
  * {@link HandlerMethodArgumentResolver}s and
+ * 和HandlerMethodReturnValueHandler决定相关的模型和视图
  * {@link HandlerMethodReturnValueHandler}s during the course of invocation of
  * a controller method.
  *
  * <p>The {@link #setRequestHandled} flag can be used to indicate the request
+ * setRequestHandled标识能用于表示请求已经直接处理不需要视图解析。
  * has been handled directly and view resolution is not required.
  *
  * <p>A default {@link Model} is automatically created at instantiation.
+ * 在实例化时自动创建默认的Model。重定向场景中通过setRedirectModel方法提供一个替代
  * An alternate model instance may be provided via {@link #setRedirectModel}
+ * 的model实例，setRedirectModelScenario设置为true标识重定向场景，getModel()方法
  * for use in a redirect scenario. When {@link #setRedirectModelScenario} is set
+ * 返回重定向模型替代默认的模型。
  * to {@code true} signalling a redirect scenario, the {@link #getModel()}
  * returns the redirect model instead of the default model.
  *
@@ -133,8 +139,11 @@ public class ModelAndViewContainer {
 
 	/**
 	 * Return the model to use -- either the "default" or the "redirect" model.
+	 * 返回要使用的模型--要么是默认的模型要么是重定向的模型。
 	 * The default model is used if {@code redirectModelScenario=false} or
+	 * 如果redirectModelScenario为false或者没有重定向模型，使用默认的模型（比如：
 	 * there is no redirect model (i.e. RedirectAttributes was not declared as
+	 * 在方法参数中没有声明RedirectAttributes）以及ignoreDefaultModelOnRedirect=false。
 	 * a method argument) and {@code ignoreDefaultModelOnRedirect=false}.
 	 */
 	public ModelMap getModel() {
@@ -151,6 +160,7 @@ public class ModelAndViewContainer {
 
 	/**
 	 * Whether to use the default model or the redirect model.
+	 * 是使用默认模型还是重定向模型。
 	 */
 	private boolean useDefaultModel() {
 		return (!this.redirectModelScenario || (this.redirectModel == null && !this.ignoreDefaultModelOnRedirect));
@@ -287,6 +297,7 @@ public class ModelAndViewContainer {
 
 	/**
 	 * Copy all attributes to the underlying model.
+	 * 将所有属性复制到底层模型中
 	 * A shortcut for {@code getModel().addAllAttributes(Map)}.
 	 */
 	public ModelAndViewContainer addAllAttributes(@Nullable Map<String, ?> attributes) {
@@ -296,7 +307,9 @@ public class ModelAndViewContainer {
 
 	/**
 	 * Copy attributes in the supplied {@code Map} with existing objects of
+	 * 复制所提供的map中的属性，优先相同名称的已存在对象。快捷方式：
 	 * the same name taking precedence (i.e. not getting replaced).
+	 * getModel().mergeAttributes(Map<String, ?>)
 	 * A shortcut for {@code getModel().mergeAttributes(Map<String, ?>)}.
 	 */
 	public ModelAndViewContainer mergeAttributes(@Nullable Map<String, ?> attributes) {

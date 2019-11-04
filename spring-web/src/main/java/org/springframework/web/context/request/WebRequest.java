@@ -16,12 +16,12 @@
 
 package org.springframework.web.context.request;
 
+import org.springframework.lang.Nullable;
+
 import java.security.Principal;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
-
-import org.springframework.lang.Nullable;
 
 /**
  * Generic interface for a web request. Mainly intended for generic web
@@ -71,6 +71,7 @@ public interface WebRequest extends RequestAttributes {
 
 	/**
 	 * Return the request parameter values for the given parameter name,
+	 * 返回给定参数名称的请求参数值、
 	 * or {@code null} if none.
 	 * <p>A single-value parameter will be exposed as an array with a single element.
 	 * @see javax.servlet.http.HttpServletRequest#getParameterValues(String)

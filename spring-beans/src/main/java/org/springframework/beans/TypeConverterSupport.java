@@ -61,6 +61,7 @@ public abstract class TypeConverterSupport extends PropertyEditorRegistrySupport
 		return doConvert(value, requiredType, null, field);
 	}
 
+	//真正执行类型转换
 	@Nullable
 	private <T> T doConvert(@Nullable Object value,@Nullable Class<T> requiredType,
 			@Nullable MethodParameter methodParam, @Nullable Field field) throws TypeMismatchException {

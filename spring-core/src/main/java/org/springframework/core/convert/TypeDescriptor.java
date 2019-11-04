@@ -16,6 +16,14 @@
 
 package org.springframework.core.convert;
 
+import org.springframework.core.MethodParameter;
+import org.springframework.core.ResolvableType;
+import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.ObjectUtils;
+
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -26,14 +34,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
-
-import org.springframework.core.MethodParameter;
-import org.springframework.core.ResolvableType;
-import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.ObjectUtils;
 
 /**
  * Context about a type to convert from or to.
@@ -727,6 +727,7 @@ public class TypeDescriptor implements Serializable {
 
 	/**
 	 * Adapter class for exposing a {@code TypeDescriptor}'s annotations as an
+	 * 适配器类，将一个TypeDescriptor的注解暴露成AnnotatedElement，特别是AnnotatedElementUtils。
 	 * {@link AnnotatedElement}, in particular to {@link AnnotatedElementUtils}.
 	 * @see AnnotatedElementUtils#isAnnotated(AnnotatedElement, Class)
 	 * @see AnnotatedElementUtils#getMergedAnnotation(AnnotatedElement, Class)

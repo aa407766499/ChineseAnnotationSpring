@@ -139,6 +139,7 @@ class TypeConverterDelegate {
 
 	/**
 	 * Convert the value to the required type (if necessary from a String),
+	 * 将值转换成要求的类型（如果需要，把字符串进行转换），指定属性。
 	 * for the specified property.
 	 * @param propertyName name of the property
 	 * @param oldValue the previous value, if available (may be {@code null})
@@ -155,6 +156,7 @@ class TypeConverterDelegate {
 			@Nullable Class<T> requiredType, @Nullable TypeDescriptor typeDescriptor) throws IllegalArgumentException {
 
 		// Custom editor for this type?
+		// 该类型有自定义编辑器？
 		PropertyEditor editor = this.propertyEditorRegistry.findCustomEditor(requiredType, propertyName);
 
 		ConversionFailedException conversionAttemptEx = null;

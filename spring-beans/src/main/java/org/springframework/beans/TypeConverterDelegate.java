@@ -162,6 +162,7 @@ class TypeConverterDelegate {
 		ConversionFailedException conversionAttemptEx = null;
 
 		// No custom editor but custom ConversionService specified?
+		// 没有自定义编辑器但是指定了自定义ConversionService？
 		ConversionService conversionService = this.propertyEditorRegistry.getConversionService();
 		if (editor == null && conversionService != null && newValue != null && typeDescriptor != null) {
 			TypeDescriptor sourceTypeDesc = TypeDescriptor.forObject(newValue);
@@ -179,6 +180,7 @@ class TypeConverterDelegate {
 		Object convertedValue = newValue;
 
 		// Value not of required type?
+		// 值不是要求的类型？
 		if (editor != null || (requiredType != null && !ClassUtils.isAssignableValue(requiredType, convertedValue))) {
 			if (typeDescriptor != null && requiredType != null && Collection.class.isAssignableFrom(requiredType) &&
 					convertedValue instanceof String) {
@@ -200,6 +202,7 @@ class TypeConverterDelegate {
 
 		if (requiredType != null) {
 			// Try to apply some standard type conversion rules if appropriate.
+			// 如果合适的话，尝试应用某些标准类型转换规则。
 
 			if (convertedValue != null) {
 				if (Object.class == requiredType) {
@@ -207,6 +210,7 @@ class TypeConverterDelegate {
 				}
 				else if (requiredType.isArray()) {
 					// Array required -> apply appropriate conversion of elements.
+					// 转换成数组->应用合适的元素转换。
 					if (convertedValue instanceof String && Enum.class.isAssignableFrom(requiredType.getComponentType())) {
 						convertedValue = StringUtils.commaDelimitedListToStringArray((String) convertedValue);
 					}

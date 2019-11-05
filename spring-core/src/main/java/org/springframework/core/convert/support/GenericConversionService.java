@@ -16,37 +16,19 @@
 
 package org.springframework.core.convert.support;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
 import org.springframework.core.DecoratingProxy;
 import org.springframework.core.ResolvableType;
-import org.springframework.core.convert.ConversionException;
-import org.springframework.core.convert.ConversionFailedException;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.core.convert.ConverterNotFoundException;
-import org.springframework.core.convert.TypeDescriptor;
-import org.springframework.core.convert.converter.ConditionalConverter;
-import org.springframework.core.convert.converter.ConditionalGenericConverter;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.core.convert.converter.ConverterFactory;
-import org.springframework.core.convert.converter.ConverterRegistry;
-import org.springframework.core.convert.converter.GenericConverter;
+import org.springframework.core.convert.*;
+import org.springframework.core.convert.converter.*;
 import org.springframework.core.convert.converter.GenericConverter.ConvertiblePair;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.util.StringUtils;
+
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * Base {@link ConversionService} implementation suitable for use in most environments.
@@ -188,8 +170,10 @@ public class GenericConversionService implements ConfigurableConversionService {
 			throw new IllegalArgumentException("Source to convert from must be an instance of [" +
 					sourceType + "]; instead it was a [" + source.getClass().getName() + "]");
 		}
+		//获取转换器
 		GenericConverter converter = getConverter(sourceType, targetType);
 		if (converter != null) {
+			//执行转换
 			Object result = ConversionUtils.invokeConverter(converter, source, sourceType, targetType);
 			return handleResult(sourceType, targetType, result);
 		}
@@ -242,7 +226,9 @@ public class GenericConversionService implements ConfigurableConversionService {
 
 	/**
 	 * Hook method to lookup the converter for a given sourceType/targetType pair.
+	 * 钩子方法查找给定sourceType/targetType对的转换器。首先查询该ConversionService的
 	 * First queries this ConversionService's converter cache.
+	 * 转换器缓存。在没有缓存时，执行全面查找匹配的转换器。如果没有转换器匹配，返回默认的转换器。
 	 * On a cache miss, then performs an exhaustive search for a matching converter.
 	 * If no converter matches, returns the default converter.
 	 * @param sourceType the source type to convert from
@@ -275,7 +261,9 @@ public class GenericConversionService implements ConfigurableConversionService {
 
 	/**
 	 * Return the default converter if no converter is found for the given sourceType/targetType pair.
+	 * 如果根据给定的sourceType/targetType对没有找到转换器，那么返回默认的转换器。
 	 * <p>Returns a NO_OP Converter if the source type is assignable to the target type.
+	 * 如果sourceType归属于targetType，返回NO_OP转换器。否则返回null，表示没有找到合适的转换器。
 	 * Returns {@code null} otherwise, indicating no suitable converter could be found.
 	 * @param sourceType the source type to convert from
 	 * @param targetType the target type to convert to
@@ -341,6 +329,7 @@ public class GenericConversionService implements ConfigurableConversionService {
 
 	/**
 	 * Adapts a {@link Converter} to a {@link GenericConverter}.
+	 * 将一个Converter适配成GenericConverter
 	 */
 	@SuppressWarnings("unchecked")
 	private final class ConverterAdapter implements ConditionalGenericConverter {
@@ -447,6 +436,7 @@ public class GenericConversionService implements ConfigurableConversionService {
 
 	/**
 	 * Key for use with the converter cache.
+	 * 转换器缓存的key。
 	 */
 	private static final class ConverterCacheKey implements Comparable<ConverterCacheKey> {
 
@@ -498,6 +488,7 @@ public class GenericConversionService implements ConfigurableConversionService {
 
 	/**
 	 * Manages all converters registered with the service.
+	 * 管理服务中注册的所有转换器。
 	 */
 	private static class Converters {
 
@@ -535,7 +526,9 @@ public class GenericConversionService implements ConfigurableConversionService {
 
 		/**
 		 * Find a {@link GenericConverter} given a source and target type.
+		 * 根据给定的源类型和目标类型查找GenericConverter。
 		 * <p>This method will attempt to match all possible converters by working
+		 * 通过类型的类和接口层级，该方法会尝试匹配所有可能的转换器。
 		 * through the class and interface hierarchy of the types.
 		 * @param sourceType the source type
 		 * @param targetType the target type
@@ -544,6 +537,7 @@ public class GenericConversionService implements ConfigurableConversionService {
 		@Nullable
 		public GenericConverter find(TypeDescriptor sourceType, TypeDescriptor targetType) {
 			// Search the full type hierarchy
+			// 检索完整的类型层级
 			List<Class<?>> sourceCandidates = getClassHierarchy(sourceType.getType());
 			List<Class<?>> targetCandidates = getClassHierarchy(targetType.getType());
 			for (Class<?> sourceCandidate : sourceCandidates) {
@@ -655,6 +649,7 @@ public class GenericConversionService implements ConfigurableConversionService {
 
 	/**
 	 * Manages converters registered with a specific {@link ConvertiblePair}.
+	 * 管理指定的ConvertiblePair注册的converter。
 	 */
 	private static class ConvertersForPair {
 

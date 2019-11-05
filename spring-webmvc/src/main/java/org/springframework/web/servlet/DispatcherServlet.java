@@ -1084,7 +1084,7 @@ public class DispatcherServlet extends FrameworkServlet {
 					return;
 				}
 
-				// 结果视图对象的处理
+				// 处理结果视图对象
 				applyDefaultViewName(processedRequest, mv);
 				mappedHandler.applyPostHandle(processedRequest, response, mv);
 			}
@@ -1096,6 +1096,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				// making them available for @ExceptionHandler methods and other scenarios.
 				dispatchException = new NestedServletException("Handler dispatch failed", err);
 			}
+			//处理处理器选择和处理器调用的结果
 			processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);
 		}
 		catch (Exception ex) {
@@ -1124,6 +1125,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * Do we need view name translation?
+	 * 我们需要视图名称翻译吗？
 	 */
 	private void applyDefaultViewName(HttpServletRequest request, @Nullable ModelAndView mv) throws Exception {
 		if (mv != null && !mv.hasView()) {
@@ -1136,7 +1138,9 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * Handle the result of handler selection and handler invocation, which is
+	 * 处理处理器选择和处理器调用的结果，要么是一个ModelAndView要么将一个Exception
 	 * either a ModelAndView or an Exception to be resolved to a ModelAndView.
+	 * 解析成ModelAndView。
 	 */
 	private void processDispatchResult(HttpServletRequest request, HttpServletResponse response,
 			@Nullable HandlerExecutionChain mappedHandler, @Nullable ModelAndView mv,
@@ -1157,6 +1161,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		}
 
 		// Did the handler return a view to render?
+		// 处理器返回一个要发送的视图吗？
 		if (mv != null && !mv.wasCleared()) {
 			render(mv, request, response);
 			if (errorView) {
@@ -1176,6 +1181,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		}
 
 		if (mappedHandler != null) {
+			//触发拦截器的afterCompletion
 			mappedHandler.triggerAfterCompletion(request, response, null);
 		}
 	}

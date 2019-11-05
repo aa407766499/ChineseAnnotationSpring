@@ -25,6 +25,7 @@ import org.springframework.util.Assert;
 
 /**
  * Internal utilities for the conversion package.
+ * conversion包的内部工具。
  *
  * @author Keith Donald
  * @author Stephane Nicoll

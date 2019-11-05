@@ -46,12 +46,17 @@ import java.util.List;
 
 /**
  * Resolves method arguments annotated with {@code @RequestBody} and handles return
+ * 解析被@RequestBody注解的方法参数以及处理被@ResponseBody注解的方法返回值，使用
  * values from methods annotated with {@code @ResponseBody} by reading and writing
+ * HttpMessageConverter读取和写入请求或者响应的体。
  * to the body of the request or response with an {@link HttpMessageConverter}.
  *
  * <p>An {@code @RequestBody} method argument is also validated if it is annotated
+ * 一个RequestBody方法参数如果它被Valid注解也要进行验证。如果验证失败如果配置了
  * with {@code @javax.validation.Valid}. In case of validation failure,
+ * DefaultHandlerExceptionResolver，抛出MethodArgumentNotValidException以及
  * {@link MethodArgumentNotValidException} is raised and results in an HTTP 400
+ * HTTP 400的响应状态码。
  * response status code if {@link DefaultHandlerExceptionResolver} is configured.
  *
  * @author Arjen Poutsma
@@ -182,6 +187,7 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 		ServletServerHttpResponse outputMessage = createOutputMessage(webRequest);
 
 		// Try even with null return value. ResponseBodyAdvice could get involved.
+		// 即使是null返回值也进行尝试。调用ResponseBodyAdvice。
 		writeWithMessageConverters(returnValue, returnType, inputMessage, outputMessage);
 	}
 

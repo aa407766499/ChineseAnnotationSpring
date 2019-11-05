@@ -241,6 +241,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 			Map<Method, T> methods = MethodIntrospector.selectMethods(userType,
 					(MethodIntrospector.MetadataLookup<T>) method -> {
 						try {
+							//这里完成了类级别的RequestMapping的url和方法级别的RequestMapping的URL的拼接
 							return getMappingForMethod(method, userType);
 						}
 						catch (Throwable ex) {

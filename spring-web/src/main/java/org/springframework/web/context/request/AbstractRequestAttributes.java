@@ -42,7 +42,9 @@ public abstract class AbstractRequestAttributes implements RequestAttributes {
 
 	/**
 	 * Signal that the request has been completed.
+	 * 标记请求已经处理。
 	 * <p>Executes all request destruction callbacks and updates the
+	 * 执行所有的请求销毁回调以及更新在请求处理期间访问的session属性
 	 * session attributes that have been accessed during request processing.
 	 */
 	public void requestCompleted() {

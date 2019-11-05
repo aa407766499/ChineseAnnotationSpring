@@ -280,6 +280,7 @@ public class PropertyEditorRegistrySupport implements PropertyEditorRegistry {
 		if (propertyPath != null) {
 			if (this.customEditorsForPath != null) {
 				// Check property-specific editor first.
+				// 首先检查属性指定编辑器。
 				PropertyEditor editor = getCustomEditor(propertyPath, requiredType);
 				if (editor == null) {
 					List<String> strippedPaths = new LinkedList<>();

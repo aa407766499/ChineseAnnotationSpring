@@ -16,26 +16,31 @@
 
 package org.springframework.core.convert.converter;
 
-import java.util.Set;
-
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
+import java.util.Set;
+
 /**
  * Generic converter interface for converting between two or more types.
- *
+ * 一般转换器接口，用于在两个或者多个类型之间转换。
  * <p>This is the most flexible of the Converter SPI interfaces, but also the most complex.
+ * 这是一个非常灵活的Converter SPI接口。GenericConverter的灵活性可以支持在多个源/目标类型对之间进行转换
  * It is flexible in that a GenericConverter may support converting between multiple source/target
+ * （参考getConvertibleTypes()）。另外，GenericConverter实现类在类型转换处理期间可以访问源/目标 TypeDescriptor
  * type pairs (see {@link #getConvertibleTypes()}. In addition, GenericConverter implementations
+ * 字段上下文。允许解析源以及目标字段元数据比如注解和泛型信息，这些元数据可以用于影响转换逻辑。
  * have access to source/target {@link TypeDescriptor field context} during the type conversion
  * process. This allows for resolving source and target field metadata such as annotations and
  * generics information, which can be used to influence the conversion logic.
  *
  * <p>This interface should generally not be used when the simpler {@link Converter} or
+ * 在简单Converter或者ConverterFactory接口足够用时，不需要使用该接口。
  * {@link ConverterFactory} interface is sufficient.
  *
  * <p>Implementations may additionally implement {@link ConditionalConverter}.
+ * 实现类可以另外实现ConditionalConverter
  *
  * @author Keith Donald
  * @author Juergen Hoeller
@@ -69,6 +74,7 @@ public interface GenericConverter {
 
 	/**
 	 * Holder for a source-to-target class pair.
+	 * 源类型-目标类型对持有器。
 	 */
 	final class ConvertiblePair {
 

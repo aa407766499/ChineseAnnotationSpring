@@ -521,7 +521,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 	@Override
 	public void afterPropertiesSet() {
 		// Do this first, it may add ResponseBody advice beans
-		// 先执行这个，该方法可以添加ResponseBody增加bean
+		// 先执行这个，该方法可以添加ResponseBody增强bean
 		initControllerAdviceCache();
 
 		if (this.argumentResolvers == null) {

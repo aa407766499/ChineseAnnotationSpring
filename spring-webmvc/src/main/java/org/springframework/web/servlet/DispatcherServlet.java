@@ -1071,6 +1071,7 @@ public class DispatcherServlet extends FrameworkServlet {
 					}
 				}
 
+				//拦截器预处理
 				if (!mappedHandler.applyPreHandle(processedRequest, response)) {
 					return;
 				}
@@ -1086,6 +1087,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 				// 处理结果视图对象
 				applyDefaultViewName(processedRequest, mv);
+				//拦截器后处理
 				mappedHandler.applyPostHandle(processedRequest, response, mv);
 			}
 			catch (Exception ex) {
@@ -1163,6 +1165,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		// Did the handler return a view to render?
 		// 处理器返回一个要发送的视图吗？
 		if (mv != null && !mv.wasCleared()) {
+			//发送给定的ModelAndView。
 			render(mv, request, response);
 			if (errorView) {
 				WebUtils.clearErrorRequestAttributes(request);
@@ -1386,6 +1389,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * Render the given ModelAndView.
+	 * 发送给定的ModelAndView。
 	 * <p>This is the last stage in handling a request. It may involve resolving the view by name.
 	 * @param mv the ModelAndView to render
 	 * @param request current HTTP servlet request
@@ -1395,6 +1399,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 */
 	protected void render(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// Determine locale for request and apply it to the response.
+		// 确定请求的locale并将其应用到响应中。
 		Locale locale =
 				(this.localeResolver != null ? this.localeResolver.resolveLocale(request) : request.getLocale());
 		response.setLocale(locale);
@@ -1403,6 +1408,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		String viewName = mv.getViewName();
 		if (viewName != null) {
 			// We need to resolve the view name.
+			// 我们需要解析视图名称
 			view = resolveViewName(viewName, mv.getModelInternal(), locale, request);
 			if (view == null) {
 				throw new ServletException("Could not resolve view with name '" + mv.getViewName() +
@@ -1411,6 +1417,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		}
 		else {
 			// No need to lookup: the ModelAndView object contains the actual View object.
+			// 不需要查找：ModelAndView对象包含了实际的视图对象。
 			view = mv.getView();
 			if (view == null) {
 				throw new ServletException("ModelAndView [" + mv + "] neither contains a view name nor a " +
@@ -1419,6 +1426,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		}
 
 		// Delegate to the View object for rendering.
+		// 委派给视图对象进行发送
 		if (logger.isDebugEnabled()) {
 			logger.debug("Rendering view [" + view + "] in DispatcherServlet with name '" + getServletName() + "'");
 		}
@@ -1426,6 +1434,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			if (mv.getStatus() != null) {
 				response.setStatus(mv.getStatus().value());
 			}
+			//发送model
 			view.render(mv.getModelInternal(), request, response);
 		}
 		catch (Exception ex) {
@@ -1450,8 +1459,11 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * Resolve the given view name into a View object (to be rendered).
+	 * 将给定的视图名称解析成一个视图对象（要被发送的）。
 	 * <p>The default implementations asks all ViewResolvers of this dispatcher.
+	 * 默认实现会访问该委派器的所有视图解析器。可以覆盖来进行自定义解析策略，可能基于
 	 * Can be overridden for custom resolution strategies, potentially based on
+	 * 指定模型属性或者请求参数。
 	 * specific model attributes or request parameters.
 	 * @param viewName the name of the view to resolve
 	 * @param model the model to be passed to the view

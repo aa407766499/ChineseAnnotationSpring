@@ -16,13 +16,13 @@
 
 package org.springframework.core.type.classreading;
 
-import java.io.IOException;
-
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
+
+import java.io.IOException;
 
 /**
  * Simple implementation of the {@link MetadataReaderFactory} interface,
@@ -78,6 +78,7 @@ public class SimpleMetadataReaderFactory implements MetadataReaderFactory {
 		Resource resource = this.resourceLoader.getResource(resourcePath);
 		if (!resource.exists()) {
 			// Maybe an inner class name using the dot name syntax? Need to use the dollar syntax here...
+			// 可能是一个使用点名称格式的内部类名称？这里需要使用$语法...
 			// ClassUtils.forName has an equivalent check for resolution into Class references later on.
 			int lastDotIndex = className.lastIndexOf('.');
 			if (lastDotIndex != -1) {

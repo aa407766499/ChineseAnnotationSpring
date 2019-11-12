@@ -49,17 +49,24 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * {@link org.springframework.beans.factory.config.BeanPostProcessor} implementation
+ * BeanPostProcessor实现类，自动注入注解的字段、setter方法以及任意的配置方法。
  * that autowires annotated fields, setter methods and arbitrary config methods.
+ * 要被注入的成员通过Java 5 注解探测：默认的，Spring的Autowired和Value注解。
  * Such members to be injected are detected through a Java 5 annotation: by default,
  * Spring's {@link Autowired @Autowired} and {@link Value @Value} annotations.
  *
  * <p>Also supports JSR-330's {@link javax.inject.Inject @Inject} annotation,
+ * 也支持JSR-330的Inject注解，如果可获得，直接选择Spring自己的Autowired。
  * if available, as a direct alternative to Spring's own {@code @Autowired}.
  *
  * <p>Only one constructor (at max) of any given bean class may carry this
+ * 任意给定bean类的仅有的一个构造器（至多）可以将该注解的required参数设置为true，
  * annotation with the 'required' parameter set to {@code true},
+ * 表示自动注入构造器在使用时作为一个Spring bean。如果多个非必须的自动注入构造器
  * indicating <i>the</i> constructor to autowire when used as a Spring bean.
+ * 带了该注解，他们会被认作是自动注入的候选者。会选择满足最多依赖的构造器。
  * If multiple <i>non-required</i> constructors carry the annotation, they
+ * 如果没有满足的候选者，使用默认的构造器。注解的构造器不是必须得是public。
  * will be considered as candidates for autowiring. The constructor with
  * the greatest number of dependencies that can be satisfied by matching
  * beans in the Spring container will be chosen. If none of the candidates
@@ -67,24 +74,34 @@ import java.util.concurrent.ConcurrentHashMap;
  * An annotated constructor does not have to be public.
  *
  * <p>Fields are injected right after construction of a bean, before any
+ * 在bean构造之后，任何配置方法被调用之前正确注入字段。配置字段不是必须得是public。
  * config methods are invoked. Such a config field does not have to be public.
  *
  * <p>Config methods may have an arbitrary name and any number of arguments; each of
+ * 配置方法可以有任意名称和任意数量的参数；每一个参数会被自动注入Spring容器中匹配的bean。
  * those arguments will be autowired with a matching bean in the Spring container.
+ * bean属性setter方法实际上只是一般配置方法的特殊情况，配置方法不是必须得是public。
  * Bean property setter methods are effectively just a special case of such a
  * general config method. Config methods do not have to be public.
  *
  * <p>Note: A default AutowiredAnnotationBeanPostProcessor will be registered
+ * 注意：默认的AutowiredAnnotationBeanPostProcessor会被context:annotation-config
  * by the "context:annotation-config" and "context:component-scan" XML tags.
+ * 以及context:component-scan XML标签注册。如果你想要指定一个自定义的
  * Remove or turn off the default annotation configuration there if you intend
+ * AutowiredAnnotationBeanPostProcessor bean定义那么可以移除或者关闭默认的注解配置。
  * to specify a custom AutowiredAnnotationBeanPostProcessor bean definition.
  * <p><b>NOTE:</b> Annotation injection will be performed <i>before</i> XML injection;
+ * 注意：注解注入会在XML注入之前执行；因此后者的配置会覆盖前者的配置。
  * thus the latter configuration will override the former for properties wired through
  * both approaches.
  *
  * <p>In addition to regular injection points as discussed above, this post-processor
+ * 另外上面讨论的常规的注入点，该后置处理器也处理Spring的Lookup注解，该注解在运行时识别
  * also handles Spring's {@link Lookup @Lookup} annotation which identifies lookup
+ * 被容器替换的lookup方法。本质上，这是类型安全的getBean(Class, args)以及getBean(String, args)
  * methods to be replaced by the container at runtime. This is essentially a type-safe
+ * 版本。参考Lookup的javadoc获取更多细节。
  * version of {@code getBean(Class, args)} and {@code getBean(String, args)},
  * See {@link Lookup @Lookup's javadoc} for details.
  *
@@ -422,8 +439,10 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 	//获取给定类的autowire相关注解元信息
 	private InjectionMetadata findAutowiringMetadata(String beanName, Class<?> clazz, @Nullable PropertyValues pvs) {
 		// Fall back to class name as cache key, for backwards compatibility with custom callers.
+		// 返回到类名称作为缓存键，用于向后兼容自定义调用方。
 		String cacheKey = (StringUtils.hasLength(beanName) ? beanName : clazz.getName());
 		// Quick check on the concurrent map first, with minimal locking.
+		// 首先快速检查并发map，最小化锁
 		//首先从容器中查找是否有给定类的autowire相关注解元信息
 		InjectionMetadata metadata = this.injectionMetadataCache.get(cacheKey);
 		if (InjectionMetadata.needsRefresh(metadata, clazz)) {
@@ -431,7 +450,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 				metadata = this.injectionMetadataCache.get(cacheKey);
 				if (InjectionMetadata.needsRefresh(metadata, clazz)) {
 					if (metadata != null) {
-						//解析给定类autowire相关注解元信息
+						//清理要跳过的属性
 						metadata.clear(pvs);
 					}
 					//解析给定类autowire相关注解元信息
@@ -480,7 +499,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 				if (!BridgeMethodResolver.isVisibilityBridgeMethodPair(method, bridgedMethod)) {
 					return;
 				}
-				//获取给定方法上的所有注解
+				//获取给定方法上的Autowired相关注解
 				AnnotationAttributes ann = findAutowiredAnnotation(bridgedMethod);
 				if (ann != null && method.equals(ClassUtils.getMostSpecificMethod(method, clazz))) {
 					//如果方法是静态的，则直接遍历下一个方法
@@ -595,6 +614,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 
 	/**
 	 * Class representing injection information about an annotated field.
+	 * 代表关于一个注解字段相关注入信息的类。
 	 */
 	private class AutowiredFieldElement extends InjectionMetadata.InjectedElement {
 
@@ -682,6 +702,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 
 	/**
 	 * Class representing injection information about an annotated method.
+	 * 代表关于一个注解方法相关注入信息的类。
 	 */
 	private class AutowiredMethodElement extends InjectionMetadata.InjectedElement {
 

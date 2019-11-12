@@ -688,6 +688,7 @@ public abstract class ReflectionUtils {
 
 	/**
 	 * Invoke the given callback on all fields in the target class, going up the
+	 * 在目标类的所有字段上调用给定回调，遍历类层级获取所有声明的字段。
 	 * class hierarchy to get all declared fields.
 	 * @param clazz the target class to analyze
 	 * @param fc the callback to invoke for each field

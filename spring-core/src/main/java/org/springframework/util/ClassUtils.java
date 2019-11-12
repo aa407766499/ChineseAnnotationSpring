@@ -949,6 +949,7 @@ public abstract class ClassUtils {
 
 	/**
 	 * Convert a "."-based fully qualified class name to a "/"-based resource path.
+	 * 将全限定类名中的"."替换成"/"。
 	 * @param className the fully qualified class name
 	 * @return the corresponding resource path, pointing to the class
 	 */

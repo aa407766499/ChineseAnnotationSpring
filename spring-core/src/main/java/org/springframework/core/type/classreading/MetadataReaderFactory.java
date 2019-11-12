@@ -16,12 +16,13 @@
 
 package org.springframework.core.type.classreading;
 
-import java.io.IOException;
-
 import org.springframework.core.io.Resource;
+
+import java.io.IOException;
 
 /**
  * Factory interface for {@link MetadataReader} instances.
+ * MetadataReader实例的工厂接口。允许对每一个原始资源缓存一个MetadataReader。
  * Allows for caching a MetadataReader per original resource.
  *
  * @author Juergen Hoeller

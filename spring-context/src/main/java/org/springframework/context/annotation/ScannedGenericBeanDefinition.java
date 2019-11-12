@@ -27,7 +27,7 @@ import org.springframework.util.Assert;
 
 /**
  * Extension of the {@link org.springframework.beans.factory.support.GenericBeanDefinition}
- * GenericBeanDefinition类的扩展类，基于ASM类加载器，通过AnnotatedBeanDefinition接口暴露
+ * GenericBeanDefinition类的扩展类，基于ASM类读取器，通过AnnotatedBeanDefinition接口暴露
  * class, based on an ASM ClassReader, with support for annotation metadata exposed
  * 注解元数据。
  * through the {@link AnnotatedBeanDefinition} interface.
@@ -35,7 +35,7 @@ import org.springframework.util.Assert;
  * <p>This class does <i>not</i> load the bean {@code Class} early.
  * 该类不提前加载bean类。相反其通过".class"文件获取所有相关的元数据，该文件由
  * It rather retrieves all relevant metadata from the ".class" file itself,
- * ASM类加载器解析。它在功能上相当于，AnnotatedGenericBeanDefinition
+ * ASM类读取器解析。它在功能上相当于，AnnotatedGenericBeanDefinition
  * parsed with the ASM ClassReader. It is functionally equivalent to
  * AnnotatedGenericBeanDefinition(AnnotationMetadata)，但区别于已扫描的bean类
  * {@link AnnotatedGenericBeanDefinition#AnnotatedGenericBeanDefinition(AnnotationMetadata)}

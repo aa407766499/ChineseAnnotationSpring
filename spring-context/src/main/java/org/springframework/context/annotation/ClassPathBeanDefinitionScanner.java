@@ -41,7 +41,7 @@ import java.util.Set;
  * <p>Candidate classes are detected through configurable type filters. The
  * 通过配置的类型过滤器探测匹配的类。默认的过滤器会过滤出被@Component注解的类，
  * default filters include classes that are annotated with Spring's
- * @Repository注解的类，@Service注解的类，或者@Controller注解的类。
+ * Repository注解的类，Service注解的类，或者Controller注解的类。
  * {@link org.springframework.stereotype.Component @Component},
  * {@link org.springframework.stereotype.Repository @Repository},
  * {@link org.springframework.stereotype.Service @Service}, or
@@ -174,7 +174,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 			Environment environment, @Nullable ResourceLoader resourceLoader) {
 
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");
-		//为扫描器设置加载Bean定义的注册器
+		//为扫描器设置注册Bean定义的注册器
 		this.registry = registry;
 
 		if (useDefaultFilters) {
@@ -288,7 +288,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 * 执行对指定基础包的扫描，返回注册的bean定义。
 	 * returning the registered bean definitions.
 	 * <p>This method does <i>not</i> register an annotation config processor
-	 * 该方法注册一个注解配置处理器而且将该处理器留给调用者。
+	 * 该方法没有注册一个注解配置处理器而是将该处理器留给调用者。
 	 * but rather leaves this up to the caller.
 	 * @param basePackages the packages to check for annotated classes
 	 * @return set of beans registered if any for tooling registration purposes (never {@code null})

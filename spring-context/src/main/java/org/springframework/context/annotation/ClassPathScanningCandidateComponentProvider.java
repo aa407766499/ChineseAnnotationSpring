@@ -316,7 +316,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 
 	/**
 	 * Scan the class path for candidate components.
-	 * 扫描类路径匹配组件。
+	 * 扫描类路径候选组件。
 	 * @param basePackage the package to check for annotated classes
 	 * @return a corresponding Set of autodetected bean definitions
 	 */
@@ -369,6 +369,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 
 	/**
 	 * Extract the stereotype to use for the specified compatible filter.
+	 * 提取指定兼容过滤器使用的stereotype。
 	 * @param filter the filter to handle
 	 * @return the stereotype in the index matching this filter
 	 * @since 5.0

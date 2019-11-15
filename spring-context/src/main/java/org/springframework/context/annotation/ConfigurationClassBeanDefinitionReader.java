@@ -16,17 +16,8 @@
 
 package org.springframework.context.annotation;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition;
@@ -36,12 +27,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.groovy.GroovyBeanDefinitionReader;
 import org.springframework.beans.factory.parsing.SourceExtractor;
-import org.springframework.beans.factory.support.AbstractBeanDefinitionReader;
-import org.springframework.beans.factory.support.BeanDefinitionReader;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.BeanNameGenerator;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.beans.factory.support.*;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.ConfigurationCondition.ConfigurationPhase;
 import org.springframework.core.annotation.AnnotationAttributes;
@@ -53,12 +39,19 @@ import org.springframework.core.type.MethodMetadata;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Method;
+import java.util.*;
+
 /**
  * Reads a given fully-populated set of ConfigurationClass instances, registering bean
+ * 读取给定的完全填充的ConfigurationClass实例集合，基于其内容使用给定的BeanDefinitionRegistry
  * definitions with the given {@link BeanDefinitionRegistry} based on its contents.
+ * 注册bean定义。
  *
  * <p>This class was modeled after the {@link BeanDefinitionReader} hierarchy, but does
+ * 在BeanDefinitionReader层级之后才对该类进行的建模，没有实现或者扩展BeanDefinitionReader的
  * not implement/extend any of its artifacts as a set of configuration classes is not a
+ * 结构，因为configuration类的集合不是一个Resource。
  * {@link Resource}.
  *
  * @author Chris Beams
@@ -109,6 +102,7 @@ class ConfigurationClassBeanDefinitionReader {
 
 	/**
 	 * Read {@code configurationModel}, registering bean definitions
+	 * 读取configurationModel，基于其内容使用registry注册bean定义。
 	 * with the registry based on its contents.
 	 */
 	public void loadBeanDefinitions(Set<ConfigurationClass> configurationModel) {
@@ -120,6 +114,7 @@ class ConfigurationClassBeanDefinitionReader {
 
 	/**
 	 * Read a particular {@link ConfigurationClass}, registering bean definitions
+	 * 读取一个特定的ConfigurationClass，根据类自身和其所有的Bean方法注册bean定义
 	 * for the class itself and all of its {@link Bean} methods.
 	 */
 	private void loadBeanDefinitionsForConfigurationClass(ConfigurationClass configClass,
@@ -137,6 +132,7 @@ class ConfigurationClassBeanDefinitionReader {
 		if (configClass.isImported()) {
 			registerBeanDefinitionForImportedConfigurationClass(configClass);
 		}
+		//根据Bean方法加载bean定义
 		for (BeanMethod beanMethod : configClass.getBeanMethods()) {
 			loadBeanDefinitionsForBeanMethod(beanMethod);
 		}
@@ -168,7 +164,9 @@ class ConfigurationClassBeanDefinitionReader {
 
 	/**
 	 * Read the given {@link BeanMethod}, registering bean definitions
+	 * 读取给定的BeanMethod，基于其内容使用BeanDefinitionRegistry注册
 	 * with the BeanDefinitionRegistry based on its contents.
+	 * bean定义。
 	 */
 	private void loadBeanDefinitionsForBeanMethod(BeanMethod beanMethod) {
 		ConfigurationClass configClass = beanMethod.getConfigurationClass();
@@ -176,6 +174,7 @@ class ConfigurationClassBeanDefinitionReader {
 		String methodName = metadata.getMethodName();
 
 		// Do we need to mark the bean as skipped by its condition?
+		// 我们需要根据条件标记该bean是否应该跳过
 		if (this.conditionEvaluator.shouldSkip(metadata, ConfigurationPhase.REGISTER_BEAN)) {
 			configClass.skippedBeanMethods.add(methodName);
 			return;
@@ -188,15 +187,18 @@ class ConfigurationClassBeanDefinitionReader {
 		Assert.state(bean != null, "No @Bean annotation attributes");
 
 		// Consider name and any aliases
+		// 考虑名称和任何别名
 		List<String> names = new ArrayList<>(Arrays.asList(bean.getStringArray("name")));
 		String beanName = (!names.isEmpty() ? names.remove(0) : methodName);
 
 		// Register aliases even when overridden
+		// 注册别名
 		for (String alias : names) {
 			this.registry.registerAlias(beanName, alias);
 		}
 
 		// Has this effectively been overridden before (e.g. via XML)?
+		// 实际上这之前已经被覆盖了（比如：通过XML）
 		if (isOverriddenByExistingDefinition(beanMethod, beanName)) {
 			if (beanName.equals(beanMethod.getConfigurationClass().getBeanName())) {
 				throw new BeanDefinitionStoreException(beanMethod.getConfigurationClass().getResource().getDescription(),
@@ -212,11 +214,13 @@ class ConfigurationClassBeanDefinitionReader {
 
 		if (metadata.isStatic()) {
 			// static @Bean method
+			// 静态的@Bean方法
 			beanDef.setBeanClassName(configClass.getMetadata().getClassName());
 			beanDef.setFactoryMethodName(methodName);
 		}
 		else {
 			// instance @Bean method
+			// 实例的@Bean method
 			beanDef.setFactoryBeanName(configClass.getBeanName());
 			beanDef.setUniqueFactoryMethodName(methodName);
 		}
@@ -239,6 +243,7 @@ class ConfigurationClassBeanDefinitionReader {
 		beanDef.setDestroyMethodName(destroyMethodName);
 
 		// Consider scoping
+		// 考虑作用域
 		ScopedProxyMode proxyMode = ScopedProxyMode.NO;
 		AnnotationAttributes attributes = AnnotationConfigUtils.attributesFor(metadata, Scope.class);
 		if (attributes != null) {
@@ -250,6 +255,7 @@ class ConfigurationClassBeanDefinitionReader {
 		}
 
 		// Replace the original bean definition with the target one, if necessary
+		// 如果需要，使用目标bean定义替换原始bean定义
 		BeanDefinition beanDefToRegister = beanDef;
 		if (proxyMode != ScopedProxyMode.NO) {
 			BeanDefinitionHolder proxyDef = ScopedProxyCreator.createScopedProxy(
@@ -363,7 +369,9 @@ class ConfigurationClassBeanDefinitionReader {
 
 	/**
 	 * {@link RootBeanDefinition} marker subclass used to signify that a bean definition
+	 * RootBeanDefinition的子类，用于表示一个根据configuration类创建的bean定义，相对于任何其他的
 	 * was created from a configuration class as opposed to any other configuration source.
+	 * 配置源。在bean覆盖情况下使用，需要确定bean定义是否在外部创建。
 	 * Used in bean overriding cases where it's necessary to determine whether the bean
 	 * definition was created externally.
 	 */
@@ -417,6 +425,7 @@ class ConfigurationClassBeanDefinitionReader {
 
 	/**
 	 * Evaluate {@code @Conditional} annotations, tracking results and taking into
+	 * 解析@Conditional注解，追踪结果以及考虑'imported by'。
 	 * account 'imported by'.
 	 */
 	private class TrackedConditionEvaluator {

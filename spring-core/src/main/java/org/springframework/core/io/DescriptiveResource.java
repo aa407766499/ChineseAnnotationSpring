@@ -16,18 +16,21 @@
 
 package org.springframework.core.io;
 
+import org.springframework.lang.Nullable;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.springframework.lang.Nullable;
-
 /**
  * Simple {@link Resource} implementation that holds a resource description
+ * Resource的简单实现，持有一个资源描述符，但是没有指向实际可读的资源。
  * but does not point to an actually readable resource.
  *
  * <p>To be used as placeholder if a {@code Resource} argument is
+ * 如果Resource参数要被用于API，但是不需要使用实际的读，那么用该类做
  * expected by an API but not necessarily used for actual reading.
+ * 占位符。
  *
  * @author Juergen Hoeller
  * @since 1.2.6

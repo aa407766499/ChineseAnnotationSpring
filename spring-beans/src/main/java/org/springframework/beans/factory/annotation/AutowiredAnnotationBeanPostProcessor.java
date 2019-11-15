@@ -748,17 +748,17 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 				for (int i = 0; i < arguments.length; i++) {
 					//创建方法参数对象
 					MethodParameter methodParam = new MethodParameter(method, i);
+					//解析方法的输入参数，为方法参数创建依赖描述符
 					DependencyDescriptor currDesc = new DependencyDescriptor(methodParam, this.required);
 					currDesc.setContainingClass(bean.getClass());
-					//解析方法的输入参数，为方法参数创建依赖描述符
 					descriptors[i] = currDesc;
 					try {
+						//根据容器中Bean定义解析依赖关系，获取方法参数依赖对象
 						Object arg = beanFactory.resolveDependency(currDesc, beanName, autowiredBeans, typeConverter);
 						if (arg == null && !this.required) {
 							arguments = null;
 							break;
 						}
-						//根据容器中Bean定义解析依赖关系，获取方法参数依赖对象
 						arguments[i] = arg;
 					}
 					catch (BeansException ex) {

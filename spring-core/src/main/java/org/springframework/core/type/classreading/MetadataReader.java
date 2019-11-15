@@ -43,6 +43,7 @@ public interface MetadataReader {
 
 	/**
 	 * Read full annotation metadata for the underlying class,
+	 * 读取底层类的所有注解元数据，包括注解方法的元数据。
 	 * including metadata for annotated methods.
 	 */
 	AnnotationMetadata getAnnotationMetadata();

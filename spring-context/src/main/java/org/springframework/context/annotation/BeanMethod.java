@@ -22,6 +22,7 @@ import org.springframework.core.type.MethodMetadata;
 
 /**
  * Represents a {@link Configuration} class method marked with the
+ * 代表一个Configuration类中被Bean注解标记的方法。
  * {@link Bean} annotation.
  *
  * @author Chris Beams

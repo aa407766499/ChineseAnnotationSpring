@@ -16,24 +16,28 @@
 
 package org.springframework.core.annotation;
 
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
-
 /**
  * {@link LinkedHashMap} subclass representing annotation attribute
+ * LinkedHashMap子类，AnnotationUtils，AnnotatedElementUtils，Spring
  * <em>key-value</em> pairs as read by {@link AnnotationUtils},
+ * 反射以及基于ASM的AnnotationMetadata实现读取的代表注解属性的键值对。
  * {@link AnnotatedElementUtils}, and Spring's reflection- and ASM-based
  * {@link org.springframework.core.type.AnnotationMetadata} implementations.
  *
  * <p>Provides 'pseudo-reification' to avoid noisy Map generics in the calling
+ * 提供“伪具体化”，以避免调用代码中有噪声的Map泛型，以及以类型安全的方式查找注解属
  * code as well as convenience methods for looking up annotation attributes
+ * 性的便利方法。
  * in a type-safe fashion.
  *
  * @author Chris Beams

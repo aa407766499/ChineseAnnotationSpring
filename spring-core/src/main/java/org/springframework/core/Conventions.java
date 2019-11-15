@@ -16,20 +16,15 @@
 
 package org.springframework.core;
 
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
+
 import java.io.Externalizable;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
+import java.util.*;
 
 /**
  * Provides methods to support various naming and other conventions used
@@ -272,6 +267,7 @@ public abstract class Conventions {
 
 	/**
 	 * Return an attribute name qualified by the given enclosing {@link Class}.
+	 * 返回通过给定的类限定的属性名称。比如SomeClass类的foo属性，返回com.myapp.SomeClass.foo。
 	 * For example the attribute name '{@code foo}' qualified by {@link Class}
 	 * '{@code com.myapp.SomeClass}' would be '{@code com.myapp.SomeClass.foo}'
 	 */

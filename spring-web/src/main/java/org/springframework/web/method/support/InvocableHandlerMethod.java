@@ -165,6 +165,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 			if (args[i] != null) {
 				continue;
 			}
+			//比如：筛选出支持参数上有@RequestBody注解的参数处理器
 			if (this.argumentResolvers.supportsParameter(parameter)) {
 				try {
 					//解析参数值

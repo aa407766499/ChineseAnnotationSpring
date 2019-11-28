@@ -16,15 +16,6 @@
 
 package org.springframework.http.converter.json;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
-import java.lang.reflect.Type;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
@@ -34,6 +25,11 @@ import org.springframework.http.converter.AbstractGenericHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.lang.Nullable;
+
+import java.io.*;
+import java.lang.reflect.Type;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Common base class for plain JSON converters, e.g. Gson and JSON-B.
@@ -113,7 +109,7 @@ public abstract class AbstractJsonHttpMessageConverter extends AbstractGenericHt
 	@Override
 	protected final void writeInternal(Object o, @Nullable Type type, HttpOutputMessage outputMessage)
 			throws IOException, HttpMessageNotWritableException {
-
+		//获取到响应的输出流
 		Writer writer = getWriter(outputMessage);
 		if (this.jsonPrefix != null) {
 			writer.append(this.jsonPrefix);
@@ -139,6 +135,7 @@ public abstract class AbstractJsonHttpMessageConverter extends AbstractGenericHt
 
 	/**
 	 * Template method that writes the JSON-bound object to the given {@link Writer}.
+	 * 模板方法，将JSON对象写到给定的Writer中。
 	 * @param o the object to write to the output message
 	 * @param type the type of object to write (may be {@code null})
 	 * @param writer the {@code} Writer to use

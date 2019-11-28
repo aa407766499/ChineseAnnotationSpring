@@ -16,16 +16,16 @@
 
 package org.springframework.web.servlet;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
+
 /**
  * MVC View for a web interaction. Implementations are responsible for rendering
+ * web交互的MVC视图。实现类需要发送内容，暴露模型。单个视图暴露多个模型属性。
  * content, and exposing the model. A single view exposes multiple model attributes.
  *
  * <p>This class and the MVC approach associated with it is discussed in Chapter 12 of
@@ -80,8 +80,11 @@ public interface View {
 
 	/**
 	 * Render the view given the specified model.
+	 * 指定model发送视图
 	 * <p>The first step will be preparing the request: In the JSP case,
+	 * 第一步是准备请求：在JSP情况下，这意味着要将模型对象设置成请求属性。
 	 * this would mean setting model objects as request attributes.
+	 * 第二部将是实际发送视图，比如通过RequestDispatcher包含JSP
 	 * The second step will be the actual rendering of the view,
 	 * for example including the JSP via a RequestDispatcher.
 	 * @param model Map with name Strings as keys and corresponding model

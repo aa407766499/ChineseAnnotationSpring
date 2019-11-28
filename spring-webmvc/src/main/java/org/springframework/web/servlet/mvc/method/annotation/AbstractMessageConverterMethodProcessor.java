@@ -48,7 +48,9 @@ import java.util.*;
 
 /**
  * Extends {@link AbstractMessageConverterMethodArgumentResolver} with the ability to handle
+ * AbstractMessageConverterMethodArgumentResolver扩展类，能够使用HttpMessageConverter处理
  * method return values by writing to the response with {@link HttpMessageConverter}s.
+ * 方法返回值写入到响应中
  *
  * @author Arjen Poutsma
  * @author Rossen Stoyanchev
@@ -129,6 +131,7 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 
 	/**
 	 * Creates a new {@link HttpOutputMessage} from the given {@link NativeWebRequest}.
+	 * 根据给定的NativeWebRequest创建一个新的HttpOutputMessage
 	 * @param webRequest the web request to create an output message from
 	 * @return the output message
 	 */
@@ -246,6 +249,7 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 				GenericHttpMessageConverter genericConverter =
 						(converter instanceof GenericHttpMessageConverter ? (GenericHttpMessageConverter<?>) converter : null);
 				if (genericConverter != null ?
+						//筛选出需要的HttpMessageConverter，比如：JsonbHttpMessageConverter
 						((GenericHttpMessageConverter) converter).canWrite(declaredType, valueType, selectedMediaType) :
 						converter.canWrite(valueType, selectedMediaType)) {
 					outputValue = (T) getAdvice().beforeBodyWrite(outputValue, returnType, selectedMediaType,
@@ -254,6 +258,7 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 					if (outputValue != null) {
 						addContentDispositionHeader(inputMessage, outputMessage);
 						if (genericConverter != null) {
+							//以JSON形式写到输出信息中。
 							genericConverter.write(outputValue, declaredType, selectedMediaType, outputMessage);
 						}
 						else {
@@ -277,7 +282,9 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 
 	/**
 	 * Return the type of the value to be written to the response. Typically this is
+	 * 要被写入到响应的值的类型。通常这只是通过value的getClass进行简单检查，但是如果value
 	 * a simple check via getClass on the value but if the value is null, then the
+	 * 是null，那么返回类型需要被检查，可能包含在泛型类型中（比如：ResponseEntity<T>）
 	 * return type needs to be examined possibly including generic type determination
 	 * (e.g. {@code ResponseEntity<T>}).
 	 */
@@ -287,6 +294,7 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 
 	/**
 	 * Return whether the returned value or the declared return type extend {@link Resource}
+	 * 返回值类型是否Resource类型
 	 */
 	protected boolean isResourceType(@Nullable Object value, MethodParameter returnType) {
 		return Resource.class.isAssignableFrom(value != null ? value.getClass() : returnType.getParameterType());
@@ -294,6 +302,7 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 
 	/**
 	 * Return the generic type of the {@code returnType} (or of the nested type
+	 * 返回returnType的泛型类型（或者如果是HttpEntity，则是内嵌类型的泛型类型）
 	 * if it is an {@link HttpEntity}).
 	 */
 	private Type getGenericType(MethodParameter returnType) {

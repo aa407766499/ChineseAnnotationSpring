@@ -135,6 +135,7 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 
 		//如果是Optional类型，增加一层内嵌层级
 		parameter = parameter.nestedIfOptional();
+		//比如：使用JsonbHttpMessageConverter对请求参数进行转换,转换成目标参数类型的对象
 		Object arg = readWithMessageConverters(webRequest, parameter, parameter.getNestedGenericParameterType());
 		String name = Conventions.getVariableNameForParameter(parameter);
 
@@ -187,7 +188,7 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 		ServletServerHttpResponse outputMessage = createOutputMessage(webRequest);
 
 		// Try even with null return value. ResponseBodyAdvice could get involved.
-		// 即使是null返回值也进行尝试。调用ResponseBodyAdvice。
+		// 即使是null返回值也进行尝试。使用ResponseBodyAdvice。
 		writeWithMessageConverters(returnValue, returnType, inputMessage, outputMessage);
 	}
 

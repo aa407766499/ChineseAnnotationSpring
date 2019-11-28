@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.springframework.http.converter.HttpMessageConverter</OriginalElement>
+  <nodes>
+    <node x="262.91666666666663" y="76.0">org.springframework.http.converter.AbstractHttpMessageConverter</node>
+    <node x="289.49999999999994" y="228.0">org.springframework.http.converter.xml.AbstractJaxb2HttpMessageConverter</node>
+    <node x="295.99999999999994" y="152.0">org.springframework.http.converter.xml.AbstractXmlHttpMessageConverter</node>
+    <node x="566.5" y="228.0">org.springframework.http.converter.json.AbstractJsonHttpMessageConverter</node>
+    <node x="609.25" y="0.0">org.springframework.http.converter.HttpMessageConverter</node>
+    <node x="0.0" y="152.0">org.springframework.http.converter.feed.AbstractWireFeedHttpMessageConverter</node>
+    <node x="836.5" y="228.0">org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter</node>
+    <node x="721.2777777777777" y="152.0">org.springframework.http.converter.AbstractGenericHttpMessageConverter</node>
+    <node x="814.0277777777777" y="76.0">org.springframework.http.converter.GenericHttpMessageConverter</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.springframework.http.converter.xml.AbstractXmlHttpMessageConverter" target="org.springframework.http.converter.AbstractHttpMessageConverter">
+      <point x="0.0" y="-13.0" />
+      <point x="417.99999999999994" y="127.0" />
+      <point x="375.41666666666663" y="127.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.springframework.http.converter.AbstractGenericHttpMessageConverter" target="org.springframework.http.converter.AbstractHttpMessageConverter">
+      <point x="-67.25" y="-13.0" />
+      <point x="788.5277777777777" y="127.0" />
+      <point x="450.41666666666663" y="127.0" />
+      <point x="75.0" y="13.0" />
+    </edge>
+    <edge source="org.springframework.http.converter.GenericHttpMessageConverter" target="org.springframework.http.converter.HttpMessageConverter">
+      <point x="0.0" y="-13.0" />
+      <point x="923.0277777777777" y="51.0" />
+      <point x="739.75" y="51.0" />
+      <point x="43.5" y="13.0" />
+    </edge>
+    <edge source="org.springframework.http.converter.xml.AbstractJaxb2HttpMessageConverter" target="org.springframework.http.converter.xml.AbstractXmlHttpMessageConverter">
+      <point x="0.0" y="-13.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.springframework.http.converter.AbstractGenericHttpMessageConverter" target="org.springframework.http.converter.GenericHttpMessageConverter">
+      <point x="67.25" y="-13.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter" target="org.springframework.http.converter.AbstractGenericHttpMessageConverter">
+      <point x="0.0" y="-13.0" />
+      <point x="974.5" y="203.0" />
+      <point x="923.0277777777777" y="203.0" />
+      <point x="67.25" y="13.0" />
+    </edge>
+    <edge source="org.springframework.http.converter.json.AbstractJsonHttpMessageConverter" target="org.springframework.http.converter.AbstractGenericHttpMessageConverter">
+      <point x="0.0" y="-13.0" />
+      <point x="691.5" y="203.0" />
+      <point x="788.5277777777777" y="203.0" />
+      <point x="-67.25" y="13.0" />
+    </edge>
+    <edge source="org.springframework.http.converter.AbstractHttpMessageConverter" target="org.springframework.http.converter.HttpMessageConverter">
+      <point x="0.0" y="-13.0" />
+      <point x="375.41666666666663" y="51.0" />
+      <point x="652.75" y="51.0" />
+      <point x="-43.5" y="13.0" />
+    </edge>
+    <edge source="org.springframework.http.converter.feed.AbstractWireFeedHttpMessageConverter" target="org.springframework.http.converter.AbstractHttpMessageConverter">
+      <point x="0.0" y="-13.0" />
+      <point x="138.0" y="127.0" />
+      <point x="300.41666666666663" y="127.0" />
+      <point x="-75.0" y="13.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="556.5" y="127.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

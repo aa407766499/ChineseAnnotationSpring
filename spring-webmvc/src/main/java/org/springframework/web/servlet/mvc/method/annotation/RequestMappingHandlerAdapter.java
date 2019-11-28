@@ -164,6 +164,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 		this.messageConverters.add(new ByteArrayHttpMessageConverter());
 		this.messageConverters.add(stringHttpMessageConverter);
 		this.messageConverters.add(new SourceHttpMessageConverter<>());
+		//对xml以及Json提供支持
 		this.messageConverters.add(new AllEncompassingFormHttpMessageConverter());
 	}
 

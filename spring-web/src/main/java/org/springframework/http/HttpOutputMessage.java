@@ -21,9 +21,11 @@ import java.io.OutputStream;
 
 /**
  * Represents an HTTP output message, consisting of {@linkplain #getHeaders() headers}
+ * 代表HTTP输出消息。
  * and a writable {@linkplain #getBody() body}.
  *
  * <p>Typically implemented by an HTTP request handle on the client side,
+ * 客户端的HTTP请求处理或者服务器端的HTTP响应处理实现。
  * or an HTTP response handle on the server side.
  *
  * @author Arjen Poutsma

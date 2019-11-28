@@ -16,22 +16,28 @@
 
 package org.springframework.web.servlet;
 
-import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Map;
+
 /**
  * Holder for both Model and View in the web MVC framework.
+ * web MVC框架中模型和视图的持有器。
  * Note that these are entirely distinct. This class merely holds
+ * 注意：这两者是有区别的。该类持有两者可能只是为了controller在单个返回值
  * both to make it possible for a controller to return both model
+ * 中返回模型和视图。
  * and view in a single return value.
  *
  * <p>Represents a model and view returned by a handler, to be resolved
+ * 代表一个处理器返回的模型和视图，能被DispatcherServlet解析。该视图能携带
  * by a DispatcherServlet. The view can take the form of a String
+ * String类型的视图名称，该视图名称能被ViewResolver对象解析；可以直接指定
  * view name which will need to be resolved by a ViewResolver object;
+ * 一个视图对象。该模型是一个map，允许通过名称key使用多个对象。
  * alternatively a View object can be specified directly. The model
  * is a Map, allowing the use of multiple objects keyed by name.
  *

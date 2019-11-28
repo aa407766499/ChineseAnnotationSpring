@@ -16,14 +16,15 @@
 
 package org.springframework.http.server;
 
-import java.net.InetSocketAddress;
-import java.security.Principal;
-
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpRequest;
 
+import java.net.InetSocketAddress;
+import java.security.Principal;
+
 /**
  * Represents a server-side HTTP request.
+ * 表示服务器端HTTP请求
  *
  * @author Arjen Poutsma
  * @author Rossen Stoyanchev

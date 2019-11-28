@@ -21,9 +21,11 @@ import java.io.InputStream;
 
 /**
  * Represents an HTTP input message, consisting of {@linkplain #getHeaders() headers}
+ * 代表一个HTTP输入消息，由getHeaders()的headers以及可读的getBody()的body组成，
  * and a readable {@linkplain #getBody() body}.
  *
  * <p>Typically implemented by an HTTP request handle on the server side,
+ * 通常由服务器端的HTTP请求处理实现，或者客户端的HTTP响应处理实现
  * or an HTTP response handle on the client side.
  *
  * @author Arjen Poutsma

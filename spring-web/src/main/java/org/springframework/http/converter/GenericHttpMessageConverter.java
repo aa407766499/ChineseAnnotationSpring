@@ -16,17 +16,19 @@
 
 package org.springframework.http.converter;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
-
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
+
 /**
  * A specialization of {@link HttpMessageConverter} that can convert an HTTP request
+ * HttpMessageConverter的特别类，能将HTTP请求转换成指定泛型类型的目标对象，或者将指定泛型类型
  * into a target object of a specified generic type and a source object of a specified
+ * 的源对象转换成HTTP响应
  * generic type into an HTTP response.
  *
  * @author Arjen Poutsma
@@ -83,6 +85,7 @@ public interface GenericHttpMessageConverter<T> extends HttpMessageConverter<T> 
 
 	/**
 	 * Write an given object to the given output message.
+	 * 将给定对象写到给定的输出消息中
 	 * @param t the object to write to the output message. The type of this object must
 	 * have previously been passed to the {@link #canWrite canWrite} method of this
 	 * interface, which must have returned {@code true}.

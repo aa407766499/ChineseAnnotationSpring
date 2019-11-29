@@ -16,27 +16,30 @@
 
 package org.springframework.transaction.interceptor;
 
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
+import org.springframework.aop.support.AopUtils;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.lang.Nullable;
+import org.springframework.transaction.PlatformTransactionManager;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Properties;
 
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
-
-import org.springframework.aop.support.AopUtils;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.lang.Nullable;
-import org.springframework.transaction.PlatformTransactionManager;
-
 /**
  * AOP Alliance MethodInterceptor for declarative transaction
+ * 声明式事务管理的AOP联盟方法拦截器使用公共的Spring事务基础设施
  * management using the common Spring transaction infrastructure
+ * PlatformTransactionManager。
  * ({@link org.springframework.transaction.PlatformTransactionManager}).
  *
  * <p>Derives from the {@link TransactionAspectSupport} class which
+ * 从TransactionAspectSupport类中获取，该类包含Spring底层事务API的整合。
  * contains the integration with Spring's underlying transaction API.
+ * TransactionInterceptor以正确的顺序简单调用相关父类方法比如：invokeWithinTransaction
  * TransactionInterceptor simply calls the relevant superclass methods
  * such as {@link #invokeWithinTransaction} in the correct order.
  *
@@ -90,11 +93,14 @@ public class TransactionInterceptor extends TransactionAspectSupport implements 
 	@Nullable
 	public Object invoke(final MethodInvocation invocation) throws Throwable {
 		// Work out the target class: may be {@code null}.
+		// 获取目标类：可能是null。
 		// The TransactionAttributeSource should be passed the target class
+		// TransactionAttributeSource应该穿过目标类和方法，方法可能来自接口。
 		// as well as the method, which may be from an interface.
 		Class<?> targetClass = (invocation.getThis() != null ? AopUtils.getTargetClass(invocation.getThis()) : null);
 
 		// Adapt to TransactionAspectSupport's invokeWithinTransaction...
+		// 适配TransactionAspectSupport的invokeWithinTransaction方法
 		return invokeWithinTransaction(invocation.getMethod(), targetClass, invocation::proceed);
 	}
 

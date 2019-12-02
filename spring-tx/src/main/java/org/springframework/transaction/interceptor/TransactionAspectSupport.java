@@ -16,13 +16,8 @@
 
 package org.springframework.transaction.interceptor;
 
-import java.lang.reflect.Method;
-import java.util.Properties;
-import java.util.concurrent.ConcurrentMap;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.InitializingBean;
@@ -38,6 +33,10 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.util.StringUtils;
+
+import java.lang.reflect.Method;
+import java.util.Properties;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Base class for transactional aspects, such as the {@link TransactionInterceptor}
@@ -266,7 +265,9 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 
 	/**
 	 * General delegate for around-advice-based subclasses, delegating to several other template
+	 * 一般委派给基于环绕增强的子类，委派给几个该类中的几个其他的模板方法。能处理CallbackPreferringPlatformTransactionManager
 	 * methods on this class. Able to handle {@link CallbackPreferringPlatformTransactionManager}
+	 * 和常规的PlatformTransactionManager实现类。
 	 * as well as regular {@link PlatformTransactionManager} implementations.
 	 * @param method the Method being invoked
 	 * @param targetClass the target class that we're invoking the method on
@@ -279,28 +280,35 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 			final InvocationCallback invocation) throws Throwable {
 
 		// If the transaction attribute is null, the method is non-transactional.
+		// 如果事务属性为null，该方法处于非事务环境。
+		//获取注解事务属性源
 		TransactionAttributeSource tas = getTransactionAttributeSource();
+		//获取方法上的事务属性
 		final TransactionAttribute txAttr = (tas != null ? tas.getTransactionAttribute(method, targetClass) : null);
 		final PlatformTransactionManager tm = determineTransactionManager(txAttr);
 		final String joinpointIdentification = methodIdentification(method, targetClass, txAttr);
 
 		if (txAttr == null || !(tm instanceof CallbackPreferringPlatformTransactionManager)) {
 			// Standard transaction demarcation with getTransaction and commit/rollback calls.
+			// 标准事务环境，进行getTransaction，提交/回滚调用
 			TransactionInfo txInfo = createTransactionIfNecessary(tm, txAttr, joinpointIdentification);
 			Object retVal = null;
 			try {
 				// This is an around advice: Invoke the next interceptor in the chain.
+				// 这是一个环绕增强：调用链中的下一个拦截器。这里通常是目标对象被调用的结果。
 				// This will normally result in a target object being invoked.
 				retVal = invocation.proceedWithInvocation();
 			}
 			catch (Throwable ex) {
 				// target invocation exception
+				// 目标调用异常
 				completeTransactionAfterThrowing(txInfo, ex);
 				throw ex;
 			}
 			finally {
 				cleanupTransactionInfo(txInfo);
 			}
+			//提交
 			commitTransactionAfterReturning(txInfo);
 			return retVal;
 		}
@@ -371,10 +379,12 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 
 	/**
 	 * Determine the specific transaction manager to use for the given transaction.
+	 * 确定要用于给定事务的指定事务管理器
 	 */
 	@Nullable
 	protected PlatformTransactionManager determineTransactionManager(@Nullable TransactionAttribute txAttr) {
 		// Do not attempt to lookup tx manager if no tx attributes are set
+		// 如果没有设置事务属性不会尝试查找事务管理器
 		if (txAttr == null || this.beanFactory == null) {
 			return getTransactionManager();
 		}
@@ -427,7 +437,9 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 
 	/**
 	 * Convenience method to return a String representation of this Method
+	 * 便利方法返回用于日志记录的该方法的String表示。子类能重写该方法提供给定
 	 * for use in logging. Can be overridden in subclasses to provide a
+	 * 方法不同的表示。
 	 * different identifier for the given method.
 	 * <p>The default implementation returns {@code null}, indicating the
 	 * use of {@link DefaultTransactionAttribute#getDescriptor()} instead,
@@ -444,7 +456,9 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 
 	/**
 	 * Create a transaction if necessary based on the given TransactionAttribute.
+	 * 如果需要根据给定的TransactionAttribute创建一个事务。
 	 * <p>Allows callers to perform custom TransactionAttribute lookups through
+	 * 允许调用者通过TransactionAttributeSource执行自定义TransactionAttribute查找
 	 * the TransactionAttributeSource.
 	 * @param txAttr the TransactionAttribute (may be {@code null})
 	 * @param joinpointIdentification the fully qualified method name
@@ -459,6 +473,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 			@Nullable TransactionAttribute txAttr, final String joinpointIdentification) {
 
 		// If no name specified, apply method identification as transaction name.
+		// 如果没有名称指定，应用方法标识作为事务名称
 		if (txAttr != null && txAttr.getName() == null) {
 			txAttr = new DelegatingTransactionAttribute(txAttr) {
 				@Override
@@ -547,6 +562,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 			}
 			if (txInfo.transactionAttribute != null && txInfo.transactionAttribute.rollbackOn(ex)) {
 				try {
+					//进行回滚
 					txInfo.getTransactionManager().rollback(txInfo.getTransactionStatus());
 				}
 				catch (TransactionSystemException ex2) {
@@ -561,8 +577,11 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 			}
 			else {
 				// We don't roll back on this exception.
+				// 不能回滚该异常。
 				// Will still roll back if TransactionStatus.isRollbackOnly() is true.
+				// 如果TransactionStatus的isRollbackOnly()是true，仍然会回滚。
 				try {
+					//提交
 					txInfo.getTransactionManager().commit(txInfo.getTransactionStatus());
 				}
 				catch (TransactionSystemException ex2) {
@@ -592,6 +611,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 
 	/**
 	 * Opaque object used to hold Transaction information. Subclasses
+	 * 持有事务信息的对象。子类必须将该类传回方法，这样看不到其内部。
 	 * must pass it back to methods on this class, but not see its internals.
 	 */
 	protected final class TransactionInfo {
